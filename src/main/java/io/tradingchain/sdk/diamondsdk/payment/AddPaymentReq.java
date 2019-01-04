@@ -10,5 +10,5 @@ public class AddPaymentReq {
   public String userId;
   public String operSysType;
   public String version = "1.0.0";
-  public String accessToken = System.currentTimeMillis()+"";
+  public String accessToken = System.currentTimeMillis()+"1";
 }

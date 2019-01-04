@@ -5,7 +5,7 @@ import java.util.List;
 public class QueryPaymentResp {
   public String resCode;
   public String resMsg;
-  public List<MerReceiveVo> receiveVoList;
+  public List<MerReceiveVo> merReceiveVos;
 
   public class MerReceiveVo{
     public String id;
@@ -17,5 +17,29 @@ public class QueryPaymentResp {
     public String qrUrl;
     public String bankNo;
     public String bankAddr;
+
+    @Override
+    public String toString() {
+      return "MerReceiveVo{" +
+          "id='" + id + '\'' +
+          ", userId='" + userId + '\'' +
+          ", name='" + name + '\'' +
+          ", stutas='" + stutas + '\'' +
+          ", receiveType='" + receiveType + '\'' +
+          ", accountNo='" + accountNo + '\'' +
+          ", qrUrl='" + qrUrl + '\'' +
+          ", bankNo='" + bankNo + '\'' +
+          ", bankAddr='" + bankAddr + '\'' +
+          '}';
+    }
+  }
+
+  @Override
+  public String toString() {
+    return "QueryPaymentResp{" +
+        "resCode='" + resCode + '\'' +
+        ", resMsg='" + resMsg + '\'' +
+        ", merReceiveVos=" + merReceiveVos +
+        '}';
   }
 }

@@ -14,5 +14,27 @@ public class QueryFiatTradeReceiveResp {
     public String qrUrl;
     public String bankNo;
     public String bankAddr;
+
+    @Override
+    public String toString() {
+      return "MerReceiveVo{" +
+          "userId='" + userId + '\'' +
+          ", name='" + name + '\'' +
+          ", receiveType='" + receiveType + '\'' +
+          ", accountNo='" + accountNo + '\'' +
+          ", qrUrl='" + qrUrl + '\'' +
+          ", bankNo='" + bankNo + '\'' +
+          ", bankAddr='" + bankAddr + '\'' +
+          '}';
+    }
+  }
+
+  @Override
+  public String toString() {
+    return "QueryFiatTradeReceiveResp{" +
+        "resCode='" + resCode + '\'' +
+        ", resMsg='" + resMsg + '\'' +
+        ", receiveVo=" + receiveVo +
+        '}';
   }
 }

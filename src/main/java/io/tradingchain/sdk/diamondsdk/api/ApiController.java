@@ -121,7 +121,7 @@ public class ApiController {
       return res;
     } else {
       return new RegisterRes( res.msg);
-    }
+    }//c34d93b6d68740f29518aa01571cc74b
   }
 
   /**
@@ -201,7 +201,8 @@ public class ApiController {
     treeMap.put("receiveType", req.receiveType);
     treeMap.put("name", req.name);
     treeMap.put("accountNo", req.accountNo);
-    return HttpUtil.post(AnnotationUtil
+    treeMap.put("userId", req.userId);
+    return HttpUtil.postForm(AnnotationUtil
         .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
             Config.OTC_SECRET, treeMap)).castTo(AddPaymentResp.class);
   }
@@ -217,6 +218,7 @@ public class ApiController {
     TreeMap treeMap = new TreeMap();
     treeMap.put("accessToken", req.accessToken);
     treeMap.put("userId", req.userId);
+
     return HttpUtil.post(AnnotationUtil
         .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
             Config.OTC_SECRET, treeMap)).castTo(QueryPaymentResp.class);
@@ -303,7 +305,7 @@ public class ApiController {
     treeMap.put("accessToken", req.accessToken);
     treeMap.put("orderNo", req.orderNo);
     treeMap.put("userId", req.userId);
-    return HttpUtil.post(AnnotationUtil
+    return HttpUtil.postForm(AnnotationUtil
         .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
             Config.OTC_SECRET, treeMap)).castTo(FiatTradeAppealResp.class);
   }

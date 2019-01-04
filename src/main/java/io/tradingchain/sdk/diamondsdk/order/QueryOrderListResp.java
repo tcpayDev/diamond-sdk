@@ -31,5 +31,40 @@ public class QueryOrderListResp {
     public BigDecimal fee;
     public String payMode;
     public String amount;
+
+    @Override
+    public String toString() {
+      return "FiatTradeOrder{" +
+          "orderNo='" + orderNo + '\'' +
+          ", assetCode='" + assetCode + '\'' +
+          ", sellerId='" + sellerId + '\'' +
+          ", sellerNickName='" + sellerNickName + '\'' +
+          ", sellerUserCategory='" + sellerUserCategory + '\'' +
+          ", buyerId='" + buyerId + '\'' +
+          ", buyerNickName='" + buyerNickName + '\'' +
+          ", buyerUserCategory='" + buyerUserCategory + '\'' +
+          ", quantity=" + quantity +
+          ", price=" + price +
+          ", offerOrderNo='" + offerOrderNo + '\'' +
+          ", status=" + status +
+          ", overtime=" + overtime +
+          ", cancelTime=" + cancelTime +
+          ", createTime=" + createTime +
+          ", fee=" + fee +
+          ", payMode='" + payMode + '\'' +
+          ", amount='" + amount + '\'' +
+          '}';
+    }
+  }
+
+  @Override
+  public String toString() {
+    return "QueryOrderListResp{" +
+        "resCode='" + resCode + '\'' +
+        ", resMsg='" + resMsg + '\'' +
+        ", totalSize=" + totalSize +
+        ", pageSize=" + pageSize +
+        ", tradeOrderList=" + tradeOrderList +
+        '}';
   }
 }
