@@ -12,6 +12,10 @@ public class AddPaymentReq {
   public String version = "1.0.0";
   public String accessToken = System.currentTimeMillis()+"1";
 
+  public AddPaymentReq(String receiveType) {
+    this.receiveType = receiveType;
+  }
+
   public AddPaymentReq(String receiveType, String name, String accountNo, String bankName,
       String bankAddr, String appealFile, String userId, String operSysType) {
     this.receiveType = receiveType;

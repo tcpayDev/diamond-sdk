@@ -7,4 +7,9 @@ public class ExchangeRateRes extends BaseRes{
   public String exchangeRateBuy;
   public String exchangeRateSell;
 
+
+  public ExchangeRateRes(String exchangeRateBuy, String exchangeRateSell) {
+    this.exchangeRateBuy = exchangeRateBuy;
+    this.exchangeRateSell = exchangeRateSell;
+  }
 }

@@ -176,26 +176,22 @@ public class DiamondService {
    * 获取汇率
    *
    * @param req 请求体
-   * @param type buy(买入)/sell(卖出)
    */
-  public ExchangeRateRes exchangeRate(ExchangeRateReq req, String type) throws Exception {
+  public ExchangeRateRes exchangeRate(ExchangeRateReq req) throws Exception {
     final String path = "/find/tradeDepth";
     OrderBookRes rateReq = HttpUtil
         .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), Config.SECRET))
         .castTo(OrderBookRes.class);
-    BigDecimal rate = BigDecimal.ZERO;
-    if ("buy".equals(type)) {
-      rate = rateReq.bids[0][0];
-    } else {
-      rate = rateReq.asks[0][0];
-    }
+    BigDecimal rateBuy = rateReq.bids[0][0];
+    BigDecimal rateSell = rateReq.asks[0][0];
     // TODO 获取OTC最新的汇率
-
     //计算DB-USDT的最终汇率
-
+    String exchangeRateBuy = rateBuy.multiply(new BigDecimal("7"))
+        .setScale(7, BigDecimal.ROUND_HALF_EVEN).toPlainString();
+    String exchangeRateSell = rateBuy.multiply(new BigDecimal("7"))
+        .setScale(7, BigDecimal.ROUND_HALF_EVEN).toPlainString();
     //信任币种
-
-    return new ExchangeRateRes();
+    return new ExchangeRateRes(exchangeRateBuy,exchangeRateSell);
   }
 
   /**

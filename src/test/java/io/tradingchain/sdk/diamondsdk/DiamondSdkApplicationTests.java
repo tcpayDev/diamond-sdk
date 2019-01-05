@@ -40,7 +40,7 @@ public class DiamondSdkApplicationTests {
   public void contextLoads() {
   }
 
-
+/*
   @Test
   public void beforeRegister() throws Exception {
     BeforeRegisterReq req = new BeforeRegisterReq();
@@ -218,5 +218,6 @@ public class DiamondSdkApplicationTests {
     QueryOrderResp resp = DiamondService.orderInfo(registReq);
     System.out.println(resp);
   }
+  */
 }
 
