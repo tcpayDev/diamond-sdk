@@ -44,10 +44,8 @@ import io.tradingchain.sdk.diamondsdk.util.AnnotationUtil;
 import io.tradingchain.sdk.diamondsdk.util.HttpUtil;
 import java.math.BigDecimal;
 import java.util.TreeMap;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-public class ApiController {
+public class DiamondService {
 
   /**
    * 注册前获取备份私钥
