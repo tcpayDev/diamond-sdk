@@ -52,10 +52,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-public class ApiController {
+public class DiamondService {
 
   public static void main(String[] args) {
     BigDecimal a = new BigDecimal("1000");
