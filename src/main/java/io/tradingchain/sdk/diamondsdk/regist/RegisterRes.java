@@ -14,20 +14,4 @@ public class RegisterRes extends BaseRes {
     public String inviteCode;
   }
 
-  @Override
-  public String toString() {
-    return "RegisterResponseVO{" +
-        "msg='" + msg + '\'' +
-        ", code=" + code +
-        ", data=" + data +
-        '}';
-  }
-
-  public RegisterRes() {
-  }
-
-  public RegisterRes(String msg) {
-    this.code=2002;
-    this.msg=msg;
-  }
 }
