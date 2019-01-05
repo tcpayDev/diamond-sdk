@@ -1,18 +1,27 @@
 package io.tradingchain.sdk.diamondsdk.merchantOffer;
 
 
+import io.tradingchain.sdk.diamondsdk.annotation.ReqParam;
 import java.math.BigDecimal;
 
 public class OtcPostersReq {
-
+  @ReqParam(isSgin = false,nullable = false, comment = "买卖方向 buy(买)/sell(卖)")
   public String tradeType;
+  @ReqParam(isSgin = false,nullable = false, comment = "金额")
   public BigDecimal amount;
+  @ReqParam(isSgin = false,nullable = false, comment = "支付方式 用,分割")
   public String payMode;
+  @ReqParam(isSgin = false,nullable = false, comment = "币种名称 如:btc")
   public String assetCode;
+  @ReqParam(isSgin = false,nullable = false, comment = "page")
   public int page;
+  @ReqParam(isSgin = false,nullable = false, comment = "pageSize")
   public int pageSize;
+  @ReqParam(isSgin = false,nullable = false, comment = "操作 1:安卓 2:IOS")
   public String operSysType;    //操作系统: 1：安卓2：IOS
+  @ReqParam(isSgin = false,nullable = false, comment = "版本")
   public String version = "1.0.0";
+  @ReqParam(isSgin = true,nullable = false, comment = "Token")
   public String accessToken = System.currentTimeMillis()+"";
 
 

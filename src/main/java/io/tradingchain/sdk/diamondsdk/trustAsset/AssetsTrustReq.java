@@ -5,17 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AssetsTrustReq {
-  @ReqParam(nullable = false, comment = "用户名")
+  @ReqParam(isSgin = true,nullable = false, comment = "用户名")
   public String username;
-  @ReqParam(comment = "用户私钥, 与backupKey二选一")
+  @ReqParam(isSgin = true,comment = "用户私钥, 与backupKey二选一")
   public String privateKey;
-  @ReqParam(nullable = false, comment = "资产列表")
+  @ReqParam(isSgin = true,nullable = false, comment = "资产列表")
   public List<AssetPair> list;
-  @ReqParam(nullable = false, comment = "标识")
+  @ReqParam(isSgin = true,nullable = false, comment = "标识")
   public String platform;
-  @ReqParam(nullable = false, comment = "签名", userset = false)
+  @ReqParam(isSgin = false,nullable = false, comment = "签名", userset = false)
   public String sign;
-  @ReqParam(nullable = false, comment = "公钥")
+  @ReqParam(isSgin = true,nullable = false, comment = "签名key")
   public String apiKey;
 
   public AssetsTrustReq() {

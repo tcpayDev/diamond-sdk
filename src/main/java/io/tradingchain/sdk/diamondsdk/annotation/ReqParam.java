@@ -12,6 +12,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 public @interface ReqParam {
 
+  boolean isSgin() default false;
+
   boolean nullable() default true;
 
   boolean userset() default true;

@@ -1,10 +1,17 @@
 package io.tradingchain.sdk.diamondsdk.payment;
 
+import io.tradingchain.sdk.diamondsdk.annotation.ReqParam;
+
 public class QueryFiatTradeReceiveReq {
+  @ReqParam(isSgin = true,nullable = false, comment = "用户id")
   public String userId;
+  @ReqParam(isSgin = true,nullable = false, comment = "支付方式")
   public String payMode;
+  @ReqParam(isSgin = false,nullable = false, comment = "操作 1:安卓 2:IOS")
   public String operSysType;
+  @ReqParam(isSgin = false,nullable = false, comment = "版本")
   public String version = "1.0.0";
+  @ReqParam(isSgin = true,nullable = false, comment = "token")
   public String accessToken = System.currentTimeMillis()+"";
 
   public QueryFiatTradeReceiveReq() {

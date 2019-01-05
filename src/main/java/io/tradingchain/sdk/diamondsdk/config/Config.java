@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 
 public class Config {
 
-  public static String BASE_URL = "http://api.1mfpay.com";
+  public static String BASE_URL = "http://api.1mfpay.com";//"http://localhost:8802";//
   public static String OTC_BASE_URL = "http://101.200.122.153:8380";
   public static String PLATFORM = "tradingchain_test";
   public static String API_KEY = "tradingchain";

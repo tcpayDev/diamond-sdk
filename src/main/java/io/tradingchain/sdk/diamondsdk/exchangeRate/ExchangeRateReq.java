@@ -1,12 +1,21 @@
 package io.tradingchain.sdk.diamondsdk.exchangeRate;
 
+import io.tradingchain.sdk.diamondsdk.annotation.ReqParam;
+
 public class ExchangeRateReq {
+  @ReqParam(isSgin = true,nullable = false, comment = "基础币种")
   public String baseAsset;
+  @ReqParam(isSgin = true,nullable = false, comment = "币种发行人")
   public String baseAssetIssuer;
+  @ReqParam(isSgin = true,nullable = false, comment = "计价币种")
   public String counterAsset;
+  @ReqParam(isSgin = true,nullable = false, comment = "币种发行人")
   public String counterAssetIssuer;
+  @ReqParam(isSgin = false,nullable = false, comment = "签名 不需要传值")
   public String  sign;
+  @ReqParam(isSgin = true,nullable = false, comment = "size")
   public int size;
+  @ReqParam(isSgin = true,nullable = false, comment = "签名key")
   public String  apiKey;
 
 

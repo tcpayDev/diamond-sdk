@@ -1,9 +1,15 @@
 package io.tradingchain.sdk.diamondsdk.payment;
 
+import io.tradingchain.sdk.diamondsdk.annotation.ReqParam;
+
 public class QueryPaymentReq {
+  @ReqParam(isSgin = true,nullable = false, comment = "用户id")
   public String userId;
+  @ReqParam(isSgin = false,nullable = false, comment = "操作 1:安卓 2:IOS")
   public String operSysType;
+  @ReqParam(isSgin = false,nullable = false, comment = "版本")
   public String version = "1.0.0";
+  @ReqParam(isSgin = true,nullable = false, comment = "token")
   public String accessToken = System.currentTimeMillis()+"";
 
   public QueryPaymentReq() {

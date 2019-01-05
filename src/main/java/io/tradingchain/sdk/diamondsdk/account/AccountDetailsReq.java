@@ -3,19 +3,19 @@ package io.tradingchain.sdk.diamondsdk.account;
 import io.tradingchain.sdk.diamondsdk.annotation.ReqParam;
 
 public class AccountDetailsReq {
-  @ReqParam(nullable = false, comment = "用户名")
+  @ReqParam(isSgin = false,nullable = false, comment = "用户名")
   public String username;
-  @ReqParam(nullable = false, comment = "用户登录密码")
+  @ReqParam(isSgin = false,nullable = false, comment = "用户登录密码")
   public String password;
-  @ReqParam(nullable = false, comment = "标识")
+  @ReqParam(isSgin = false,nullable = false, comment = "标识")
   public String platform;
-  @ReqParam(nullable = true, comment = "计价币名称")
+  @ReqParam(isSgin = false,nullable = true, comment = "计价币名称")
   public String counterAssetName;
-  @ReqParam(nullable = true, comment = "计价币发行者")
+  @ReqParam(isSgin = false,nullable = true, comment = "计价币发行者")
   public String counterAssetIssuer;
-  @ReqParam(nullable = false, comment = "签名", userset = false)
+  @ReqParam(isSgin = false,nullable = false, comment = "签名", userset = false)
   public String sign;
-  @ReqParam(nullable = false, comment = "公钥")
+  @ReqParam(isSgin = false,nullable = false, comment = "公钥")
   public String apiKey;
 
   public AccountDetailsReq() {

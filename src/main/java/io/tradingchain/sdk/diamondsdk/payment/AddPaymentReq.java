@@ -1,15 +1,27 @@
 package io.tradingchain.sdk.diamondsdk.payment;
 
+import io.tradingchain.sdk.diamondsdk.annotation.ReqParam;
+
 public class AddPaymentReq {
+  @ReqParam(isSgin = true,nullable = false, comment = "收款方式")
   public String receiveType;
+  @ReqParam(isSgin = true,nullable = false, comment = "姓名")
   public String name;
+  @ReqParam(isSgin = true,nullable = false, comment = "账号")
   public String accountNo;
+  @ReqParam(isSgin = false,nullable = false, comment = "银行名称")
   public String bankName;
+  @ReqParam(isSgin = false,nullable = false, comment = "开户行地址")
   public String bankAddr;
+  @ReqParam(isSgin = false,nullable = false, comment = "二维码图片文件")
   public String appealFile;
+  @ReqParam(isSgin = false,nullable = false, comment = "用户id")
   public String userId;
+  @ReqParam(isSgin = false,nullable = false, comment = "操作 1:安卓 2:IOS")
   public String operSysType;
+  @ReqParam(isSgin = false,nullable = false, comment = "版本")
   public String version = "1.0.0";
+  @ReqParam(isSgin = true,nullable = false, comment = "Token")
   public String accessToken = System.currentTimeMillis()+"1";
 
   public AddPaymentReq(String receiveType) {

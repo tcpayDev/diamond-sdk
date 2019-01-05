@@ -51,6 +51,7 @@ import io.tradingchain.sdk.diamondsdk.trustAsset.AssetTrustResp;
 import io.tradingchain.sdk.diamondsdk.trustAsset.AssetsTrustReq;
 import io.tradingchain.sdk.diamondsdk.util.AnnotationUtil;
 import io.tradingchain.sdk.diamondsdk.util.HttpUtil;
+import io.tradingchain.sdk.diamondsdk.util.HttpUtil.Response;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -109,19 +110,6 @@ public class DiamondService {
     if (queryUserResp.resCode.equals("C502570000000")) {
       if (queryUserResp.userStatus.equals("01")) {
         //该用户没有注册,调用OTC注册接口
-        //生成签名参数
-        TreeMap treeMap = new TreeMap();
-        treeMap.put("mobile", req.phone);
-        treeMap.put("loginPass", req.password);
-        treeMap.put("tradePassword", req.tradePassword);
-        treeMap.put("privateKey", req.privateKey);
-        treeMap.put("exUserId", res.data.userId + "");
-        treeMap.put("publicKey", res.data.publicKey);
-        treeMap.put("inviteCode", res.data.inviteCode);
-        treeMap.put("idCard", req.phone);
-        treeMap.put("userName", req.username);
-        treeMap.put("nickName", req.username);
-        treeMap.put("accessToken", userReq.accessToken);
         //生成请求参数
         userReq.mobile = req.phone;
         userReq.loginPass = req.password;
@@ -136,7 +124,7 @@ public class DiamondService {
         userReq.nickName = req.username;
         UserResp user = HttpUtil.post(AnnotationUtil
             .buildReq(Config.OTC_BASE_URL + otc_path, setOtcCommonParams(userReq),
-                Config.OTC_SECRET, treeMap)).castTo(UserResp.class);
+                Config.OTC_SECRET)).castTo(UserResp.class);
         if (user.resCode.equals("C502570000000")) {
           System.out.println(res.data.publicKey);
           return new RegisterResOTC(res, user);
@@ -156,13 +144,9 @@ public class DiamondService {
    */
   public QueryUserResp queryUser(QueryUserReq req) throws Exception {
     final String path = "/api/user/query";
-    TreeMap treeMap = new TreeMap();
-    treeMap.put("mobile", req.mobile);
-    treeMap.put("accessToken", req.accessToken);
     return HttpUtil
         .post(AnnotationUtil
-            .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req), Config.OTC_SECRET,
-                treeMap)).castTo(QueryUserResp.class);
+            .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req), Config.OTC_SECRET)).castTo(QueryUserResp.class);
   }
 
   /**
@@ -223,11 +207,9 @@ public class DiamondService {
    */
   public BaseVO moneyMerchantInfo(OtcPostersReq req) throws Exception {
     final String path = "/api/fiatTrade/queryOffers";
-    TreeMap treeMap = new TreeMap();
-    treeMap.put("accessToken", req.accessToken);
     OtcPostersRes res = HttpUtil.post(AnnotationUtil
         .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
-            Config.OTC_SECRET, treeMap)).castTo(OtcPostersRes.class);
+            Config.OTC_SECRET)).castTo(OtcPostersRes.class);
     List<OtcPostersVO> lists = new ArrayList<>();
     if (res.resCode.equals("C502570000000") && res.otcPosterseList.size() > 0) {
       for (OtcPosters o : res.otcPosterseList) {
@@ -253,11 +235,9 @@ public class DiamondService {
    */
   public BaseVO moneyMerchantOrder(OtcPostersReq req) throws Exception {
     final String path = "/api/fiatTrade/queryOffers";
-    TreeMap treeMap = new TreeMap();
-    treeMap.put("accessToken", req.accessToken);
     OtcPostersRes res = HttpUtil.post(AnnotationUtil
         .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
-            Config.OTC_SECRET, treeMap)).castTo(OtcPostersRes.class);
+            Config.OTC_SECRET)).castTo(OtcPostersRes.class);
     List<OtcPostersResVO> lists = new ArrayList<>();
     List<OtcPosters> banks = new ArrayList<>();
     List<OtcPosters> alipays = new ArrayList<>();
@@ -317,15 +297,9 @@ public class DiamondService {
    */
   public AddPaymentResp addPayment(AddPaymentReq req) throws Exception {
     final String path = "/api/info/receive/add";
-    TreeMap treeMap = new TreeMap();
-    treeMap.put("accessToken", req.accessToken);
-    treeMap.put("receiveType", req.receiveType);
-    treeMap.put("name", req.name);
-    treeMap.put("accountNo", req.accountNo);
-    treeMap.put("userId", req.userId);
     return HttpUtil.postForm(AnnotationUtil
         .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
-            Config.OTC_SECRET, treeMap)).castTo(AddPaymentResp.class);
+            Config.OTC_SECRET)).castTo(AddPaymentResp.class);
   }
 
 
@@ -341,7 +315,7 @@ public class DiamondService {
     treeMap.put("userId", req.userId);
     return HttpUtil.post(AnnotationUtil
         .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
-            Config.OTC_SECRET, treeMap)).castTo(QueryPaymentResp.class);
+            Config.OTC_SECRET)).castTo(QueryPaymentResp.class);
   }
 
   /**
@@ -351,12 +325,9 @@ public class DiamondService {
    */
   public DelPaymentResp delReceive(DelPaymentReq req) throws Exception {
     final String path = "/api/info/receive/delReceive";
-    TreeMap treeMap = new TreeMap();
-    treeMap.put("accessToken", req.accessToken);
-    treeMap.put("id", req.id);
     return HttpUtil.post(AnnotationUtil
         .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
-            Config.OTC_SECRET, treeMap)).castTo(DelPaymentResp.class);
+            Config.OTC_SECRET)).castTo(DelPaymentResp.class);
   }
 
 
@@ -367,17 +338,9 @@ public class DiamondService {
    */
   public CreateOrderResp createOrder(CreateOrderReq req) throws Exception {
     final String path = "/api/fiatTrade/create";
-    TreeMap treeMap = new TreeMap();
-    treeMap.put("accessToken", req.accessToken);
-    treeMap.put("offerOrderNo", req.offerOrderNo);
-    treeMap.put("quantity", req.quantity);
-    treeMap.put("price", req.price);
-    treeMap.put("amount", req.amount);
-    treeMap.put("type", req.type);
-    treeMap.put("userId", req.userId);
     return HttpUtil.post(AnnotationUtil
         .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
-            Config.OTC_SECRET, treeMap)).castTo(CreateOrderResp.class);
+            Config.OTC_SECRET)).castTo(CreateOrderResp.class);
   }
 
 
@@ -388,13 +351,9 @@ public class DiamondService {
    */
   public CancelOrderResp cancelOrder(CancelOrderReq req) throws Exception {
     final String path = "/api/fiatTrade/cancel";
-    TreeMap treeMap = new TreeMap();
-    treeMap.put("accessToken", req.accessToken);
-    treeMap.put("orderNo", req.orderNo);
-    treeMap.put("userId", req.userId);
     return HttpUtil.post(AnnotationUtil
         .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
-            Config.OTC_SECRET, treeMap)).castTo(CancelOrderResp.class);
+            Config.OTC_SECRET)).castTo(CancelOrderResp.class);
   }
 
   /**
@@ -404,14 +363,9 @@ public class DiamondService {
    */
   public ConfirmPayResp confirmPay(ConfirmPayReq req) throws Exception {
     final String path = "/api/fiatTrade/pay";
-    TreeMap treeMap = new TreeMap();
-    treeMap.put("accessToken", req.accessToken);
-    treeMap.put("orderNo", req.orderNo);
-    treeMap.put("userId", req.userId);
-    treeMap.put("payMode", req.payMode);
     return HttpUtil.post(AnnotationUtil
         .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
-            Config.OTC_SECRET, treeMap)).castTo(ConfirmPayResp.class);
+            Config.OTC_SECRET)).castTo(ConfirmPayResp.class);
   }
 
   /**
@@ -421,13 +375,9 @@ public class DiamondService {
    */
   public FiatTradeAppealResp fiatTradeAppeal(FiatTradeAppealReq req) throws Exception {
     final String path = "/api/fiatTrade/appeal";
-    TreeMap treeMap = new TreeMap();
-    treeMap.put("accessToken", req.accessToken);
-    treeMap.put("orderNo", req.orderNo);
-    treeMap.put("userId", req.userId);
     return HttpUtil.postForm(AnnotationUtil
         .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
-            Config.OTC_SECRET, treeMap)).castTo(FiatTradeAppealResp.class);
+            Config.OTC_SECRET)).castTo(FiatTradeAppealResp.class);
   }
 
 
@@ -438,12 +388,9 @@ public class DiamondService {
    */
   public QueryOrderListResp orderList(QueryOrderListReq req) throws Exception {
     final String path = "/api/fiatTrade/query";
-    TreeMap treeMap = new TreeMap();
-    treeMap.put("accessToken", req.accessToken);
-    treeMap.put("userId", req.userId);
     return HttpUtil.post(AnnotationUtil
         .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
-            Config.OTC_SECRET, treeMap)).castTo(QueryOrderListResp.class);
+            Config.OTC_SECRET)).castTo(QueryOrderListResp.class);
   }
 
 
@@ -454,28 +401,21 @@ public class DiamondService {
    */
   public QueryFiatTradeReceiveResp queryReceive(QueryFiatTradeReceiveReq req) throws Exception {
     final String path = "/api/fiatTrade/queryReceives";
-    TreeMap treeMap = new TreeMap();
-    treeMap.put("accessToken", req.accessToken);
-    treeMap.put("userId", req.userId);
-    treeMap.put("payMode", req.payMode);
     return HttpUtil.post(AnnotationUtil
         .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
-            Config.OTC_SECRET, treeMap)).castTo(QueryFiatTradeReceiveResp.class);
+            Config.OTC_SECRET)).castTo(QueryFiatTradeReceiveResp.class);
   }
 
 
   /**
-   * 查询单个订单洗信息
+   * 查询单个订单信息
    *
    * @param req 请求体
    */
   public QueryOrderResp orderInfo(QueryOrderReq req) throws Exception {
     final String path = "/api/fiatTrade/queryByOrderNo";
-    TreeMap treeMap = new TreeMap();
-    treeMap.put("accessToken", req.accessToken);
-    treeMap.put("userId", req.userId);
     return HttpUtil.post(AnnotationUtil
         .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
-            Config.OTC_SECRET, treeMap)).castTo(QueryOrderResp.class);
+            Config.OTC_SECRET)).castTo(QueryOrderResp.class);
   }
 }

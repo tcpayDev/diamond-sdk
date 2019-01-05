@@ -1,14 +1,25 @@
 package io.tradingchain.sdk.diamondsdk.order;
 
+import io.tradingchain.sdk.diamondsdk.annotation.ReqParam;
+
 public class CreateOrderReq {
+  @ReqParam(isSgin = true,nullable = false, comment = "挂单订单号")
   public String offerOrderNo;
+  @ReqParam(isSgin = true,nullable = false, comment = "数量")
   public String quantity;
+  @ReqParam(isSgin = true,nullable = false, comment = "价格")
   public String price;
+  @ReqParam(isSgin = true,nullable = false, comment = "金额")
   public String amount;
+  @ReqParam(isSgin = true,nullable = false, comment = "买卖方向")
   public String type;
+  @ReqParam(isSgin = true,nullable = false, comment = "用户id")
   public String userId;
+  @ReqParam(isSgin = false,nullable = false, comment = "操作 1:安卓 2:IOS")
   public String operSysType;
+  @ReqParam(isSgin = false,nullable = false, comment = "版本")
   public String version = "1.0.0";
+  @ReqParam(isSgin = true,nullable = false, comment = "token")
   public String accessToken = System.currentTimeMillis()+"";
 
   public CreateOrderReq(String offerOrderNo, String quantity, String price, String amount,
