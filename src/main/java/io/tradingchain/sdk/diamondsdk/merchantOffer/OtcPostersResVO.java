@@ -3,10 +3,9 @@ package io.tradingchain.sdk.diamondsdk.merchantOffer;
 
 import io.tradingchain.sdk.diamondsdk.merchantOffer.OtcPostersRes.OtcPosters;
 import io.tradingchain.sdk.diamondsdk.payment.QueryFiatTradeReceiveResp;
-import io.tradingchain.sdk.diamondsdk.response.BaseVO;
 import java.util.List;
 
-public class OtcPostersResVO extends BaseVO{
+public class OtcPostersResVO{
 
   public OtcVO otcVOS;
 
