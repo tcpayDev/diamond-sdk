@@ -29,6 +29,7 @@ import io.tradingchain.sdk.diamondsdk.regist.QueryUserReq;
 import io.tradingchain.sdk.diamondsdk.regist.QueryUserResp;
 import io.tradingchain.sdk.diamondsdk.regist.RegistReq;
 import io.tradingchain.sdk.diamondsdk.regist.RegisterResOTC;
+import io.tradingchain.sdk.diamondsdk.response.BaseVO;
 import java.math.BigDecimal;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -104,12 +105,27 @@ public class DiamondSdkApplicationTests {
 		OtcPostersReq registReq = new OtcPostersReq();
 		registReq.tradeType="sell";
 		registReq.amount= BigDecimal.ONE;
-		registReq.payMode="bank";
+		registReq.payMode="bank,alipay";
 		registReq.assetCode="usdt";
 		registReq.page=1;
 		registReq.pageSize=10;
 		registReq.operSysType="1";
-		OtcPostersRes vos = apiController.moneyMerchantInfo(registReq);
+		BaseVO vos = apiController.moneyMerchantInfo(registReq);
+		System.out.println(vos);
+	}
+
+
+	@Test
+	public void moneyMerchantOrder()throws Exception{
+		OtcPostersReq registReq = new OtcPostersReq();
+		registReq.tradeType="sell";
+		registReq.amount= BigDecimal.ONE;
+		registReq.payMode="bank,alipay";
+		registReq.assetCode="usdt";
+		registReq.page=1;
+		registReq.pageSize=10;
+		registReq.operSysType="1";
+		BaseVO vos = apiController.moneyMerchantOrder(registReq);
 		System.out.println(vos);
 	}
 

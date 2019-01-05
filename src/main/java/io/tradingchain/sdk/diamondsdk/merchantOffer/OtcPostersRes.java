@@ -8,7 +8,7 @@ public class OtcPostersRes {
   public String resMsg;
   public List<OtcPosters> otcPosterseList;
 
-  public class OtcPosters {
+  public static class OtcPosters {
 
     public String orderNo; //	订单号
 
@@ -32,6 +32,9 @@ public class OtcPostersRes {
     public String paymentType; //	支付方式
 
     public String extend1;
+
+    public OtcPosters() {
+    }
 
     @Override
     public String toString() {

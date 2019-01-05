@@ -18,6 +18,9 @@ public class QueryPaymentResp {
     public String bankNo;
     public String bankAddr;
 
+    public MerReceiveVo() {
+    }
+
     @Override
     public String toString() {
       return "MerReceiveVo{" +

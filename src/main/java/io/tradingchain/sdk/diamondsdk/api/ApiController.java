@@ -11,6 +11,9 @@ import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeRateRes;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.OrderBookRes;
 import io.tradingchain.sdk.diamondsdk.merchantOffer.OtcPostersReq;
 import io.tradingchain.sdk.diamondsdk.merchantOffer.OtcPostersRes;
+import io.tradingchain.sdk.diamondsdk.merchantOffer.OtcPostersRes.OtcPosters;
+import io.tradingchain.sdk.diamondsdk.merchantOffer.OtcPostersResVO;
+import io.tradingchain.sdk.diamondsdk.merchantOffer.OtcPostersVO;
 import io.tradingchain.sdk.diamondsdk.order.CancelOrderReq;
 import io.tradingchain.sdk.diamondsdk.order.CancelOrderResp;
 import io.tradingchain.sdk.diamondsdk.order.ConfirmPayReq;
@@ -40,14 +43,24 @@ import io.tradingchain.sdk.diamondsdk.regist.RegisterRes;
 import io.tradingchain.sdk.diamondsdk.regist.RegisterResOTC;
 import io.tradingchain.sdk.diamondsdk.regist.UserReq;
 import io.tradingchain.sdk.diamondsdk.regist.UserResp;
+import io.tradingchain.sdk.diamondsdk.response.BaseVO;
+import io.tradingchain.sdk.diamondsdk.response.OtcPostersResponse;
+import io.tradingchain.sdk.diamondsdk.response.OtcPostersResponseOtc;
 import io.tradingchain.sdk.diamondsdk.util.AnnotationUtil;
 import io.tradingchain.sdk.diamondsdk.util.HttpUtil;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ApiController {
+
+  public static void main(String[] args) {
+    BigDecimal a = new BigDecimal("1000");
+    System.out.println(a.compareTo(new BigDecimal("1000")));
+  }
 
   /**
    * 注册前获取备份私钥
@@ -58,7 +71,6 @@ public class ApiController {
         .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), Config.SECRET))
         .castTo(BeforeRegisterResp.class);
   }
-
 
   /**
    * 注册接口
@@ -79,7 +91,6 @@ public class ApiController {
       return new RegisterResOTC(res.msg);
     }
   }
-
 
   /**
    * OTC注册接口
@@ -139,7 +150,6 @@ public class ApiController {
     }
   }
 
-
   /**
    * 用户查询接口
    */
@@ -190,19 +200,98 @@ public class ApiController {
     return new ExchangeRateRes();
   }
 
-
   /**
-   * 查询商家挂单
+   * 查询商家挂单列表
    *
    * @param req 请求体
    */
-  public OtcPostersRes moneyMerchantInfo(OtcPostersReq req) throws Exception {
+  public BaseVO moneyMerchantInfo(OtcPostersReq req) throws Exception {
     final String path = "/api/fiatTrade/queryOffers";
     TreeMap treeMap = new TreeMap();
     treeMap.put("accessToken", req.accessToken);
-    return HttpUtil.post(AnnotationUtil
+    OtcPostersRes res = HttpUtil.post(AnnotationUtil
         .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
             Config.OTC_SECRET, treeMap)).castTo(OtcPostersRes.class);
+    List<OtcPostersVO> lists = new ArrayList<>();
+    if (res.resCode.equals("C502570000000") && res.otcPosterseList.size() > 0) {
+      for (OtcPosters o : res.otcPosterseList) {
+        //获取币商的收款账户
+        QueryPaymentReq receiveReq = new QueryPaymentReq();
+        receiveReq.userId = o.userId;
+        receiveReq.operSysType = req.operSysType;
+        QueryPaymentResp receiveResp = findPayments(receiveReq);
+        if (receiveResp.resCode.equals("C502570000000") && receiveResp.merReceiveVos.size() > 0) {
+          lists.add(new OtcPostersVO(o, receiveResp.merReceiveVos));
+        }
+      }
+      return new OtcPostersResponse(lists);
+    } else {
+      return new BaseVO(res.resCode, res.resMsg);
+    }
+  }
+
+  /**
+   * 推荐商家挂单
+   *
+   * @param req 请求体
+   */
+  public BaseVO moneyMerchantOrder(OtcPostersReq req) throws Exception {
+    final String path = "/api/fiatTrade/queryOffers";
+    TreeMap treeMap = new TreeMap();
+    treeMap.put("accessToken", req.accessToken);
+    OtcPostersRes res = HttpUtil.post(AnnotationUtil
+        .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
+            Config.OTC_SECRET, treeMap)).castTo(OtcPostersRes.class);
+    List<OtcPostersResVO> lists = new ArrayList<>();
+    List<OtcPosters> banks = new ArrayList<>();
+    List<OtcPosters> alipays = new ArrayList<>();
+    List<OtcPosters> wepays = new ArrayList<>();
+    if (res.resCode.equals("C502570000000") && res.otcPosterseList.size() > 0) {
+      for (OtcPosters o : res.otcPosterseList) {
+        //推荐查询银行卡挂单
+        if (o.paymentType.equals("bank")) {
+          banks.add(o);
+        }
+        if (o.paymentType.equals("alipay")) {
+          alipays.add(o);
+        }
+        if (o.paymentType.equals("wepay")) {
+          wepays.add(o);
+        }
+      }
+      //首先判断银行卡用户
+      OtcPosters otcPosters;
+      if (req.amount.compareTo(new BigDecimal("1000")) >= 0) {
+        if (banks.size() > 0) {
+          otcPosters = banks.get(banks.size() - 1);
+        } else if (alipays.size() > 0) {
+          otcPosters = alipays.get(alipays.size() - 1);
+        } else {
+          otcPosters = wepays.get(wepays.size() - 1);
+        }
+      } else {
+        if (alipays.size() > 0) {
+          otcPosters = alipays.get(alipays.size() - 1);
+        } else if (banks.size() > 0) {
+          otcPosters = banks.get(banks.size() - 1);
+        } else {
+          otcPosters = wepays.get(wepays.size() - 1);
+        }
+      }
+      //获取商户挂单信息
+      QueryFiatTradeReceiveReq receiveReq = new QueryFiatTradeReceiveReq();
+      receiveReq.operSysType = req.operSysType;
+      receiveReq.userId = otcPosters.userId;
+      receiveReq.payMode = otcPosters.paymentType;
+      List<QueryFiatTradeReceiveResp.MerReceiveVo> mlists = new ArrayList<>();
+      QueryFiatTradeReceiveResp queryResp = queryReceive(receiveReq);
+      if (queryResp.resCode.equals("C502570000000")) {
+        mlists.add(queryResp.receiveVo);
+        lists.add(new OtcPostersResVO(otcPosters, mlists));
+        return new OtcPostersResponseOtc(lists);
+      }
+    }
+    return new BaseVO(res.resCode, res.resMsg);
   }
 
   /**
@@ -234,7 +323,6 @@ public class ApiController {
     TreeMap treeMap = new TreeMap();
     treeMap.put("accessToken", req.accessToken);
     treeMap.put("userId", req.userId);
-
     return HttpUtil.post(AnnotationUtil
         .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
             Config.OTC_SECRET, treeMap)).castTo(QueryPaymentResp.class);
