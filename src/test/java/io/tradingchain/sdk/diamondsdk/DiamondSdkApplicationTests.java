@@ -28,7 +28,7 @@ import io.tradingchain.sdk.diamondsdk.regist.BeforeRegisterResp;
 import io.tradingchain.sdk.diamondsdk.regist.QueryUserReq;
 import io.tradingchain.sdk.diamondsdk.regist.QueryUserResp;
 import io.tradingchain.sdk.diamondsdk.regist.RegistReq;
-import io.tradingchain.sdk.diamondsdk.regist.RegisterRes;
+import io.tradingchain.sdk.diamondsdk.regist.RegisterResOTC;
 import java.math.BigDecimal;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,14 +60,14 @@ public class DiamondSdkApplicationTests {
 	public void register()throws Exception{
 		RegistReq registReq = new RegistReq();
 		registReq.apiKey="tradingchain";
-		registReq.username="15922222230";
+		registReq.username="15922222233";
 		registReq.password="12345678";
-		registReq.phone="15922222230";
+		registReq.phone="15922222233";
 		registReq.platform="tradingchain_test";
 		registReq.privateKey="SBC2WDTSXF55ZRUBYVHXI6S7UDKYUADUQTKGC52ILWC4O4ML5HZBDNCR";
 		registReq.backupKey="SA5OSGDABAZQBLPVHRJD65OBS6NK7L2LSJ6LDO64TBINPIPJSEJ364UH";
 		registReq.tradePassword="123456";
-		RegisterRes register = apiController.register(registReq,"1");
+    RegisterResOTC register = apiController.register(registReq,"1");
 		System.out.println(register);
 	}
 
@@ -96,7 +96,7 @@ public class DiamondSdkApplicationTests {
 		registReq.size=2;
 		registReq.sign="";
 		ExchangeRateRes rateRes = apiController.exchangeRate(registReq,"buy");
-		System.out.println("");
+		System.out.println(rateRes);
 	}
 
 	@Test
@@ -117,7 +117,7 @@ public class DiamondSdkApplicationTests {
 	public void queryUser()throws Exception{
 		QueryUserReq registReq = new QueryUserReq();
 		registReq.operSysType="1";
-		registReq.mobile="15922222228";
+		registReq.mobile="15922222232";
 		QueryUserResp resp = apiController.queryUser(registReq);
 		System.out.println(resp);
 	}

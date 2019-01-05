@@ -38,6 +38,7 @@ import io.tradingchain.sdk.diamondsdk.regist.QueryUserReq;
 import io.tradingchain.sdk.diamondsdk.regist.QueryUserResp;
 import io.tradingchain.sdk.diamondsdk.regist.RegistReq;
 import io.tradingchain.sdk.diamondsdk.regist.RegisterRes;
+import io.tradingchain.sdk.diamondsdk.regist.RegisterResOTC;
 import io.tradingchain.sdk.diamondsdk.regist.UserReq;
 import io.tradingchain.sdk.diamondsdk.regist.UserResp;
 import io.tradingchain.sdk.diamondsdk.response.BaseVO;
@@ -68,61 +69,79 @@ public class ApiController {
    * @param req 请求体
    * @param type 操作方式 1: 安卓; 2: IOS
    */
-  public RegisterRes register(RegistReq req, String type) throws Exception {
+  public RegisterResOTC register(RegistReq req, String type) throws Exception {
     final String path = "/api/registUser2";
-    final String otc_path = "/api/user/add";
     //注册1
     RegisterRes res = HttpUtil
         .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), Config.SECRET))
         .castTo(RegisterRes.class);
     if (res.code == 0) {
-      //查询商户是否在OTC注册;
-      UserReq userReq = new UserReq();
-      QueryUserReq queryUserReq = new QueryUserReq();
-      queryUserReq.mobile = req.phone;
-      queryUserReq.accessToken = System.currentTimeMillis()+"1";
-      queryUserReq.operSysType = type;
-      queryUserReq.version = userReq.version;
-      QueryUserResp queryUserResp = queryUser(queryUserReq);
-      if (queryUserResp.resCode.equals("C502570000000") && queryUserResp.userStatus.equals("01")) {
+      //去OTC做相应注册
+      return userAdd(req, res, type);
+    } else {
+      return new RegisterResOTC(res.msg);
+    }
+  }
+
+
+  /**
+   * OTC注册接口
+   */
+  private RegisterResOTC userAdd(RegistReq req, RegisterRes res, String type)throws Exception {
+    final String otc_path = "/api/user/add";
+    //查询商户是否在OTC注册;
+    UserReq userReq = new UserReq();
+    QueryUserReq queryUserReq = new QueryUserReq();
+    queryUserReq.mobile = req.phone;
+    queryUserReq.accessToken = System.currentTimeMillis() + "1";
+    queryUserReq.operSysType = type;
+    queryUserReq.version = userReq.version;
+    QueryUserResp queryUserResp = queryUser(queryUserReq);
+    if (queryUserResp.resCode.equals("C502570000000")) {
+      if (queryUserResp.userStatus.equals("01")) {
         //该用户没有注册,调用OTC注册接口
+        //生成签名参数
         TreeMap treeMap = new TreeMap();
         treeMap.put("mobile", req.phone);
         treeMap.put("loginPass", req.password);
         treeMap.put("tradePassword", req.tradePassword);
         treeMap.put("privateKey", req.privateKey);
-        treeMap.put("exUserId", res.data.userId+"");
+        treeMap.put("exUserId", res.data.userId + "");
         treeMap.put("publicKey", res.data.publicKey);
         treeMap.put("inviteCode", res.data.inviteCode);
         treeMap.put("idCard", req.phone);
         treeMap.put("userName", req.username);
         treeMap.put("nickName", req.username);
         treeMap.put("accessToken", userReq.accessToken);
-        userReq.mobile=req.phone;
-        userReq.loginPass=req.password;
-        userReq.tradePassword=req.tradePassword;
-        userReq.privateKey=req.privateKey;
-        userReq.exUserId=res.data.userId+"";
-        userReq.publicKey=res.data.publicKey;
-        userReq.inviteCode=res.data.inviteCode;
-        userReq.idCard=req.phone;
-        userReq.userName=req.username;
-        userReq.operSysType=type;
-        userReq.nickName=req.username;
-        UserResp  user = HttpUtil.post(AnnotationUtil
-            .buildReq(Config.OTC_BASE_URL + otc_path, setOtcCommonParams(userReq), Config.OTC_SECRET,
-                treeMap)).castTo(UserResp.class);
+        //生成请求参数
+        userReq.mobile = req.phone;
+        userReq.loginPass = req.password;
+        userReq.tradePassword = req.tradePassword;
+        userReq.privateKey = req.privateKey;
+        userReq.exUserId = res.data.userId + "";
+        userReq.publicKey = res.data.publicKey;
+        userReq.inviteCode = res.data.inviteCode;
+        userReq.idCard = req.phone;
+        userReq.userName = req.username;
+        userReq.operSysType = type;
+        userReq.nickName = req.username;
+        UserResp user = HttpUtil.post(AnnotationUtil
+            .buildReq(Config.OTC_BASE_URL + otc_path, setOtcCommonParams(userReq),
+                Config.OTC_SECRET,treeMap)).castTo(UserResp.class);
         if (user.resCode.equals("C502570000000")) {
-          return res;
+          System.out.println(res.data.publicKey);
+          return new RegisterResOTC(res,user);
         } else {
-          return new RegisterRes(user.resMsg);
+          return new RegisterResOTC(user.resMsg);
         }
+      }else {
+        return new RegisterResOTC(queryUserResp.resMsg);
       }
-      return res;
-    } else {
-      return new RegisterRes( res.msg);
-    }//c34d93b6d68740f29518aa01571cc74b
+    }else {
+      return  new RegisterResOTC(queryUserResp.resMsg);
+    }
   }
+
 
   /**
    * 用户查询接口
@@ -134,8 +153,8 @@ public class ApiController {
     treeMap.put("accessToken", req.accessToken);
     return HttpUtil
         .post(AnnotationUtil
-            .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req), Config.OTC_SECRET, treeMap))
-        .castTo(QueryUserResp.class);
+            .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req), Config.OTC_SECRET,
+                treeMap)) .castTo(QueryUserResp.class);
   }
 
   /**

@@ -90,8 +90,6 @@ public class HttpUtil {
       }else {
         SignUtil.signOTC(treeMap, secret, data);
       }
-      System.out.println("data="+data);
-      System.out.println("treeMap="+treeMap);
     }
   }
 
