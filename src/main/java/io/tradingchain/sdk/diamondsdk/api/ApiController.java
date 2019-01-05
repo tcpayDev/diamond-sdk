@@ -3,12 +3,11 @@ package io.tradingchain.sdk.diamondsdk.api;
 import static io.tradingchain.sdk.diamondsdk.config.Config.setCommonParams;
 import static io.tradingchain.sdk.diamondsdk.config.Config.setOtcCommonParams;
 
-import com.alibaba.fastjson.JSON;
 import io.tradingchain.sdk.diamondsdk.account.AccountDetailsReq;
 import io.tradingchain.sdk.diamondsdk.account.AccountDetailsResp;
 import io.tradingchain.sdk.diamondsdk.config.Config;
-import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeRateRes;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeRateReq;
+import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeRateRes;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.OrderBookRes;
 import io.tradingchain.sdk.diamondsdk.merchantOffer.OtcPostersReq;
 import io.tradingchain.sdk.diamondsdk.merchantOffer.OtcPostersRes;
@@ -41,10 +40,8 @@ import io.tradingchain.sdk.diamondsdk.regist.RegisterRes;
 import io.tradingchain.sdk.diamondsdk.regist.RegisterResOTC;
 import io.tradingchain.sdk.diamondsdk.regist.UserReq;
 import io.tradingchain.sdk.diamondsdk.regist.UserResp;
-import io.tradingchain.sdk.diamondsdk.response.BaseVO;
 import io.tradingchain.sdk.diamondsdk.util.AnnotationUtil;
 import io.tradingchain.sdk.diamondsdk.util.HttpUtil;
-import io.tradingchain.sdk.diamondsdk.util.HttpUtil.Response;
 import java.math.BigDecimal;
 import java.util.TreeMap;
 import org.springframework.web.bind.annotation.RestController;
@@ -87,7 +84,7 @@ public class ApiController {
   /**
    * OTC注册接口
    */
-  private RegisterResOTC userAdd(RegistReq req, RegisterRes res, String type)throws Exception {
+  private RegisterResOTC userAdd(RegistReq req, RegisterRes res, String type) throws Exception {
     final String otc_path = "/api/user/add";
     //查询商户是否在OTC注册;
     UserReq userReq = new UserReq();
@@ -127,18 +124,18 @@ public class ApiController {
         userReq.nickName = req.username;
         UserResp user = HttpUtil.post(AnnotationUtil
             .buildReq(Config.OTC_BASE_URL + otc_path, setOtcCommonParams(userReq),
-                Config.OTC_SECRET,treeMap)).castTo(UserResp.class);
+                Config.OTC_SECRET, treeMap)).castTo(UserResp.class);
         if (user.resCode.equals("C502570000000")) {
           System.out.println(res.data.publicKey);
-          return new RegisterResOTC(res,user);
+          return new RegisterResOTC(res, user);
         } else {
           return new RegisterResOTC(user.resMsg);
         }
-      }else {
+      } else {
         return new RegisterResOTC(queryUserResp.resMsg);
       }
-    }else {
-      return  new RegisterResOTC(queryUserResp.resMsg);
+    } else {
+      return new RegisterResOTC(queryUserResp.resMsg);
     }
   }
 
@@ -154,7 +151,7 @@ public class ApiController {
     return HttpUtil
         .post(AnnotationUtil
             .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req), Config.OTC_SECRET,
-                treeMap)) .castTo(QueryUserResp.class);
+                treeMap)).castTo(QueryUserResp.class);
   }
 
   /**

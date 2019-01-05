@@ -1,18 +1,10 @@
 package io.tradingchain.sdk.diamondsdk.util;
 
-import com.alibaba.fastjson.JSON;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 import javax.xml.bind.DatatypeConverter;
-import org.apache.logging.log4j.util.Strings;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
-import sun.security.provider.MD5;
 
 public class SignUtil {
 
@@ -59,39 +51,6 @@ public class SignUtil {
         .printHexBinary(MessageDigest.getInstance("MD5").digest(String.valueOf(o).getBytes()));
   }
 
-  public static String signByMD5(String md5key, TreeMap<String, String> fieldsMap) {
-    String sign = "";
-    try {
-      if (CollectionUtils.isEmpty(fieldsMap)) {
-        return sign;
-      }
-      fieldsMap.put("sign", null);
-      Set entrySet = fieldsMap.entrySet();
-      StringBuilder sb = new StringBuilder();
-      Iterator var4 = entrySet.iterator();
-
-      while (var4.hasNext()) {
-        Map.Entry sortData = (Map.Entry) var4.next();
-        String key = (String) sortData.getKey();
-        String value = (String) sortData.getValue();
-        if (!StringUtils.isEmpty(value)) {
-          sb.append("&").append(key).append("=").append(value);
-        }
-      }
-
-      sb.deleteCharAt(0);
-      String sortData1 = sb.toString();
-//      String sortData = ReflectionUtil.sortData(fieldsMap);
-      sortData1 = sortData1 + "&key=" + md5key;
-      System.out.println(sortData1);
-      sign = MD5OTC(sortData1);
-      System.out.println(sign);
-    } catch (Exception e) {
-    }
-    return sign;
-  }
-
-
   public final static String MD5OTC(String s) {
     char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e',
         'f'};
@@ -118,18 +77,5 @@ public class SignUtil {
       e.printStackTrace();
       return null;
     }
-  }
-
-
-  public static void main(String[] args) {
-    TreeMap treeMap = new TreeMap();
-    treeMap.put("accessToken", "1546509976245");
-    treeMap.put("amount", "1");
-    treeMap.put("page", "1");
-    treeMap.put("assetCode", "btc");
-    treeMap.put("tradeType", "sell");
-    treeMap.put("payMode", "alipay");
-    treeMap.put("pageSize", "10");
-    signByMD5("iaM43PnzzfY6Xdeo", treeMap);
   }
 }
