@@ -46,6 +46,9 @@ import io.tradingchain.sdk.diamondsdk.regist.UserResp;
 import io.tradingchain.sdk.diamondsdk.response.BaseVO;
 import io.tradingchain.sdk.diamondsdk.response.OtcPostersResponse;
 import io.tradingchain.sdk.diamondsdk.response.OtcPostersResponseOtc;
+import io.tradingchain.sdk.diamondsdk.trustAsset.AssetPair;
+import io.tradingchain.sdk.diamondsdk.trustAsset.AssetTrustResp;
+import io.tradingchain.sdk.diamondsdk.trustAsset.AssetsTrustReq;
 import io.tradingchain.sdk.diamondsdk.util.AnnotationUtil;
 import io.tradingchain.sdk.diamondsdk.util.HttpUtil;
 import java.math.BigDecimal;
@@ -177,7 +180,7 @@ public class DiamondService {
    *
    * @param req 请求体
    */
-  public ExchangeRateRes exchangeRate(ExchangeRateReq req) throws Exception {
+  public ExchangeRateRes exchangeRate(ExchangeRateReq req, AssetsTrustReq assetReq)throws Exception {
     final String path = "/find/tradeDepth";
     OrderBookRes rateReq = HttpUtil
         .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), Config.SECRET))
@@ -188,10 +191,29 @@ public class DiamondService {
     //计算DB-USDT的最终汇率
     String exchangeRateBuy = rateBuy.multiply(new BigDecimal("7"))
         .setScale(7, BigDecimal.ROUND_HALF_EVEN).toPlainString();
-    String exchangeRateSell = rateBuy.multiply(new BigDecimal("7"))
+    String exchangeRateSell = rateSell.multiply(new BigDecimal("7"))
         .setScale(7, BigDecimal.ROUND_HALF_EVEN).toPlainString();
     //信任币种
-    return new ExchangeRateRes(exchangeRateBuy,exchangeRateSell);
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        try {
+          assetsTrust(assetReq);
+        } catch (Exception e) {
+        }
+      }
+    }).start();
+    return new ExchangeRateRes(exchangeRateBuy, exchangeRateSell);
+  }
+
+
+  /**
+   * 资产列表信任接口
+   */
+  private void assetsTrust(AssetsTrustReq req) throws Exception {
+    final String path = "/find/assetTrustList";
+     HttpUtil
+        .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), Config.SECRET));
   }
 
   /**
