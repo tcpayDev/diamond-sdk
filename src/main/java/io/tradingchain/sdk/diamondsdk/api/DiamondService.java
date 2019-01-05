@@ -46,12 +46,9 @@ import io.tradingchain.sdk.diamondsdk.regist.UserResp;
 import io.tradingchain.sdk.diamondsdk.response.BaseVO;
 import io.tradingchain.sdk.diamondsdk.response.OtcPostersResponse;
 import io.tradingchain.sdk.diamondsdk.response.OtcPostersResponseOtc;
-import io.tradingchain.sdk.diamondsdk.trustAsset.AssetPair;
-import io.tradingchain.sdk.diamondsdk.trustAsset.AssetTrustResp;
 import io.tradingchain.sdk.diamondsdk.trustAsset.AssetsTrustReq;
 import io.tradingchain.sdk.diamondsdk.util.AnnotationUtil;
 import io.tradingchain.sdk.diamondsdk.util.HttpUtil;
-import io.tradingchain.sdk.diamondsdk.util.HttpUtil.Response;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -146,7 +143,8 @@ public class DiamondService {
     final String path = "/api/user/query";
     return HttpUtil
         .post(AnnotationUtil
-            .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req), Config.OTC_SECRET)).castTo(QueryUserResp.class);
+            .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req), Config.OTC_SECRET))
+        .castTo(QueryUserResp.class);
   }
 
   /**
@@ -164,7 +162,8 @@ public class DiamondService {
    *
    * @param req 请求体
    */
-  public ExchangeRateRes exchangeRate(ExchangeRateReq req, AssetsTrustReq assetReq)throws Exception {
+  public ExchangeRateRes exchangeRate(ExchangeRateReq req, AssetsTrustReq assetReq)
+      throws Exception {
     final String path = "/find/tradeDepth";
     OrderBookRes rateReq = HttpUtil
         .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), Config.SECRET))
@@ -196,7 +195,7 @@ public class DiamondService {
    */
   private void assetsTrust(AssetsTrustReq req) throws Exception {
     final String path = "/find/assetTrustList";
-     HttpUtil
+    HttpUtil
         .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), Config.SECRET));
   }
 

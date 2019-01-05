@@ -12,4 +12,12 @@ public class ExchangeRateRes extends BaseRes{
     this.exchangeRateBuy = exchangeRateBuy;
     this.exchangeRateSell = exchangeRateSell;
   }
+
+  @Override
+  public String toString() {
+    return "ExchangeRateRes{" +
+        "exchangeRateBuy='" + exchangeRateBuy + '\'' +
+        ", exchangeRateSell='" + exchangeRateSell + '\'' +
+        '}';
+  }
 }

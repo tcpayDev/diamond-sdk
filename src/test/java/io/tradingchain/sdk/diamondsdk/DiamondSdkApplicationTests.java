@@ -1,6 +1,8 @@
 package io.tradingchain.sdk.diamondsdk;
 
 import io.tradingchain.sdk.diamondsdk.api.DiamondService;
+import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeRateReq;
+import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeRateRes;
 import io.tradingchain.sdk.diamondsdk.order.QueryOrderListReq;
 import io.tradingchain.sdk.diamondsdk.order.QueryOrderListResp;
 import io.tradingchain.sdk.diamondsdk.order.QueryOrderReq;
@@ -11,6 +13,10 @@ import io.tradingchain.sdk.diamondsdk.regist.BeforeRegisterReq;
 import io.tradingchain.sdk.diamondsdk.regist.BeforeRegisterResp;
 import io.tradingchain.sdk.diamondsdk.regist.RegistReq;
 import io.tradingchain.sdk.diamondsdk.regist.RegisterResOTC;
+import io.tradingchain.sdk.diamondsdk.trustAsset.AssetPair;
+import io.tradingchain.sdk.diamondsdk.trustAsset.AssetsTrustReq;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Test;
 
 public class DiamondSdkApplicationTests {
@@ -201,5 +207,28 @@ public class DiamondSdkApplicationTests {
     System.out.println(resp);
   }
 
+
+  @Test
+  public void exchangeRate() throws Exception {
+    ExchangeRateReq registReq = new ExchangeRateReq();
+    registReq.apiKey="tradingchain";
+    registReq.baseAsset="BTC";
+    registReq.baseAssetIssuer="GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG";
+    registReq.counterAsset="USDT";
+    registReq.counterAssetIssuer="GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG";
+    registReq.size=1;
+    AssetsTrustReq assetsTrustReq = new AssetsTrustReq();
+    List<AssetPair> list = new ArrayList<>();
+    list.add(new AssetPair("USDT","GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG"));
+    list.add(new AssetPair("BTC","GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG"));
+    assetsTrustReq.apiKey="tradingchain";
+    assetsTrustReq.platform="tradingchain_test";
+    assetsTrustReq.username="15922222234";
+    assetsTrustReq.privateKey="SBC2WDTSXF55ZRUBYVHXI6S7UDKYUADUQTKGC52ILWC4O4ML5HZBDNCR";
+    assetsTrustReq.list=list;
+    ExchangeRateRes rateRes = DiamondService.exchangeRate(registReq, assetsTrustReq);
+    Thread.sleep(15000);
+    System.out.println(rateRes);
+  }
 }
 
