@@ -27,6 +27,11 @@ import io.tradingchain.sdk.diamondsdk.order.QueryOrderListReq;
 import io.tradingchain.sdk.diamondsdk.order.QueryOrderListResp;
 import io.tradingchain.sdk.diamondsdk.order.QueryOrderReq;
 import io.tradingchain.sdk.diamondsdk.order.QueryOrderResp;
+import io.tradingchain.sdk.diamondsdk.pathPayment.DoPathPaymentReq;
+import io.tradingchain.sdk.diamondsdk.pathPayment.DoPathPaymentResp;
+import io.tradingchain.sdk.diamondsdk.pathPayment.PaymentPathListReq;
+import io.tradingchain.sdk.diamondsdk.pathPayment.PaymentPathListResp;
+import io.tradingchain.sdk.diamondsdk.pathPayment.SdkPaymentPathListResp;
 import io.tradingchain.sdk.diamondsdk.payment.AddPaymentReq;
 import io.tradingchain.sdk.diamondsdk.payment.AddPaymentResp;
 import io.tradingchain.sdk.diamondsdk.payment.ChargeCollectTransferReq;
@@ -456,6 +461,37 @@ public class DiamondService {
       return new BaseVO();
     } else {
       return new BaseVO(collectTransferResp.code + "", collectTransferResp.msg);
+    }
+  }
+
+  /**
+   * 桥链列表接口(接收方扣手续费,到付)
+   */
+  public BaseVO paymentPathListOfFreightCollect(PaymentPathListReq req)
+      throws Exception {
+    final String path = "/find/getPaymentPathList";
+    PaymentPathListResp pathListResp = HttpUtil
+        .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), Config.SECRET))
+        .castTo(PaymentPathListResp.class);
+    if (pathListResp.code == 0) {
+      return new SdkPaymentPathListResp(pathListResp);
+    } else {
+      return new BaseVO(pathListResp.code + "", pathListResp.msg);
+    }
+  }
+
+  /**
+   * 桥链支付接口(接收方扣手续费,到付)
+   */
+  public BaseVO doPathPaymentFreightCollect(DoPathPaymentReq req) throws Exception {
+    final String path = "/trade/api/dfPaymentPath";
+    DoPathPaymentResp doPathPaymentResp = HttpUtil
+        .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), Config.SECRET))
+        .castTo(DoPathPaymentResp.class);
+    if (doPathPaymentResp.code == 0) {
+      return new BaseVO();
+    } else {
+      return new BaseVO(doPathPaymentResp.code + "", doPathPaymentResp.msg);
     }
   }
 }

@@ -110,7 +110,7 @@ public class DiamondSdkApplicationTests {
       registReq.pageSize = 10;
       registReq.operSysType = "1";
       BaseVO vos = DiamondService.moneyMerchantOrder(registReq);
-      //System.out.println(vos);
+      System.out.println(vos);
     }
 /*
     @Test
