@@ -88,9 +88,9 @@ public class HttpUtil {
       if (treeMap.isEmpty()) {
         SignUtil.sign(data, secret);
       }else {
-        System.out.println(treeMap);
+        //System.out.println(treeMap);
         SignUtil.signOTC(treeMap, secret, data);
-        System.out.println(data);
+        //System.out.println(data);
       }
     }
   }

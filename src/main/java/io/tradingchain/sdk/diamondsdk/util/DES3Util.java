@@ -217,18 +217,18 @@ public class DES3Util {
 //
 //		zkClient.connect(5000, new Watcher(){com/ninefbank/smallpay/payment/ZookeeperClientTest.java:18
 //			public void process(WatchedEvent event) {
-//				System.out.println(event.getState());;
+//				//System.out.println(event.getState());;
 //			}
 //		});2016-05-28 10:33:31
 //		zkClient.close();
 //		ZookeeperClientTest test = new ZookeeperClientTest();
 //		test.setBigDecimal(test.getBigDecimal().setScale(2));
-//		System.out.print(test.getBigDecimal());
+//		//System.out.print(test.getBigDecimal());
 //
-//		System.out.println(ConfidentialDataUtil.decrypt3DES("18910287806","wang!@#2"));
-		System.out.println(Encrypt3DES("1","aki1CcBk3HYgdYuS"));
-    System.out.println(GetKeyBytes("aki1CcBk3HYgdYuS"));
-    System.out.println(Decrypt3DES("ra6pzFNcYMI=","aki1CcBk3HYgdYuS"));
+//		//System.out.println(ConfidentialDataUtil.decrypt3DES("18910287806","wang!@#2"));
+		//System.out.println(Encrypt3DES("1","aki1CcBk3HYgdYuS"));
+    //System.out.println(GetKeyBytes("aki1CcBk3HYgdYuS"));
+    //System.out.println(Decrypt3DES("ra6pzFNcYMI=","aki1CcBk3HYgdYuS"));
 //		throw  new UndeclaredThrowableException(new Throwable("11"));
 
   }

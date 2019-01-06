@@ -24,6 +24,8 @@ public class OtcPostersReq {
   @ReqParam(isSgin = true,nullable = false, comment = "Token")
   public String accessToken = System.currentTimeMillis()+"";
 
+  public OtcPostersReq() {
+  }
 
   public OtcPostersReq(String tradeType, BigDecimal amount, String payMode,
       String assetCode, int page, int pageSize, String operSysType) {

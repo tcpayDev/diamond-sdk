@@ -3,6 +3,7 @@ package io.tradingchain.sdk.diamondsdk;
 import io.tradingchain.sdk.diamondsdk.api.DiamondService;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeRateReq;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeRateRes;
+import io.tradingchain.sdk.diamondsdk.merchantOffer.OtcPostersReq;
 import io.tradingchain.sdk.diamondsdk.order.QueryOrderListReq;
 import io.tradingchain.sdk.diamondsdk.order.QueryOrderListResp;
 import io.tradingchain.sdk.diamondsdk.order.QueryOrderReq;
@@ -13,8 +14,10 @@ import io.tradingchain.sdk.diamondsdk.regist.BeforeRegisterReq;
 import io.tradingchain.sdk.diamondsdk.regist.BeforeRegisterResp;
 import io.tradingchain.sdk.diamondsdk.regist.RegistReq;
 import io.tradingchain.sdk.diamondsdk.regist.RegisterResOTC;
+import io.tradingchain.sdk.diamondsdk.response.BaseVO;
 import io.tradingchain.sdk.diamondsdk.trustAsset.AssetPair;
 import io.tradingchain.sdk.diamondsdk.trustAsset.AssetsTrustReq;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
@@ -32,8 +35,8 @@ public class DiamondSdkApplicationTests {
   public void beforeRegister() throws Exception {
     BeforeRegisterReq req = new BeforeRegisterReq();
     req.apiKey = "tradingchain";
-    BeforeRegisterResp register = DiamondService.beforeRegister(req);
-    System.out.println(register.data);
+    BaseVO register = DiamondService.beforeRegister(req);
+    //System.out.println(register.data);
   }
 
 
@@ -48,8 +51,8 @@ public class DiamondSdkApplicationTests {
     registReq.privateKey = "SBC2WDTSXF55ZRUBYVHXI6S7UDKYUADUQTKGC52ILWC4O4ML5HZBDNCR";
     registReq.backupKey = "SA5OSGDABAZQBLPVHRJD65OBS6NK7L2LSJ6LDO64TBINPIPJSEJ364UH";
     registReq.tradePassword = "123456";
-    RegisterResOTC register = DiamondService.register(registReq, "1");
-    System.out.println(register);
+    BaseVO register = DiamondService.register(registReq, "1");
+    //System.out.println(register);
   }
 
   /*
@@ -63,7 +66,7 @@ public class DiamondSdkApplicationTests {
       registReq.counterAssetName = "USDT";
       registReq.counterAssetIssuer = "GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG";
       AccountDetailsResp resp = DiamondService.accountDetails(registReq);
-      System.out.println("");
+      //System.out.println("");
     }
 
 
@@ -78,7 +81,7 @@ public class DiamondSdkApplicationTests {
       registReq.size = 2;
       registReq.sign = "";
       ExchangeRateRes rateRes = DiamondService.exchangeRate(registReq, "buy");
-      System.out.println(rateRes);
+      //System.out.println(rateRes);
     }
 
     @Test
@@ -92,14 +95,14 @@ public class DiamondSdkApplicationTests {
       registReq.pageSize = 10;
       registReq.operSysType = "1";
       BaseVO vos = DiamondService.moneyMerchantInfo(registReq);
-      System.out.println(vos);
+      //System.out.println(vos);
     }
 
-
+*/
     @Test
     public void moneyMerchantOrder() throws Exception {
       OtcPostersReq registReq = new OtcPostersReq();
-      registReq.tradeType = "sell";
+      registReq.tradeType = "buy";
       registReq.amount = BigDecimal.ONE;
       registReq.payMode = "bank,alipay";
       registReq.assetCode = "usdt";
@@ -107,16 +110,16 @@ public class DiamondSdkApplicationTests {
       registReq.pageSize = 10;
       registReq.operSysType = "1";
       BaseVO vos = DiamondService.moneyMerchantOrder(registReq);
-      System.out.println(vos);
+      //System.out.println(vos);
     }
-
+/*
     @Test
     public void queryUser() throws Exception {
       QueryUserReq registReq = new QueryUserReq();
       registReq.operSysType = "1";
       registReq.mobile = "15922222232";
       QueryUserResp resp = DiamondService.queryUser(registReq);
-      System.out.println(resp);
+      //System.out.println(resp);
     }
 
 
@@ -129,7 +132,7 @@ public class DiamondSdkApplicationTests {
       registReq.operSysType = "1";
       registReq.userId = "c34d93b6d68740f29518aa01571cc74b";
       AddPaymentResp resp = DiamondService.addPayment(registReq);
-      System.out.println(resp);
+      //System.out.println(resp);
     }
 
     @Test
@@ -138,7 +141,7 @@ public class DiamondSdkApplicationTests {
       registReq.operSysType = "1";
       registReq.userId = "c34d93b6d68740f29518aa01571cc74b";
       QueryPaymentResp resp = DiamondService.findPayments(registReq);
-      System.out.println(resp);
+      //System.out.println(resp);
     }
 
 
@@ -153,7 +156,7 @@ public class DiamondSdkApplicationTests {
       registReq.operSysType = "1";
       registReq.userId = "c34d93b6d68740f29518aa01571cc74b";
       CreateOrderResp resp = DiamondService.createOrder(registReq);
-      System.out.println(resp);
+      //System.out.println(resp);
     }
 
     @Test
@@ -163,7 +166,7 @@ public class DiamondSdkApplicationTests {
       registReq.operSysType = "1";
       registReq.userId = "c34d93b6d68740f29518aa01571cc74b";
       CancelOrderResp resp = DiamondService.cancelOrder(registReq);
-      System.out.println(resp);
+      //System.out.println(resp);
     }
 
     @Test
@@ -174,7 +177,7 @@ public class DiamondSdkApplicationTests {
       registReq.operSysType = "1";
       registReq.userId = "c34d93b6d68740f29518aa01571cc74b";
       FiatTradeAppealResp resp = DiamondService.fiatTradeAppeal(registReq);
-      System.out.println(resp);
+      //System.out.println(resp);
     }
   */
   @Test
@@ -183,7 +186,7 @@ public class DiamondSdkApplicationTests {
     registReq.operSysType = "1";
     registReq.userId = "c34d93b6d68740f29518aa01571cc74b";
     QueryOrderListResp resp = DiamondService.orderList(registReq);
-    System.out.println(resp);
+    //System.out.println(resp);
   }
 
   @Test
@@ -193,7 +196,7 @@ public class DiamondSdkApplicationTests {
     registReq.payMode = "alipay";
     registReq.userId = "c34d93b6d68740f29518aa01571cc74b";
     QueryFiatTradeReceiveResp resp = DiamondService.queryReceive(registReq);
-    System.out.println(resp);
+    //System.out.println(resp);
   }
 
 
@@ -204,7 +207,7 @@ public class DiamondSdkApplicationTests {
     registReq.orderNo = "99110190104185455000003";
     registReq.userId = "c34d93b6d68740f29518aa01571cc74b";
     QueryOrderResp resp = DiamondService.orderInfo(registReq);
-    System.out.println(resp);
+    //System.out.println(resp);
   }
 
 
@@ -228,7 +231,7 @@ public class DiamondSdkApplicationTests {
     assetsTrustReq.list=list;
     ExchangeRateRes rateRes = DiamondService.exchangeRate(registReq, assetsTrustReq);
     Thread.sleep(15000);
-    System.out.println(rateRes);
+    //System.out.println(rateRes);
   }
 }
 

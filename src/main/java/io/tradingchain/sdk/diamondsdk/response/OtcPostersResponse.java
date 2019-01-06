@@ -9,8 +9,8 @@ public class OtcPostersResponse extends BaseVO {
   public List<OtcPostersVO> otcPostersVOS;
 
   public OtcPostersResponse(List<OtcPostersVO> list) {
-    this.code="0";
-    this.msg="ok";
+    this.resCode="C502570000000";
+    this.resCode="ok";
     this.otcPostersVOS=list;
   }
 }

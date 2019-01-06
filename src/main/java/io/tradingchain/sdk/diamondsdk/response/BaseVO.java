@@ -1,16 +1,16 @@
 package io.tradingchain.sdk.diamondsdk.response;
 
-public class BaseVO extends BaseRes{
-  public String code;
-  public String msg;
+public class BaseVO{
+  public String resCode;
+  public String resMsg;
 
   public BaseVO() {
-    this.code="0";
-    this.msg="ok";
+    this.resCode="C502570000000";
+    this.resMsg ="ok";
   }
 
   public BaseVO(String code,String msg) {
-    this.code=code;
-    this.msg=msg;
+    this.resCode=code;
+    this.resMsg =msg;
   }
 }

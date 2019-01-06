@@ -5,6 +5,7 @@ import static io.tradingchain.sdk.diamondsdk.config.Config.setOtcCommonParams;
 
 import io.tradingchain.sdk.diamondsdk.account.AccountDetailsReq;
 import io.tradingchain.sdk.diamondsdk.account.AccountDetailsResp;
+import io.tradingchain.sdk.diamondsdk.account.SdkAccountDetailsResp;
 import io.tradingchain.sdk.diamondsdk.config.Config;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeRateReq;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeRateRes;
@@ -28,6 +29,8 @@ import io.tradingchain.sdk.diamondsdk.order.QueryOrderReq;
 import io.tradingchain.sdk.diamondsdk.order.QueryOrderResp;
 import io.tradingchain.sdk.diamondsdk.payment.AddPaymentReq;
 import io.tradingchain.sdk.diamondsdk.payment.AddPaymentResp;
+import io.tradingchain.sdk.diamondsdk.payment.ChargeCollectTransferReq;
+import io.tradingchain.sdk.diamondsdk.payment.ChargeCollectTransferResp;
 import io.tradingchain.sdk.diamondsdk.payment.DelPaymentReq;
 import io.tradingchain.sdk.diamondsdk.payment.DelPaymentResp;
 import io.tradingchain.sdk.diamondsdk.payment.QueryFiatTradeReceiveReq;
@@ -41,6 +44,8 @@ import io.tradingchain.sdk.diamondsdk.regist.QueryUserResp;
 import io.tradingchain.sdk.diamondsdk.regist.RegistReq;
 import io.tradingchain.sdk.diamondsdk.regist.RegisterRes;
 import io.tradingchain.sdk.diamondsdk.regist.RegisterResOTC;
+import io.tradingchain.sdk.diamondsdk.regist.SdkBeforeRegisterResp;
+import io.tradingchain.sdk.diamondsdk.regist.SdkRegisterResOTC;
 import io.tradingchain.sdk.diamondsdk.regist.UserReq;
 import io.tradingchain.sdk.diamondsdk.regist.UserResp;
 import io.tradingchain.sdk.diamondsdk.response.BaseVO;
@@ -58,17 +63,22 @@ public class DiamondService {
 
   public static void main(String[] args) {
     BigDecimal a = new BigDecimal("1000");
-    System.out.println(a.compareTo(new BigDecimal("1000")));
+    //System.out.println(a.compareTo(new BigDecimal("1000")));
   }
 
   /**
    * 注册前获取备份私钥
    */
-  public BeforeRegisterResp beforeRegister(BeforeRegisterReq req) throws Exception {
+  public BaseVO beforeRegister(BeforeRegisterReq req) throws Exception {
     final String path = "/api/getKeyBeforeRegister";
-    return HttpUtil
+    BeforeRegisterResp resp = HttpUtil
         .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), Config.SECRET))
         .castTo(BeforeRegisterResp.class);
+    if (resp.code == 0) {
+      return new SdkBeforeRegisterResp(resp);
+    } else {
+      return new BaseVO(resp.code + "", resp.msg);
+    }
   }
 
   /**
@@ -77,7 +87,7 @@ public class DiamondService {
    * @param req 请求体
    * @param type 操作方式 1: 安卓; 2: IOS
    */
-  public RegisterResOTC register(RegistReq req, String type) throws Exception {
+  public BaseVO register(RegistReq req, String type) throws Exception {
     final String path = "/api/registUser2";
     //注册1
     RegisterRes res = HttpUtil
@@ -85,9 +95,14 @@ public class DiamondService {
         .castTo(RegisterRes.class);
     if (res.code == 0) {
       //去OTC做相应注册
-      return userAdd(req, res, type);
+      RegisterResOTC resOTC = userAdd(req, res, type);
+      if (resOTC.code == 0) {
+        return new SdkRegisterResOTC(resOTC);
+      } else {
+        return new BaseVO(resOTC.code + "", resOTC.msg);
+      }
     } else {
-      return new RegisterResOTC(res.msg);
+      return new BaseVO(res.code + "", res.msg);
     }
   }
 
@@ -123,7 +138,7 @@ public class DiamondService {
             .buildReq(Config.OTC_BASE_URL + otc_path, setOtcCommonParams(userReq),
                 Config.OTC_SECRET)).castTo(UserResp.class);
         if (user.resCode.equals("C502570000000")) {
-          System.out.println(res.data.publicKey);
+          //System.out.println(res.data.publicKey);
           return new RegisterResOTC(res, user);
         } else {
           return new RegisterResOTC(user.resMsg);
@@ -150,11 +165,16 @@ public class DiamondService {
   /**
    * 账户详情接口
    */
-  public AccountDetailsResp accountDetails(AccountDetailsReq req) throws Exception {
+  public BaseVO accountDetails(AccountDetailsReq req) throws Exception {
     final String path = "/find/account";
-    return HttpUtil
+    AccountDetailsResp detailsResp = HttpUtil
         .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), Config.SECRET))
         .castTo(AccountDetailsResp.class);
+    if (detailsResp.code == 0) {
+      return new SdkAccountDetailsResp(detailsResp);
+    } else {
+      return new BaseVO(detailsResp.code + "", detailsResp.msg);
+    }
   }
 
   /**
@@ -244,24 +264,24 @@ public class DiamondService {
     if (res.resCode.equals("C502570000000") && res.otcPosterseList.size() > 0) {
       for (OtcPosters o : res.otcPosterseList) {
         //推荐查询银行卡挂单
-        if (o.paymentType.equals("bank")) {
+        if (o.paymentType.contains("bank")) {
           banks.add(o);
         }
-        if (o.paymentType.equals("alipay")) {
+        if (o.paymentType.contains("alipay")) {
           alipays.add(o);
         }
-        if (o.paymentType.equals("wepay")) {
+        if (o.paymentType.contains("wepay")) {
           wepays.add(o);
         }
       }
       //首先判断银行卡用户
-      OtcPosters otcPosters;
+      OtcPosters otcPosters = new OtcPosters();
       if (req.amount.compareTo(new BigDecimal("1000")) >= 0) {
         if (banks.size() > 0) {
           otcPosters = banks.get(banks.size() - 1);
         } else if (alipays.size() > 0) {
           otcPosters = alipays.get(alipays.size() - 1);
-        } else {
+        } else if (wepays.size() > 0) {
           otcPosters = wepays.get(wepays.size() - 1);
         }
       } else {
@@ -269,9 +289,12 @@ public class DiamondService {
           otcPosters = alipays.get(alipays.size() - 1);
         } else if (banks.size() > 0) {
           otcPosters = banks.get(banks.size() - 1);
-        } else {
+        } else if (wepays.size() > 0) {
           otcPosters = wepays.get(wepays.size() - 1);
         }
+      }
+      if (otcPosters == null) {
+        return new BaseVO(res.resCode, res.resMsg);
       }
       //获取商户挂单信息
       QueryFiatTradeReceiveReq receiveReq = new QueryFiatTradeReceiveReq();
@@ -400,6 +423,7 @@ public class DiamondService {
    */
   public QueryFiatTradeReceiveResp queryReceive(QueryFiatTradeReceiveReq req) throws Exception {
     final String path = "/api/fiatTrade/queryReceives";
+
     return HttpUtil.post(AnnotationUtil
         .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
             Config.OTC_SECRET)).castTo(QueryFiatTradeReceiveResp.class);
@@ -416,5 +440,22 @@ public class DiamondService {
     return HttpUtil.post(AnnotationUtil
         .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
             Config.OTC_SECRET)).castTo(QueryOrderResp.class);
+  }
+
+  /**
+   * 转账接口(接收方扣手续费,到付)
+   */
+  public BaseVO freightCollectTransfer(ChargeCollectTransferReq req)
+      throws Exception {
+    final String path = "/trade/api/dfPayment";
+
+    ChargeCollectTransferResp collectTransferResp = HttpUtil
+        .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), Config.SECRET))
+        .castTo(ChargeCollectTransferResp.class);
+    if (collectTransferResp.code == 0) {
+      return new BaseVO();
+    } else {
+      return new BaseVO(collectTransferResp.code + "", collectTransferResp.msg);
+    }
   }
 }
