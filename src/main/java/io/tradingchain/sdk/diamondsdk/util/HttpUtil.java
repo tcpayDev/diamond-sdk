@@ -1,24 +1,26 @@
 package io.tradingchain.sdk.diamondsdk.util;
 
 import com.alibaba.fastjson.JSON;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.BasicHttpEntity;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.util.EntityUtils;
+
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.BasicHttpEntity;
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.util.EntityUtils;
-import org.apache.http.entity.ContentType;
 
 public class HttpUtil {
 
@@ -29,7 +31,7 @@ public class HttpUtil {
     HttpEntity httpEntity = new BasicHttpEntity();
     ((BasicHttpEntity) httpEntity).setContent(data);
     httpPost.setEntity(httpEntity);
-    Response response =  new Response(httpClient.execute(httpPost));
+    Response response = new Response(httpClient.execute(httpPost));
     return response;
   }
 
@@ -59,19 +61,23 @@ public class HttpUtil {
 
     MultipartEntityBuilder builder = MultipartEntityBuilder.create();
     builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-    if(data!=null) {
-      Iterator iter = data.entrySet().iterator();
-      while(iter.hasNext()){
-        Map.Entry entry = (Map.Entry) iter.next();
+    if (data != null) {
+      Iterator iterator = data.entrySet().iterator();
+      while (iterator.hasNext()) {
+        Map.Entry entry = (Map.Entry) iterator.next();
         String key = (String) entry.getKey();
-        String value = (String) entry.getValue();
-        builder.addTextBody(key,value);
+        Object value = entry.getValue();
+        if (value instanceof File) {
+          builder.addBinaryBody(key, (File) value);
+        } else {
+          builder.addTextBody(key, (String) value);
+        }
       }
     }
-    HttpEntity httpEntity=builder.build();
+    HttpEntity httpEntity = builder.build();
     // 设置请求参数
     httpPost.setEntity(httpEntity);
-    Response response =  new Response(httpClient.execute(httpPost));
+    Response response = new Response(httpClient.execute(httpPost));
     return response;
   }
 
@@ -82,15 +88,13 @@ public class HttpUtil {
     private Map data;
 
     public Request(String url, Map data, String secret, TreeMap treeMap)
-        throws NoSuchAlgorithmException {
+            throws NoSuchAlgorithmException {
       this.url = url;
       this.data = data;
       if (treeMap.isEmpty()) {
         SignUtil.sign(data, secret);
-      }else {
-        //System.out.println(treeMap);
+      } else {
         SignUtil.signOTC(treeMap, secret, data);
-        //System.out.println(data);
       }
     }
   }
