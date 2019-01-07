@@ -176,6 +176,25 @@ public class DiamondService {
       throws Exception {
     final String path = "/find/tradeDepth";
     final String otc_path = "/api/fiatTrade/queryExchangeRate";
+    //信任资产
+    AssetsTrustReq assetReq = new AssetsTrustReq();
+    assetReq.username = req.username;
+    assetReq.platform = "";
+    assetReq.privateKey = req.privateKey;
+    assetReq.apiKey = req.apiKey;
+    assetReq.list = req.list;
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        try {
+          assetsTrust(assetReq);
+        } catch (Exception e) {
+        }
+      }
+    }).start();
+    //获取汇率
+    String exchangeRateBuy = "0.0";
+    String exchangeRateSell = "0.0";
     ExchangeRateReq exchangeRateReq = new ExchangeRateReq();
     exchangeRateReq.counterAsset = req.counterAsset;
     exchangeRateReq.counterAssetIssuer = req.counterAssetIssuer;
@@ -183,10 +202,12 @@ public class DiamondService {
     exchangeRateReq.baseAssetIssuer = req.baseAssetIssuer;
     exchangeRateReq.size = req.size;
     exchangeRateReq.apiKey = req.apiKey;
-    OrderBookRes rateReq = HttpUtil
-        .post(AnnotationUtil
+    OrderBookRes rateReq = HttpUtil.post(AnnotationUtil
             .buildReq(Config.BASE_URL + path, setCommonParams(exchangeRateReq), Config.SECRET))
         .castTo(OrderBookRes.class);
+    if (rateReq.code!=0){
+      return new ExchangeRateRes(exchangeRateBuy, exchangeRateSell, rateReq.code+"", "暂无币商挂单,请选择其他交易方式");
+    }
     BigDecimal rateBuy = rateReq.bids[0][0];
     BigDecimal rateSell = rateReq.asks[0][0];
     //  获取OTC最新的汇率
@@ -198,32 +219,14 @@ public class DiamondService {
             .buildReq(Config.OTC_BASE_URL + otc_path, setCommonParams(exchangeOTCRateReq),
                 Config.OTC_SECRET))
         .castTo(ExchangeOTCRateRes.class);
-    String exchangeRateBuy = "0.0";
-    String exchangeRateSell = "0.0";
     if (rate.resCode.equals("C502570000000")) {
       exchangeRateBuy = rateBuy.multiply(rate.buyRate)
           .setScale(7, BigDecimal.ROUND_HALF_EVEN).toPlainString();
       exchangeRateSell = rateSell.multiply(rate.sellRate)
           .setScale(7, BigDecimal.ROUND_HALF_EVEN).toPlainString();
     } else {
-      return new ExchangeRateRes(exchangeRateBuy, exchangeRateSell, rate.resCode, rate.resMsg);
+      return new ExchangeRateRes(exchangeRateBuy, exchangeRateSell, rate.resCode, "暂无币商挂单,请选择其他交易方式");
     }
-    AssetsTrustReq assetReq = new AssetsTrustReq();
-    assetReq.username = req.username;
-    assetReq.platform = "";
-    assetReq.privateKey = req.privateKey;
-    assetReq.apiKey = req.apiKey;
-    assetReq.list = req.list;
-    //信任币种
-    new Thread(new Runnable() {
-      @Override
-      public void run() {
-        try {
-          assetsTrust(assetReq);
-        } catch (Exception e) {
-        }
-      }
-    }).start();
     return new ExchangeRateRes(exchangeRateBuy, exchangeRateSell);
   }
 
