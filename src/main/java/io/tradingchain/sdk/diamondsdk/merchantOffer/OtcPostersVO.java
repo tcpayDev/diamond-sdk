@@ -21,6 +21,7 @@ public class OtcPostersVO {
     public List<MerReceiveVo> accountNo;  //收款信息
 
     public OtcVO(OtcPosters o, List<MerReceiveVo> list) {
+      this.orderNo=o.orderNo;
       this.extend1 = o.extend1;
       this.accountNo = list;
     }

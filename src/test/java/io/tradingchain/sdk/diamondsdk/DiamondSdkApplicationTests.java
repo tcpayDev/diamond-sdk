@@ -30,6 +30,7 @@ public class DiamondSdkApplicationTests {
   public void contextLoads() {
   }
 
+  /*
 
   @Test
   public void beforeRegister() throws Exception {
@@ -38,7 +39,7 @@ public class DiamondSdkApplicationTests {
     BaseVO register = DiamondService.beforeRegister(req);
     //System.out.println(register.data);
   }
-
+/*
 
   @Test
   public void register() throws Exception {

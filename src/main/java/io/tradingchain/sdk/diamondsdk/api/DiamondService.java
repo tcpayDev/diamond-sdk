@@ -74,16 +74,11 @@ public class DiamondService {
   /**
    * 注册前获取备份私钥
    */
-  public BaseVO beforeRegister(BeforeRegisterReq req) throws Exception {
+  public BeforeRegisterResp beforeRegister(BeforeRegisterReq req) throws Exception {
     final String path = "/api/getKeyBeforeRegister";
-    BeforeRegisterResp resp = HttpUtil
+    return HttpUtil
         .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), Config.SECRET))
         .castTo(BeforeRegisterResp.class);
-    if (resp.code == 0) {
-      return new SdkBeforeRegisterResp(resp);
-    } else {
-      return new BaseVO(resp.code + "", resp.msg);
-    }
   }
 
   /**
@@ -92,7 +87,7 @@ public class DiamondService {
    * @param req 请求体
    * @param type 操作方式 1: 安卓; 2: IOS
    */
-  public BaseVO register(RegistReq req, String type) throws Exception {
+  public RegisterResOTC register(RegistReq req, String type) throws Exception {
     final String path = "/api/registUser2";
     //注册1
     RegisterRes res = HttpUtil
@@ -100,14 +95,9 @@ public class DiamondService {
         .castTo(RegisterRes.class);
     if (res.code == 0) {
       //去OTC做相应注册
-      RegisterResOTC resOTC = userAdd(req, res, type);
-      if (resOTC.code == 0) {
-        return new SdkRegisterResOTC(resOTC);
-      } else {
-        return new BaseVO(resOTC.code + "", resOTC.msg);
-      }
+      return userAdd(req, res, type);
     } else {
-      return new BaseVO(res.code + "", res.msg);
+      return new RegisterResOTC(res.msg);
     }
   }
 
@@ -170,16 +160,11 @@ public class DiamondService {
   /**
    * 账户详情接口
    */
-  public BaseVO accountDetails(AccountDetailsReq req) throws Exception {
+  public AccountDetailsResp accountDetails(AccountDetailsReq req) throws Exception {
     final String path = "/find/account";
-    AccountDetailsResp detailsResp = HttpUtil
+    return HttpUtil
         .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), Config.SECRET))
         .castTo(AccountDetailsResp.class);
-    if (detailsResp.code == 0) {
-      return new SdkAccountDetailsResp(detailsResp);
-    } else {
-      return new BaseVO(detailsResp.code + "", detailsResp.msg);
-    }
   }
 
   /**
@@ -238,12 +223,14 @@ public class DiamondService {
     if (res.resCode.equals("C502570000000") && res.otcPosterseList.size() > 0) {
       for (OtcPosters o : res.otcPosterseList) {
         //获取币商的收款账户
-        QueryPaymentReq receiveReq = new QueryPaymentReq();
-        receiveReq.userId = o.userId;
-        receiveReq.operSysType = req.operSysType;
-        QueryPaymentResp receiveResp = findPayments(receiveReq);
-        if (receiveResp.resCode.equals("C502570000000") && receiveResp.merReceiveVos.size() > 0) {
-          lists.add(new OtcPostersVO(o, receiveResp.merReceiveVos));
+        if (new BigDecimal(o.amount).compareTo(req.amount)>=0){
+          QueryPaymentReq receiveReq = new QueryPaymentReq();
+          receiveReq.userId = o.userId;
+          receiveReq.operSysType = req.operSysType;
+          QueryPaymentResp receiveResp = findPayments(receiveReq);
+          if (receiveResp.resCode.equals("C502570000000") && receiveResp.merReceiveVos.size() > 0) {
+            lists.add(new OtcPostersVO(o, receiveResp.merReceiveVos));
+          }
         }
       }
       return new OtcPostersResponse(lists);
@@ -268,15 +255,17 @@ public class DiamondService {
     List<OtcPosters> wepays = new ArrayList<>();
     if (res.resCode.equals("C502570000000") && res.otcPosterseList.size() > 0) {
       for (OtcPosters o : res.otcPosterseList) {
-        //推荐查询银行卡挂单
-        if (o.paymentType.contains("bank")) {
-          banks.add(o);
-        }
-        if (o.paymentType.contains("alipay")) {
-          alipays.add(o);
-        }
-        if (o.paymentType.contains("wepay")) {
-          wepays.add(o);
+        if (new BigDecimal(o.amount).compareTo(req.amount)>=0) {
+          //推荐查询银行卡挂单
+          if (o.paymentType.contains("bank")) {
+            banks.add(o);
+          }
+          if (o.paymentType.contains("alipay")) {
+            alipays.add(o);
+          }
+          if (o.paymentType.contains("wepay")) {
+            wepays.add(o);
+          }
         }
       }
       //首先判断银行卡用户
@@ -450,18 +439,12 @@ public class DiamondService {
   /**
    * 转账接口(接收方扣手续费,到付)
    */
-  public BaseVO freightCollectTransfer(ChargeCollectTransferReq req)
+  public ChargeCollectTransferResp freightCollectTransfer(ChargeCollectTransferReq req)
       throws Exception {
     final String path = "/trade/api/dfPayment";
-
-    ChargeCollectTransferResp collectTransferResp = HttpUtil
+    return HttpUtil
         .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), Config.SECRET))
         .castTo(ChargeCollectTransferResp.class);
-    if (collectTransferResp.code == 0) {
-      return new BaseVO();
-    } else {
-      return new BaseVO(collectTransferResp.code + "", collectTransferResp.msg);
-    }
   }
 
   /**
