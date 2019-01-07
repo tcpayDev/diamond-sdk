@@ -5,10 +5,12 @@ import static io.tradingchain.sdk.diamondsdk.config.Config.setOtcCommonParams;
 
 import io.tradingchain.sdk.diamondsdk.account.AccountDetailsReq;
 import io.tradingchain.sdk.diamondsdk.account.AccountDetailsResp;
-import io.tradingchain.sdk.diamondsdk.account.SdkAccountDetailsResp;
 import io.tradingchain.sdk.diamondsdk.config.Config;
+import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeOTCRateReq;
+import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeOTCRateRes;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeRateReq;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeRateRes;
+import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeReq;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.OrderBookRes;
 import io.tradingchain.sdk.diamondsdk.merchantOffer.OtcPostersReq;
 import io.tradingchain.sdk.diamondsdk.merchantOffer.OtcPostersRes;
@@ -49,8 +51,6 @@ import io.tradingchain.sdk.diamondsdk.regist.QueryUserResp;
 import io.tradingchain.sdk.diamondsdk.regist.RegistReq;
 import io.tradingchain.sdk.diamondsdk.regist.RegisterRes;
 import io.tradingchain.sdk.diamondsdk.regist.RegisterResOTC;
-import io.tradingchain.sdk.diamondsdk.regist.SdkBeforeRegisterResp;
-import io.tradingchain.sdk.diamondsdk.regist.SdkRegisterResOTC;
 import io.tradingchain.sdk.diamondsdk.regist.UserReq;
 import io.tradingchain.sdk.diamondsdk.regist.UserResp;
 import io.tradingchain.sdk.diamondsdk.response.BaseVO;
@@ -172,20 +172,48 @@ public class DiamondService {
    *
    * @param req 请求体
    */
-  public ExchangeRateRes exchangeRate(ExchangeRateReq req, AssetsTrustReq assetReq)
+  public ExchangeRateRes exchangeRate(ExchangeReq req)
       throws Exception {
     final String path = "/find/tradeDepth";
+    final String otc_path = "/api/fiatTrade/queryExchangeRate";
+    ExchangeRateReq exchangeRateReq = new ExchangeRateReq();
+    exchangeRateReq.counterAsset = req.counterAsset;
+    exchangeRateReq.counterAssetIssuer = req.counterAssetIssuer;
+    exchangeRateReq.baseAsset = req.baseAsset;
+    exchangeRateReq.baseAssetIssuer = req.baseAssetIssuer;
+    exchangeRateReq.size = req.size;
+    exchangeRateReq.apiKey = req.apiKey;
     OrderBookRes rateReq = HttpUtil
-        .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), Config.SECRET))
+        .post(AnnotationUtil
+            .buildReq(Config.BASE_URL + path, setCommonParams(exchangeRateReq), Config.SECRET))
         .castTo(OrderBookRes.class);
     BigDecimal rateBuy = rateReq.bids[0][0];
     BigDecimal rateSell = rateReq.asks[0][0];
-    // TODO 获取OTC最新的汇率
-    //计算DB-USDT的最终汇率
-    String exchangeRateBuy = rateBuy.multiply(new BigDecimal("7"))
-        .setScale(7, BigDecimal.ROUND_HALF_EVEN).toPlainString();
-    String exchangeRateSell = rateSell.multiply(new BigDecimal("7"))
-        .setScale(7, BigDecimal.ROUND_HALF_EVEN).toPlainString();
+    //  获取OTC最新的汇率
+    ExchangeOTCRateReq exchangeOTCRateReq = new ExchangeOTCRateReq();
+    exchangeOTCRateReq.assetCode = req.counterAsset;
+    exchangeOTCRateReq.operSysType = req.operSysType;
+    ExchangeOTCRateRes rate = HttpUtil
+        .post(AnnotationUtil
+            .buildReq(Config.OTC_BASE_URL + otc_path, setCommonParams(exchangeOTCRateReq),
+                Config.OTC_SECRET))
+        .castTo(ExchangeOTCRateRes.class);
+    String exchangeRateBuy = "0.0";
+    String exchangeRateSell = "0.0";
+    if (rate.resCode.equals("C502570000000")) {
+      exchangeRateBuy = rateBuy.multiply(rate.buyRate)
+          .setScale(7, BigDecimal.ROUND_HALF_EVEN).toPlainString();
+      exchangeRateSell = rateSell.multiply(rate.sellRate)
+          .setScale(7, BigDecimal.ROUND_HALF_EVEN).toPlainString();
+    } else {
+      return new ExchangeRateRes(exchangeRateBuy, exchangeRateSell, rate.resCode, rate.resMsg);
+    }
+    AssetsTrustReq assetReq = new AssetsTrustReq();
+    assetReq.username = req.username;
+    assetReq.platform = "";
+    assetReq.privateKey = req.privateKey;
+    assetReq.apiKey = req.apiKey;
+    assetReq.list = req.list;
     //信任币种
     new Thread(new Runnable() {
       @Override
@@ -223,7 +251,7 @@ public class DiamondService {
     if (res.resCode.equals("C502570000000") && res.otcPosterseList.size() > 0) {
       for (OtcPosters o : res.otcPosterseList) {
         //获取币商的收款账户
-        if (new BigDecimal(o.amount).compareTo(req.amount)>=0){
+        if (new BigDecimal(o.amount).compareTo(req.amount) >= 0) {
           QueryPaymentReq receiveReq = new QueryPaymentReq();
           receiveReq.userId = o.userId;
           receiveReq.operSysType = req.operSysType;
@@ -255,7 +283,7 @@ public class DiamondService {
     List<OtcPosters> wepays = new ArrayList<>();
     if (res.resCode.equals("C502570000000") && res.otcPosterseList.size() > 0) {
       for (OtcPosters o : res.otcPosterseList) {
-        if (new BigDecimal(o.amount).compareTo(req.amount)>=0) {
+        if (new BigDecimal(o.amount).compareTo(req.amount) >= 0) {
           //推荐查询银行卡挂单
           if (o.paymentType.contains("bank")) {
             banks.add(o);

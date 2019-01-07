@@ -95,6 +95,7 @@ public class HttpUtil {
         SignUtil.sign(data, secret);
       } else {
         SignUtil.signOTC(treeMap, secret, data);
+        System.out.println("data="+data);
       }
     }
   }

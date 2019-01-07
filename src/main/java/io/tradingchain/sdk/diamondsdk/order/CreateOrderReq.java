@@ -22,6 +22,9 @@ public class CreateOrderReq {
   @ReqParam(isSgin = true,nullable = false, comment = "token")
   public String accessToken = System.currentTimeMillis()+"";
 
+  public CreateOrderReq() {
+  }
+
   public CreateOrderReq(String offerOrderNo, String quantity, String price, String amount,
       String type, String userId, String operSysType) {
     this.offerOrderNo = offerOrderNo;
