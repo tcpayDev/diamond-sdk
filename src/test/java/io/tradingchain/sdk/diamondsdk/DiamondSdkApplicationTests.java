@@ -1,5 +1,7 @@
 package io.tradingchain.sdk.diamondsdk;
 
+import com.alibaba.fastjson.JSON;
+import com.sun.org.apache.regexp.internal.RE;
 import io.tradingchain.sdk.diamondsdk.api.DiamondService;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeRateRes;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeReq;
@@ -10,8 +12,11 @@ import io.tradingchain.sdk.diamondsdk.order.QueryOrderListReq;
 import io.tradingchain.sdk.diamondsdk.order.QueryOrderListResp;
 import io.tradingchain.sdk.diamondsdk.order.QueryOrderReq;
 import io.tradingchain.sdk.diamondsdk.order.QueryOrderResp;
+import io.tradingchain.sdk.diamondsdk.pathPayment.DoPathPaymentReq;
 import io.tradingchain.sdk.diamondsdk.payment.QueryFiatTradeReceiveReq;
 import io.tradingchain.sdk.diamondsdk.payment.QueryFiatTradeReceiveResp;
+import io.tradingchain.sdk.diamondsdk.regist.BeforeRegisterReq;
+import io.tradingchain.sdk.diamondsdk.regist.BeforeRegisterResp;
 import io.tradingchain.sdk.diamondsdk.response.BaseVO;
 import io.tradingchain.sdk.diamondsdk.trustAsset.AssetPair;
 import java.math.BigDecimal;
@@ -29,14 +34,15 @@ public class DiamondSdkApplicationTests {
   public void contextLoads() {
   }
 
-  /*
+
 
   @Test
   public void beforeRegister() throws Exception {
     BeforeRegisterReq req = new BeforeRegisterReq();
     req.apiKey = "tradingchain";
-    BaseVO register = DiamondService.beforeRegister(req);
-    //System.out.println(register.data);
+    BeforeRegisterResp resp = DiamondService.beforeRegister(req);
+    String privateKey = JSON.parseObject(resp.data.toString()).getString("privateKey");
+    System.out.println(privateKey);
   }
 /*
 
@@ -207,8 +213,8 @@ public class DiamondSdkApplicationTests {
   @Test
   public void orderInfo() throws Exception {
     QueryOrderReq registReq = new QueryOrderReq();
-    registReq.operSysType = "1";
-    registReq.orderNo = "99110190104185455000003";
+    registReq.operSysType = "2";
+    registReq.orderNo = "90005181102172044000027";
     registReq.userId = "c34d93b6d68740f29518aa01571cc74b";
     QueryOrderResp resp = DiamondService.orderInfo(registReq);
     System.out.println(resp);
@@ -236,6 +242,19 @@ public class DiamondSdkApplicationTests {
     ExchangeRateRes rateRes = DiamondService.exchangeRate(exchangeReq);
     Thread.sleep(15000);
     System.out.println(rateRes);
+  }
+
+  @Test
+  public void doPathPaymentFreightCollect() throws Exception {
+    //String username, String tradePassword, String sourceAmount, String sourceAssetName, String sourceAssetIssuer,
+    // String destinationAmount, String destinationAssetName, String destinationAssetIssuer, String destination,
+    // String privateKey, String backupKey
+    DoPathPaymentReq registReq = DoPathPaymentReq.getInstanceByPrivateKey("15922222234","123456","0.0001000",
+        "BTC","GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG",
+        "0.4007827","USDT","GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG",
+        "GAYEHYYEMTLQMUJGIRSWZDOF6CE5ESBYV5SV2YNJLAKKDMVECWY7ZAWR","SBC2WDTSXF55ZRUBYVHXI6S7UDKYUADUQTKGC52ILWC4O4ML5HZBDNCR");
+    BaseVO baseVO = DiamondService.doPathPaymentFreightCollect(registReq);
+    System.out.println(baseVO);
   }
 
 }

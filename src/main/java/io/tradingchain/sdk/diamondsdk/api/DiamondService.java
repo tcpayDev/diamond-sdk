@@ -93,11 +93,11 @@ public class DiamondService {
    * @param req 请求体
    * @param type 操作方式 1: 安卓; 2: IOS
    */
-  public RegisterResOTC register(RegistReq req, String type) throws Exception {
+  public RegisterResOTC register(RegistReq req, String type,String SECRET) throws Exception {
     final String path = "/api/registUser2";
     //注册1
     RegisterRes res = HttpUtil
-        .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), Config.SECRET))
+        .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), SECRET))
         .castTo(RegisterRes.class);
     if (res.code == 0) {
       //去OTC做相应注册
@@ -166,10 +166,10 @@ public class DiamondService {
   /**
    * 账户详情接口
    */
-  public AccountDetailsResp accountDetails(AccountDetailsReq req) throws Exception {
+  public AccountDetailsResp accountDetails(AccountDetailsReq req,String SECRET) throws Exception {
     final String path = "/find/account";
     return HttpUtil
-        .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), Config.SECRET))
+        .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), SECRET))
         .castTo(AccountDetailsResp.class);
   }
 
@@ -178,7 +178,7 @@ public class DiamondService {
    *
    * @param req 请求体
    */
-  public ExchangeRateRes exchangeRate(ExchangeReq req)
+  public ExchangeRateRes exchangeRate(ExchangeReq req,String SECRET)
       throws Exception {
     final String path = "/find/tradeDepth";
     final String otc_path = "/api/fiatTrade/queryExchangeRate";
@@ -193,7 +193,7 @@ public class DiamondService {
       @Override
       public void run() {
         try {
-          assetsTrust(assetReq);
+          assetsTrust(assetReq,SECRET);
         } catch (Exception e) {
         }
       }
@@ -209,7 +209,7 @@ public class DiamondService {
     exchangeRateReq.size = req.size;
     exchangeRateReq.apiKey = req.apiKey;
     OrderBookRes rateReq = HttpUtil.post(AnnotationUtil
-        .buildReq(Config.BASE_URL + path, setCommonParams(exchangeRateReq), Config.SECRET))
+        .buildReq(Config.BASE_URL + path, setCommonParams(exchangeRateReq), SECRET))
         .castTo(OrderBookRes.class);
     if (rateReq.code != 0) {
       return new ExchangeRateRes(rateReq.code + "", "暂无币商挂单,请选择其他交易方式");
@@ -240,10 +240,10 @@ public class DiamondService {
   /**
    * 资产列表信任接口
    */
-  private void assetsTrust(AssetsTrustReq req) throws Exception {
+  private void assetsTrust(AssetsTrustReq req,String SECRET) throws Exception {
     final String path = "/find/assetTrustList";
     HttpUtil
-        .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), Config.SECRET));
+        .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), SECRET));
   }
 
   /**
@@ -476,22 +476,22 @@ public class DiamondService {
   /**
    * 转账接口(接收方扣手续费,到付)
    */
-  public ChargeCollectTransferResp freightCollectTransfer(ChargeCollectTransferReq req)
+  public ChargeCollectTransferResp freightCollectTransfer(ChargeCollectTransferReq req,String SECRET)
       throws Exception {
     final String path = "/trade/api/dfPayment";
     return HttpUtil
-        .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), Config.SECRET))
+        .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), SECRET))
         .castTo(ChargeCollectTransferResp.class);
   }
 
   /**
    * 桥链列表接口(接收方扣手续费,到付)
    */
-  public BaseVO paymentPathListOfFreightCollect(PaymentPathListReq req)
+  public BaseVO paymentPathListOfFreightCollect(PaymentPathListReq req,String SECRET)
       throws Exception {
     final String path = "/find/getPaymentPathList";
     PaymentPathListResp pathListResp = HttpUtil
-        .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), Config.SECRET))
+        .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), SECRET))
         .castTo(PaymentPathListResp.class);
     if (pathListResp.code == 0) {
       return new SdkPaymentPathListResp(pathListResp);
@@ -503,10 +503,10 @@ public class DiamondService {
   /**
    * 桥链支付接口(接收方扣手续费,到付)
    */
-  public BaseVO doPathPaymentFreightCollect(DoPathPaymentReq req) throws Exception {
+  public BaseVO doPathPaymentFreightCollect(DoPathPaymentReq req,String SECRET) throws Exception {
     final String path = "/trade/api/dfPaymentPath";
     DoPathPaymentResp doPathPaymentResp = HttpUtil
-        .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), Config.SECRET))
+        .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req),SECRET))
         .castTo(DoPathPaymentResp.class);
     if (doPathPaymentResp.code == 0) {
       return new BaseVO();
@@ -533,7 +533,7 @@ public class DiamondService {
   }
 
   /**
-   * 交易放币接口
+   * 获取用户信息
    */
   public UserInfoResp userInfo(UserInfoReq req) throws Exception {
     UserInfoReqVO userInfoReqVO = new UserInfoReqVO();
