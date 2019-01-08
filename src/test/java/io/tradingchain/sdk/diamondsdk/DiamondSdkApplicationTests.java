@@ -239,7 +239,7 @@ public class DiamondSdkApplicationTests {
     exchangeReq.privateKey = "SBC2WDTSXF55ZRUBYVHXI6S7UDKYUADUQTKGC52ILWC4O4ML5HZBDNCR";
     exchangeReq.list = list;
     exchangeReq.operSysType = "1";
-    ExchangeRateRes rateRes = DiamondService.exchangeRate(exchangeReq);
+    ExchangeRateRes rateRes = DiamondService.exchangeRate(exchangeReq,"");
     Thread.sleep(15000);
     System.out.println(rateRes);
   }
@@ -253,7 +253,7 @@ public class DiamondSdkApplicationTests {
         "BTC","GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG",
         "0.4007827","USDT","GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG",
         "GAYEHYYEMTLQMUJGIRSWZDOF6CE5ESBYV5SV2YNJLAKKDMVECWY7ZAWR","SBC2WDTSXF55ZRUBYVHXI6S7UDKYUADUQTKGC52ILWC4O4ML5HZBDNCR");
-    BaseVO baseVO = DiamondService.doPathPaymentFreightCollect(registReq);
+    BaseVO baseVO = DiamondService.doPathPaymentFreightCollect(registReq,"");
     System.out.println(baseVO);
   }
 
