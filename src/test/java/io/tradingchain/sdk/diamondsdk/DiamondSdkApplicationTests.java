@@ -2,6 +2,7 @@ package io.tradingchain.sdk.diamondsdk;
 
 import io.tradingchain.sdk.diamondsdk.annotation.ReqParam;
 import io.tradingchain.sdk.diamondsdk.api.DiamondService;
+import io.tradingchain.sdk.diamondsdk.commit.CommitOrderReq;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeRateReq;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeRateRes;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeReq;
@@ -28,6 +29,7 @@ import io.tradingchain.sdk.diamondsdk.trustAsset.AssetsTrustReq;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.tomcat.jni.BIOCallback;
 import org.junit.Test;
 
 public class DiamondSdkApplicationTests {
@@ -245,5 +247,6 @@ public class DiamondSdkApplicationTests {
     Thread.sleep(15000);
     System.out.println(rateRes);
   }
+
 }
 

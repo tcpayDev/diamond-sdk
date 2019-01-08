@@ -49,7 +49,7 @@ public class QueryOrderResp {
           ", overtime=" + overtime +
           ", cancelTime=" + cancelTime +
           ", createTime=" + createTime +
-          ", fee=" + fee +
+          ", rate=" + fee +
           ", payMode='" + payMode + '\'' +
           ", amount='" + amount + '\'' +
           '}';

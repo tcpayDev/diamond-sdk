@@ -5,6 +5,7 @@ import static io.tradingchain.sdk.diamondsdk.config.Config.setOtcCommonParams;
 
 import io.tradingchain.sdk.diamondsdk.account.AccountDetailsReq;
 import io.tradingchain.sdk.diamondsdk.account.AccountDetailsResp;
+import io.tradingchain.sdk.diamondsdk.commit.CommitOrderReq;
 import io.tradingchain.sdk.diamondsdk.config.Config;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeOTCRateReq;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeOTCRateRes;
@@ -59,6 +60,8 @@ import io.tradingchain.sdk.diamondsdk.response.BaseVO;
 import io.tradingchain.sdk.diamondsdk.response.OtcPostersResponse;
 import io.tradingchain.sdk.diamondsdk.response.OtcPostersResponseOtc;
 import io.tradingchain.sdk.diamondsdk.trustAsset.AssetsTrustReq;
+import io.tradingchain.sdk.diamondsdk.user.UserInfoReq;
+import io.tradingchain.sdk.diamondsdk.user.UserInfoResp;
 import io.tradingchain.sdk.diamondsdk.util.AnnotationUtil;
 import io.tradingchain.sdk.diamondsdk.util.HttpUtil;
 import java.math.BigDecimal;
@@ -526,6 +529,15 @@ public class DiamondService {
     } else {
       return new BaseVO(grantResp.resCode, grantResp.resMsg);
     }
+  }
+
+  /**
+   * 交易放币接口
+   */
+  public UserInfoResp userInfo(UserInfoReq req) throws Exception {
+    return HttpUtil
+        .post(AnnotationUtil.buildReq(req.pathUrl, setCommonParams(req), req.patSecret))
+        .castTo(UserInfoResp.class);
   }
 
 }
