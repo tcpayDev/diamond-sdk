@@ -203,10 +203,10 @@ public class DiamondService {
     exchangeRateReq.size = req.size;
     exchangeRateReq.apiKey = req.apiKey;
     OrderBookRes rateReq = HttpUtil.post(AnnotationUtil
-            .buildReq(Config.BASE_URL + path, setCommonParams(exchangeRateReq), Config.SECRET))
+        .buildReq(Config.BASE_URL + path, setCommonParams(exchangeRateReq), Config.SECRET))
         .castTo(OrderBookRes.class);
-    if (rateReq.code!=0){
-      return new ExchangeRateRes(exchangeRateBuy, exchangeRateSell, rateReq.code+"", "暂无币商挂单,请选择其他交易方式");
+    if (rateReq.code != 0) {
+      return new ExchangeRateRes(rateReq.code + "", "暂无币商挂单,请选择其他交易方式");
     }
     BigDecimal rateBuy = rateReq.bids[0][0];
     BigDecimal rateSell = rateReq.asks[0][0];
@@ -225,9 +225,9 @@ public class DiamondService {
       exchangeRateSell = rateSell.multiply(rate.sellRate)
           .setScale(7, BigDecimal.ROUND_HALF_EVEN).toPlainString();
     } else {
-      return new ExchangeRateRes(exchangeRateBuy, exchangeRateSell, rate.resCode, "暂无币商挂单,请选择其他交易方式");
+      return new ExchangeRateRes(rate.resCode, "暂无币商挂单,请选择其他交易方式");
     }
-    return new ExchangeRateRes(exchangeRateBuy, exchangeRateSell);
+    return new ExchangeRateRes(rateBuy + "", rateSell + "", exchangeRateBuy, exchangeRateSell);
   }
 
 
