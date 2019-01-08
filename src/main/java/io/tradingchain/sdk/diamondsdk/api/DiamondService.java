@@ -29,6 +29,8 @@ import io.tradingchain.sdk.diamondsdk.order.QueryOrderListReq;
 import io.tradingchain.sdk.diamondsdk.order.QueryOrderListResp;
 import io.tradingchain.sdk.diamondsdk.order.QueryOrderReq;
 import io.tradingchain.sdk.diamondsdk.order.QueryOrderResp;
+import io.tradingchain.sdk.diamondsdk.order.TradeGrantReq;
+import io.tradingchain.sdk.diamondsdk.order.TradeGrantResp;
 import io.tradingchain.sdk.diamondsdk.pathPayment.DoPathPaymentReq;
 import io.tradingchain.sdk.diamondsdk.pathPayment.DoPathPaymentResp;
 import io.tradingchain.sdk.diamondsdk.pathPayment.PaymentPathListReq;
@@ -508,4 +510,22 @@ public class DiamondService {
       return new BaseVO(doPathPaymentResp.code + "", doPathPaymentResp.msg);
     }
   }
+
+
+  /**
+   * 交易放币接口
+   */
+  public BaseVO fiatTradeGrant(TradeGrantReq req) throws Exception {
+    final String path = "/api/fiatTrade/grant";
+    TradeGrantResp grantResp = HttpUtil
+        .post(AnnotationUtil
+            .buildReq(Config.OTC_BASE_URL + path, setCommonParams(req), Config.OTC_SECRET))
+        .castTo(TradeGrantResp.class);
+    if (grantResp.resCode.equals("C502570000000")) {
+      return new BaseVO();
+    } else {
+      return new BaseVO(grantResp.resCode, grantResp.resMsg);
+    }
+  }
+
 }
