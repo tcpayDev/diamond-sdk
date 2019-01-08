@@ -1,37 +1,26 @@
 package io.tradingchain.sdk.diamondsdk;
 
-import io.tradingchain.sdk.diamondsdk.annotation.ReqParam;
 import io.tradingchain.sdk.diamondsdk.api.DiamondService;
-import io.tradingchain.sdk.diamondsdk.commit.CommitOrderReq;
-import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeRateReq;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeRateRes;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeReq;
 import io.tradingchain.sdk.diamondsdk.merchantOffer.OtcPostersReq;
-import io.tradingchain.sdk.diamondsdk.order.CancelOrderReq;
-import io.tradingchain.sdk.diamondsdk.order.CancelOrderResp;
 import io.tradingchain.sdk.diamondsdk.order.CreateOrderReq;
 import io.tradingchain.sdk.diamondsdk.order.CreateOrderResp;
-import io.tradingchain.sdk.diamondsdk.order.FiatTradeAppealReq;
-import io.tradingchain.sdk.diamondsdk.order.FiatTradeAppealResp;
 import io.tradingchain.sdk.diamondsdk.order.QueryOrderListReq;
 import io.tradingchain.sdk.diamondsdk.order.QueryOrderListResp;
 import io.tradingchain.sdk.diamondsdk.order.QueryOrderReq;
 import io.tradingchain.sdk.diamondsdk.order.QueryOrderResp;
 import io.tradingchain.sdk.diamondsdk.payment.QueryFiatTradeReceiveReq;
 import io.tradingchain.sdk.diamondsdk.payment.QueryFiatTradeReceiveResp;
-import io.tradingchain.sdk.diamondsdk.regist.BeforeRegisterReq;
-import io.tradingchain.sdk.diamondsdk.regist.BeforeRegisterResp;
-import io.tradingchain.sdk.diamondsdk.regist.RegistReq;
-import io.tradingchain.sdk.diamondsdk.regist.RegisterResOTC;
 import io.tradingchain.sdk.diamondsdk.response.BaseVO;
 import io.tradingchain.sdk.diamondsdk.trustAsset.AssetPair;
-import io.tradingchain.sdk.diamondsdk.trustAsset.AssetsTrustReq;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.tomcat.jni.BIOCallback;
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class DiamondSdkApplicationTests {
 
   DiamondService DiamondService = new DiamondService();
@@ -98,19 +87,19 @@ public class DiamondSdkApplicationTests {
 //      System.out.println(rateRes);
 //    }
 
-    @Test
-    public void moneyMerchantInfo() throws Exception {
-      OtcPostersReq registReq = new OtcPostersReq();
-      registReq.tradeType = "sell";
-      registReq.amount = BigDecimal.ONE;
-      registReq.payMode = "bank,alipay";
-      registReq.assetCode = "usdt";
-      registReq.page = 1;
-      registReq.pageSize = 10;
-      registReq.operSysType = "1";
-      BaseVO vos = DiamondService.moneyMerchantInfo(registReq);
-      //System.out.println(vos);
-    }
+  @Test
+  public void moneyMerchantInfo() throws Exception {
+    OtcPostersReq registReq = new OtcPostersReq();
+    registReq.tradeType = "sell";
+    registReq.amount = BigDecimal.ONE;
+    registReq.payMode = "bank,alipay";
+    registReq.assetCode = "usdt";
+    registReq.page = 1;
+    registReq.pageSize = 10;
+    registReq.operSysType = "1";
+    BaseVO vos = DiamondService.moneyMerchantInfo(registReq);
+    //System.out.println(vos);
+  }
 
   /*
       @Test
@@ -159,41 +148,42 @@ public class DiamondSdkApplicationTests {
       }
 
   */
-    @Test
-    public void createOrder() throws Exception {
-      CreateOrderReq registReq = new CreateOrderReq();
-      registReq.offerOrderNo = "90005181101181159000005";
-      registReq.quantity = "1";
-      registReq.price = "200";
-      registReq.amount = "200";
-      registReq.type = "sell";
-      registReq.operSysType = "1";
-      registReq.userId = "c2d81d064e684c989233562c23d2dc0b";
-      CreateOrderResp resp = DiamondService.createOrder(registReq);
-      System.out.println(resp);
-    }
-/*
-    @Test
-    public void cancelOrder() throws Exception {
-      CancelOrderReq registReq = new CancelOrderReq();
-      registReq.orderNo = "99110190104184625000002";
-      registReq.operSysType = "1";
-      registReq.userId = "c34d93b6d68740f29518aa01571cc74b";
-      CancelOrderResp resp = DiamondService.cancelOrder(registReq);
-      //System.out.println(resp);
-    }
+  @Test
+  public void createOrder() throws Exception {
+    CreateOrderReq registReq = new CreateOrderReq();
+    registReq.offerOrderNo = "90005181101181159000005";
+    registReq.quantity = "1";
+    registReq.price = "200";
+    registReq.amount = "200";
+    registReq.type = "sell";
+    registReq.operSysType = "1";
+    registReq.userId = "c2d81d064e684c989233562c23d2dc0b";
+    CreateOrderResp resp = DiamondService.createOrder(registReq);
+    System.out.println(resp);
+  }
 
-    @Test
-    public void fiatTradeAppeal() throws Exception {
-      FiatTradeAppealReq registReq = new FiatTradeAppealReq();
-      registReq.orderNo = "99110190104184625000002";
-      registReq.appealRemark = "test";
-      registReq.operSysType = "1";
-      registReq.userId = "c34d93b6d68740f29518aa01571cc74b";
-      FiatTradeAppealResp resp = DiamondService.fiatTradeAppeal(registReq);
-      //System.out.println(resp);
-    }
-  */
+  /*
+      @Test
+      public void cancelOrder() throws Exception {
+        CancelOrderReq registReq = new CancelOrderReq();
+        registReq.orderNo = "99110190104184625000002";
+        registReq.operSysType = "1";
+        registReq.userId = "c34d93b6d68740f29518aa01571cc74b";
+        CancelOrderResp resp = DiamondService.cancelOrder(registReq);
+        //System.out.println(resp);
+      }
+
+      @Test
+      public void fiatTradeAppeal() throws Exception {
+        FiatTradeAppealReq registReq = new FiatTradeAppealReq();
+        registReq.orderNo = "99110190104184625000002";
+        registReq.appealRemark = "test";
+        registReq.operSysType = "1";
+        registReq.userId = "c34d93b6d68740f29518aa01571cc74b";
+        FiatTradeAppealResp resp = DiamondService.fiatTradeAppeal(registReq);
+        //System.out.println(resp);
+      }
+    */
   @Test
   public void orderList() throws Exception {
     QueryOrderListReq registReq = new QueryOrderListReq();
@@ -229,20 +219,20 @@ public class DiamondSdkApplicationTests {
   public void exchangeRate() throws Exception {
 
     ExchangeReq exchangeReq = new ExchangeReq();
-    exchangeReq.apiKey="tradingchain";
-    exchangeReq.baseAsset="BTC";
-    exchangeReq.baseAssetIssuer="GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG";
-    exchangeReq.counterAsset="USDT";
-    exchangeReq.counterAssetIssuer="GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG";
-    exchangeReq.size=1;
+    exchangeReq.apiKey = "tradingchain";
+    exchangeReq.baseAsset = "BTC";
+    exchangeReq.baseAssetIssuer = "GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG";
+    exchangeReq.counterAsset = "USDT";
+    exchangeReq.counterAssetIssuer = "GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG";
+    exchangeReq.size = 1;
     List<AssetPair> list = new ArrayList<>();
-    list.add(new AssetPair("USDT","GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG"));
-    list.add(new AssetPair("BTC","GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG"));
-    exchangeReq.apiKey="tradingchain";
-    exchangeReq.username="15922222234";
-    exchangeReq.privateKey="SBC2WDTSXF55ZRUBYVHXI6S7UDKYUADUQTKGC52ILWC4O4ML5HZBDNCR";
-    exchangeReq.list=list;
-    exchangeReq.operSysType="1";
+    list.add(new AssetPair("USDT", "GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG"));
+    list.add(new AssetPair("BTC", "GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG"));
+    exchangeReq.apiKey = "tradingchain";
+    exchangeReq.username = "15922222234";
+    exchangeReq.privateKey = "SBC2WDTSXF55ZRUBYVHXI6S7UDKYUADUQTKGC52ILWC4O4ML5HZBDNCR";
+    exchangeReq.list = list;
+    exchangeReq.operSysType = "1";
     ExchangeRateRes rateRes = DiamondService.exchangeRate(exchangeReq);
     Thread.sleep(15000);
     System.out.println(rateRes);
