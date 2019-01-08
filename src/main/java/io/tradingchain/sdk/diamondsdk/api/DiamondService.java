@@ -61,6 +61,7 @@ import io.tradingchain.sdk.diamondsdk.response.OtcPostersResponse;
 import io.tradingchain.sdk.diamondsdk.response.OtcPostersResponseOtc;
 import io.tradingchain.sdk.diamondsdk.trustAsset.AssetsTrustReq;
 import io.tradingchain.sdk.diamondsdk.user.UserInfoReq;
+import io.tradingchain.sdk.diamondsdk.user.UserInfoReqVO;
 import io.tradingchain.sdk.diamondsdk.user.UserInfoResp;
 import io.tradingchain.sdk.diamondsdk.util.AnnotationUtil;
 import io.tradingchain.sdk.diamondsdk.util.HttpUtil;
@@ -535,8 +536,10 @@ public class DiamondService {
    * 交易放币接口
    */
   public UserInfoResp userInfo(UserInfoReq req) throws Exception {
+    UserInfoReqVO userInfoReqVO = new UserInfoReqVO();
+    userInfoReqVO.userId=req.userId;
     return HttpUtil
-        .post(AnnotationUtil.buildReq(req.pathUrl, setCommonParams(req), req.patSecret))
+        .post(AnnotationUtil.buildReq(req.pathUrl, setCommonParams(userInfoReqVO), req.secret))
         .castTo(UserInfoResp.class);
   }
 
