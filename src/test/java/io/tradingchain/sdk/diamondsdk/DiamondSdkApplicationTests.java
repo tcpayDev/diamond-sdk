@@ -1,7 +1,6 @@
 package io.tradingchain.sdk.diamondsdk;
 
 import com.alibaba.fastjson.JSON;
-import com.sun.org.apache.regexp.internal.RE;
 import io.tradingchain.sdk.diamondsdk.api.DiamondService;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeRateRes;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeReq;
@@ -13,10 +12,14 @@ import io.tradingchain.sdk.diamondsdk.order.QueryOrderListResp;
 import io.tradingchain.sdk.diamondsdk.order.QueryOrderReq;
 import io.tradingchain.sdk.diamondsdk.order.QueryOrderResp;
 import io.tradingchain.sdk.diamondsdk.pathPayment.DoPathPaymentReq;
+import io.tradingchain.sdk.diamondsdk.payment.AddPaymentReq;
+import io.tradingchain.sdk.diamondsdk.payment.AddPaymentResp;
 import io.tradingchain.sdk.diamondsdk.payment.QueryFiatTradeReceiveReq;
 import io.tradingchain.sdk.diamondsdk.payment.QueryFiatTradeReceiveResp;
 import io.tradingchain.sdk.diamondsdk.regist.BeforeRegisterReq;
 import io.tradingchain.sdk.diamondsdk.regist.BeforeRegisterResp;
+import io.tradingchain.sdk.diamondsdk.regist.RegistReq;
+import io.tradingchain.sdk.diamondsdk.regist.RegisterResOTC;
 import io.tradingchain.sdk.diamondsdk.response.BaseVO;
 import io.tradingchain.sdk.diamondsdk.trustAsset.AssetPair;
 import java.math.BigDecimal;
@@ -41,24 +44,22 @@ public class DiamondSdkApplicationTests {
     BeforeRegisterReq req = new BeforeRegisterReq();
     req.apiKey = "tradingchain";
     BeforeRegisterResp resp = DiamondService.beforeRegister(req);
-    String privateKey = JSON.parseObject(resp.data.toString()).getString("privateKey");
-    System.out.println(privateKey);
+    System.out.println(JSON.toJSONString(resp));
   }
-/*
 
   @Test
   public void register() throws Exception {
     RegistReq registReq = new RegistReq();
     registReq.apiKey = "tradingchain";
-    registReq.username = "15922222234";
+    registReq.username = "15966668888";
     registReq.password = "12345678";
-    registReq.phone = "15922222234";
+    registReq.phone = "15966668888";
     registReq.platform = "tradingchain_test";
-    registReq.privateKey = "SBC2WDTSXF55ZRUBYVHXI6S7UDKYUADUQTKGC52ILWC4O4ML5HZBDNCR";
-    registReq.backupKey = "SA5OSGDABAZQBLPVHRJD65OBS6NK7L2LSJ6LDO64TBINPIPJSEJ364UH";
+    registReq.privateKey = "SA7EAP4IA4G5GEITLW2RIESPZQ2DAZZBTNWO7JAS3VWBP6DIEQQF4EYO";
+    registReq.backupKey = "SANFDFZ56TJTRHN26K3MIYDHVSSGGAIJJVP4XYVDPDSM2KW5DAWMN5KS";
     registReq.tradePassword = "123456";
-    BaseVO register = DiamondService.register(registReq, "1");
-    //System.out.println(register);
+    RegisterResOTC register = DiamondService.register(registReq, "1", "yScdDvjCDJ906OlrIGIzITnOZVDKKEpm");
+    System.out.println(register);
   }
 
   /*
@@ -132,17 +133,6 @@ public class DiamondSdkApplicationTests {
       }
 
 
-      @Test
-      public void addPayment() throws Exception {
-        AddPaymentReq registReq = new AddPaymentReq();
-        registReq.accountNo = "123456";
-        registReq.name = "test";
-        registReq.receiveType = "alipay";
-        registReq.operSysType = "1";
-        registReq.userId = "c34d93b6d68740f29518aa01571cc74b";
-        AddPaymentResp resp = DiamondService.addPayment(registReq);
-        //System.out.println(resp);
-      }
 
       @Test
       public void findPayments() throws Exception {
@@ -152,15 +142,28 @@ public class DiamondSdkApplicationTests {
         QueryPaymentResp resp = DiamondService.findPayments(registReq);
         //System.out.println(resp);
       }
+ @Test
+  public void addPayment() throws Exception {
+    AddPaymentReq registReq = new AddPaymentReq();
+    registReq.accountNo = "123456";
+    registReq.name = "燕子李三";
+    registReq.receiveType = "alipay";
+    registReq.operSysType = "1";
+    registReq.userId = "c34d93b6d68740f29518aa01571cc74b";
+    AddPaymentResp resp = DiamondService.addPayment(registReq);
+    System.out.println(resp);
+  }
 
   */
+
+
   @Test
   public void createOrder() throws Exception {
     CreateOrderReq registReq = new CreateOrderReq();
-    registReq.offerOrderNo = "90005181101181159000005";
-    registReq.quantity = "1";
+    registReq.offerOrderNo = "90005181102172044000027";
+    registReq.quantity = "0.4007827";
     registReq.price = "200";
-    registReq.amount = "200";
+    registReq.amount = "80.1565400";
     registReq.type = "sell";
     registReq.operSysType = "1";
     registReq.userId = "c2d81d064e684c989233562c23d2dc0b";

@@ -1,6 +1,7 @@
 package io.tradingchain.sdk.diamondsdk.payment;
 
-public class ChargeCollectTransferResp {
-  public Integer code;
-  public String msg;
+import io.tradingchain.sdk.diamondsdk.response.BaseRes;
+
+public class ChargeCollectTransferResp extends BaseRes {
+
 }

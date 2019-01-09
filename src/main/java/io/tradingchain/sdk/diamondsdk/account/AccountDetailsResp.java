@@ -1,10 +1,10 @@
 package io.tradingchain.sdk.diamondsdk.account;
 
+import io.tradingchain.sdk.diamondsdk.response.BaseRes;
 import java.util.List;
 
-public class AccountDetailsResp {
-  public Integer code;
-  public String msg;
+public class AccountDetailsResp extends BaseRes {
+
   public String total;
   public List<Data> data;
 

@@ -1,6 +1,7 @@
 package io.tradingchain.sdk.diamondsdk.util;
 
 import com.alibaba.fastjson.JSON;
+import java.nio.charset.Charset;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -59,6 +60,7 @@ public class HttpUtil {
     HttpClient httpClient = HttpClientBuilder.create().build();
     HttpPost httpPost = new HttpPost(url);
 
+    ContentType strContent=ContentType.create("text/plain",Charset.forName("UTF-8"));
     MultipartEntityBuilder builder = MultipartEntityBuilder.create();
     builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
     if (data != null) {
@@ -70,7 +72,7 @@ public class HttpUtil {
         if (value instanceof File) {
           builder.addBinaryBody(key, (File) value);
         } else {
-          builder.addTextBody(key, (String) value);
+          builder.addTextBody(key, (String) value,strContent);
         }
       }
     }
