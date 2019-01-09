@@ -7,7 +7,6 @@ public class BeforeRegisterReq {
   @ReqParam(isSgin = false,nullable = false, comment = "签名key")
   public String apiKey;
 
-
   public BeforeRegisterReq(String apiKey) {
     this.apiKey = apiKey;
   }

@@ -185,7 +185,7 @@ public class DiamondService {
     //信任资产
     AssetsTrustReq assetReq = new AssetsTrustReq();
     assetReq.username = req.username;
-    assetReq.platform = "";
+    assetReq.platform = req.platform;
     assetReq.privateKey = req.privateKey;
     assetReq.apiKey = req.apiKey;
     assetReq.list = req.list;
@@ -208,6 +208,7 @@ public class DiamondService {
     exchangeRateReq.baseAssetIssuer = req.baseAssetIssuer;
     exchangeRateReq.size = req.size;
     exchangeRateReq.apiKey = req.apiKey;
+    exchangeRateReq.platform = req.platform;
     OrderBookRes rateReq = HttpUtil.post(AnnotationUtil
         .buildReq(Config.BASE_URL + path, setCommonParams(exchangeRateReq), SECRET))
         .castTo(OrderBookRes.class);

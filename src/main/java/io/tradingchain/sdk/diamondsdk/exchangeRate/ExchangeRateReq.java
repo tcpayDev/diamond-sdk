@@ -17,6 +17,8 @@ public class ExchangeRateReq {
   public int size;
   @ReqParam(isSgin = false,nullable = false, comment = "签名key")
   public String  apiKey;
+  @ReqParam(isSgin = false,nullable = false, comment = "标识")
+  public String platform;
 
   public ExchangeRateReq() {
   }

@@ -32,7 +32,7 @@ public class DoPathPaymentReq {
   @ReqParam(isSgin = false,nullable = false, comment = "公钥")
   public String apiKey;
 
-  private DoPathPaymentReq(String username, String tradePassword, String sourceAmount, String sourceAssetName, String sourceAssetIssuer, String destinationAmount, String destinationAssetName, String destinationAssetIssuer, String destination, String privateKey, String backupKey) {
+  private DoPathPaymentReq(String platform,String username, String tradePassword, String sourceAmount, String sourceAssetName, String sourceAssetIssuer, String destinationAmount, String destinationAssetName, String destinationAssetIssuer, String destination, String privateKey, String backupKey) {
     this.username = username;
     this.tradePassword = tradePassword;
     this.sourceAmount = sourceAmount;
@@ -44,14 +44,15 @@ public class DoPathPaymentReq {
     this.destination = destination;
     this.privateKey = privateKey;
     this.backupKey = backupKey;
+    this.platform=platform;
   }
 
-  public static final DoPathPaymentReq getInstanceByPrivateKey(String username, String tradePassword, String sourceAmount, String sourceAssetName, String sourceAssetIssuer, String destinationAmount, String destinationAssetName, String destinationAssetIssuer, String destination, String privateKey) {
-    return new DoPathPaymentReq(username, tradePassword, sourceAmount, sourceAssetName, sourceAssetIssuer, destinationAmount, destinationAssetName, destinationAssetIssuer, destination, privateKey, null);
+  public static final DoPathPaymentReq getInstanceByPrivateKey(String platform,String username, String tradePassword, String sourceAmount, String sourceAssetName, String sourceAssetIssuer, String destinationAmount, String destinationAssetName, String destinationAssetIssuer, String destination, String privateKey) {
+    return new DoPathPaymentReq(platform,username, tradePassword, sourceAmount, sourceAssetName, sourceAssetIssuer, destinationAmount, destinationAssetName, destinationAssetIssuer, destination, privateKey, null);
   }
 
-  public static final DoPathPaymentReq getInstanceByBackupKey(String username, String tradePassword, String sourceAmount, String sourceAssetName, String sourceAssetIssuer, String destinationAmount, String destinationAssetName, String destinationAssetIssuer, String destination, String backupKey) {
-    return new DoPathPaymentReq(username, tradePassword, sourceAmount, sourceAssetName, sourceAssetIssuer, destinationAmount, destinationAssetName, destinationAssetIssuer, destination, null, backupKey);
+  public static final DoPathPaymentReq getInstanceByBackupKey(String platform,String username, String tradePassword, String sourceAmount, String sourceAssetName, String sourceAssetIssuer, String destinationAmount, String destinationAssetName, String destinationAssetIssuer, String destination, String backupKey) {
+    return new DoPathPaymentReq(platform,username, tradePassword, sourceAmount, sourceAssetName, sourceAssetIssuer, destinationAmount, destinationAssetName, destinationAssetIssuer, destination, null, backupKey);
   }
 
   public DoPathPaymentReq setUsername(String username) {

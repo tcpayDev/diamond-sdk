@@ -1,6 +1,7 @@
 package io.tradingchain.sdk.diamondsdk.exchangeRate;
 
 import io.tradingchain.sdk.diamondsdk.trustAsset.AssetPair;
+
 import java.util.List;
 
 public class ExchangeReq {
@@ -9,18 +10,19 @@ public class ExchangeReq {
   public String counterAsset;
   public String counterAssetIssuer;
   public int size;
-  public String  apiKey;
+  public String apiKey;
   public String username;
   public String privateKey;
   public List<AssetPair> list;
   public String operSysType;
+  public String platform;
 
   public ExchangeReq() {
   }
 
   public ExchangeReq(String baseAsset, String baseAssetIssuer, String counterAsset,
-      String counterAssetIssuer, int size, String apiKey, String username,
-      String privateKey, List<AssetPair> list, String operSysType) {
+                     String counterAssetIssuer, int size, String apiKey, String username,
+                     String privateKey, List<AssetPair> list, String operSysType) {
     this.baseAsset = baseAsset;
     this.baseAssetIssuer = baseAssetIssuer;
     this.counterAsset = counterAsset;
@@ -74,7 +76,7 @@ public class ExchangeReq {
   }
 
   public ExchangeReq setList(
-      List<AssetPair> list) {
+          List<AssetPair> list) {
     this.list = list;
     return this;
   }
