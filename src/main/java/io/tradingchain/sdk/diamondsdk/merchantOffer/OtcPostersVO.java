@@ -18,10 +18,12 @@ public class OtcPostersVO {
     public String orderNo; //	订单号
     public String userId; //	用户id
     public String extend1;     //昵称
+    public String price;    //价格
     public List<MerReceiveVo> accountNo;  //收款信息
 
     public OtcVO(OtcPosters o, List<MerReceiveVo> list) {
       this.orderNo=o.orderNo;
+      this.price=o.unitPrice;
       this.extend1 = o.extend1;
       this.accountNo = list;
     }
