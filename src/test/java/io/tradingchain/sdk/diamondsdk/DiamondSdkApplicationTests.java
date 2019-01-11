@@ -31,7 +31,7 @@ public class DiamondSdkApplicationTests {
   public void beforeRegister() throws Exception {
     BeforeRegisterReq req = new BeforeRegisterReq();
     req.apiKey = "tradingchain";
-    BeforeRegisterResp resp = DiamondService.beforeRegister(req);
+    BeforeRegisterResp resp = DiamondService.beforeRegister(req,"");
     System.out.println(JSON.toJSONString(resp));
   }
 

@@ -81,10 +81,10 @@ public class DiamondService {
   /**
    * 注册前获取备份私钥
    */
-  public BeforeRegisterResp beforeRegister(BeforeRegisterReq req) throws Exception {
+  public BeforeRegisterResp beforeRegister(BeforeRegisterReq req,String SECRET) throws Exception {
     final String path = "/api/getKeyBeforeRegister";
     return HttpUtil
-        .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), Config.SECRET))
+        .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), SECRET))
         .castTo(BeforeRegisterResp.class);
   }
 
