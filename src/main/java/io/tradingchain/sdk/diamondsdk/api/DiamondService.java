@@ -104,7 +104,7 @@ public class DiamondService {
       //去OTC做相应注册
       return userAdd(req, res, type);
     } else {
-      return new RegisterResOTC(res.msg);
+      return new RegisterResOTC(res.msg,req.username,req.platform);
     }
   }
 
