@@ -1,6 +1,7 @@
 package io.tradingchain.sdk.diamondsdk.order;
 
 import io.tradingchain.sdk.diamondsdk.annotation.ReqParam;
+import java.io.File;
 
 public class FiatTradeAppealReq {
   @ReqParam(isSgin = true,nullable = false, comment = "订单号")
@@ -8,7 +9,7 @@ public class FiatTradeAppealReq {
   @ReqParam(isSgin = false,nullable = false, comment = "申诉详情")
   public String appealRemark;
   @ReqParam(isSgin = false,nullable = false, comment = "文件")
-  public String appealFile;
+  public File appealFile;
   @ReqParam(isSgin = false,nullable = false, comment = "申诉理由")
   public String appealReason;
   @ReqParam(isSgin = false,nullable = false, comment = "联系方式")
@@ -22,7 +23,7 @@ public class FiatTradeAppealReq {
   @ReqParam(isSgin = true,nullable = false, comment = "token")
   public String accessToken = System.currentTimeMillis()+"";
 
-  public FiatTradeAppealReq(String orderNo, String appealRemark, String appealFile,
+  public FiatTradeAppealReq(String orderNo, String appealRemark, File appealFile,
       String appealReason, String contact, String userId, String operSysType) {
     this.orderNo = orderNo;
     this.appealRemark = appealRemark;
@@ -43,7 +44,7 @@ public class FiatTradeAppealReq {
     return this;
   }
 
-  public FiatTradeAppealReq setAppealFile(String appealFile) {
+  public FiatTradeAppealReq setAppealFile(File appealFile) {
     this.appealFile = appealFile;
     return this;
   }
