@@ -7,6 +7,8 @@ import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeReq;
 import io.tradingchain.sdk.diamondsdk.merchantOffer.OtcPostersReq;
 import io.tradingchain.sdk.diamondsdk.order.*;
 import io.tradingchain.sdk.diamondsdk.pathPayment.DoPathPaymentReq;
+import io.tradingchain.sdk.diamondsdk.payment.ChargeCollectTransferReq;
+import io.tradingchain.sdk.diamondsdk.payment.ChargeCollectTransferResp;
 import io.tradingchain.sdk.diamondsdk.payment.QueryFiatTradeReceiveReq;
 import io.tradingchain.sdk.diamondsdk.payment.QueryFiatTradeReceiveResp;
 import io.tradingchain.sdk.diamondsdk.regist.BeforeRegisterReq;
@@ -31,7 +33,7 @@ public class DiamondSdkApplicationTests {
   public void beforeRegister() throws Exception {
     BeforeRegisterReq req = new BeforeRegisterReq();
     req.apiKey = "tradingchain";
-    BeforeRegisterResp resp = DiamondService.beforeRegister(req);
+    BeforeRegisterResp resp = DiamondService.beforeRegister(req,"");
     System.out.println(JSON.toJSONString(resp));
   }
 
@@ -247,6 +249,21 @@ public class DiamondSdkApplicationTests {
     BaseVO baseVO = DiamondService.doPathPaymentFreightCollect(registReq, "yScdDvjCDJ906OlrIGIzITnOZVDKKEpm");
     System.out.println(JSON.toJSONString(baseVO));
   }
+
+  @Test
+  public void freightCollectTransfer() throws Exception {
+    //String username, String tradePassword, String privateKey, String amount, String assetName, String assetIssuer, String destination
+    ChargeCollectTransferReq chargeCollectTransferReq =ChargeCollectTransferReq.getInstanceByPrivateKey("tradingchain_test","tradingchain","test10002",
+        "000000","SD4ULE6JLPUVB3I5FADCKOOOX7E7X52ISEDPGI2ASDVD36IST53I42QS","100",
+        "HGD","GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG","GCNUUCAWTBNUHVK4DCQ4V4NMJKKPGJ6KJSJEVPVZWKUFJQ7LI5QXZW3U");
+
+    ChargeCollectTransferResp collectTransferResp = DiamondService
+        .freightCollectTransfer(chargeCollectTransferReq, "yScdDvjCDJ906OlrIGIzITnOZVDKKEpm");
+
+
+    System.out.println(JSON.toJSONString(collectTransferResp));
+  }
+
 
 }
 

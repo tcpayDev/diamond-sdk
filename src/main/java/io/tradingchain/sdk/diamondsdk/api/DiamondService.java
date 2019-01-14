@@ -65,6 +65,7 @@ import io.tradingchain.sdk.diamondsdk.user.UserInfoReqVO;
 import io.tradingchain.sdk.diamondsdk.user.UserInfoResp;
 import io.tradingchain.sdk.diamondsdk.util.AnnotationUtil;
 import io.tradingchain.sdk.diamondsdk.util.HttpUtil;
+import io.tradingchain.sdk.diamondsdk.util.RandomUtil;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,10 +81,10 @@ public class DiamondService {
   /**
    * 注册前获取备份私钥
    */
-  public BeforeRegisterResp beforeRegister(BeforeRegisterReq req) throws Exception {
+  public BeforeRegisterResp beforeRegister(BeforeRegisterReq req,String SECRET) throws Exception {
     final String path = "/api/getKeyBeforeRegister";
     return HttpUtil
-        .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), Config.SECRET))
+        .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), SECRET))
         .castTo(BeforeRegisterResp.class);
   }
 
@@ -103,7 +104,7 @@ public class DiamondService {
       //去OTC做相应注册
       return userAdd(req, res, type);
     } else {
-      return new RegisterResOTC(res.msg);
+      return new RegisterResOTC(res.msg,req.username,req.platform);
     }
   }
 
@@ -208,7 +209,6 @@ public class DiamondService {
     exchangeRateReq.baseAssetIssuer = req.baseAssetIssuer;
     exchangeRateReq.size = req.size;
     exchangeRateReq.apiKey = req.apiKey;
-    exchangeRateReq.platform = req.platform;
     OrderBookRes rateReq = HttpUtil.post(AnnotationUtil
         .buildReq(Config.BASE_URL + path, setCommonParams(exchangeRateReq), SECRET))
         .castTo(OrderBookRes.class);
@@ -310,19 +310,19 @@ public class DiamondService {
       OtcPosters otcPosters = new OtcPosters();
       if (req.amount.compareTo(new BigDecimal("1000")) >= 0) {
         if (banks.size() > 0) {
-          otcPosters = banks.get(banks.size() - 1);
+          otcPosters = banks.get(RandomUtil.get(banks.size()));
         } else if (alipays.size() > 0) {
-          otcPosters = alipays.get(alipays.size() - 1);
+          otcPosters = alipays.get(RandomUtil.get(alipays.size()));
         } else if (wepays.size() > 0) {
-          otcPosters = wepays.get(wepays.size() - 1);
+          otcPosters = wepays.get(RandomUtil.get(wepays.size()));
         }
       } else {
         if (alipays.size() > 0) {
-          otcPosters = alipays.get(alipays.size() - 1);
+          otcPosters = alipays.get(RandomUtil.get(alipays.size()));
         } else if (banks.size() > 0) {
-          otcPosters = banks.get(banks.size() - 1);
+          otcPosters = banks.get(RandomUtil.get(banks.size()));
         } else if (wepays.size() > 0) {
-          otcPosters = wepays.get(wepays.size() - 1);
+          otcPosters = wepays.get(RandomUtil.get(wepays.size()));
         }
       }
       if (otcPosters == null) {
