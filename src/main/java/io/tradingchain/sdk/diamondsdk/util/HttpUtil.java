@@ -28,10 +28,10 @@ public class HttpUtil {
   private static final Response post(String url, InputStream data, long length) throws IOException {
     HttpClient httpClient = HttpClientBuilder.create().build();
     HttpPost httpPost = new HttpPost(url);
-    httpPost.addHeader(new BasicHeader("Content-Type", ContentType.APPLICATION_JSON.toString()));
     HttpEntity httpEntity = new BasicHttpEntity();
-    ((BasicHttpEntity) httpEntity).setContent(data);
+    ((BasicHttpEntity) httpEntity).setContentType(ContentType.APPLICATION_JSON.toString());
     ((BasicHttpEntity) httpEntity).setContentLength(length);
+    ((BasicHttpEntity) httpEntity).setContent(data);
     httpPost.setEntity(httpEntity);
     Response response = new Response(httpClient.execute(httpPost));
     return response;
