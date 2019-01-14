@@ -26,7 +26,7 @@ public class ChargeCollectTransferReq {
   @ReqParam(isSgin = false,nullable = false, comment = "公钥")
   public String apiKey;
 
-  private ChargeCollectTransferReq(String apiKey,String username, String tradePassword, String privateKey, String backupKey, String amount, String assetName, String assetIssuer, String destination) {
+  private ChargeCollectTransferReq(String platform,String apiKey,String username, String tradePassword, String privateKey, String backupKey, String amount, String assetName, String assetIssuer, String destination) {
     this.username = username;
     this.tradePassword = tradePassword;
     this.privateKey = privateKey;
@@ -36,14 +36,15 @@ public class ChargeCollectTransferReq {
     this.assetIssuer = assetIssuer;
     this.destination = destination;
     this.apiKey=apiKey;
+    this.platform=platform;
   }
 
-  public static final ChargeCollectTransferReq getInstanceByPrivateKey(String apiKey,String username, String tradePassword, String privateKey, String amount, String assetName, String assetIssuer, String destination) {
-    return new ChargeCollectTransferReq(apiKey,username, tradePassword, privateKey, null, amount, assetName, assetIssuer, destination);
+  public static final ChargeCollectTransferReq getInstanceByPrivateKey(String platform,String apiKey,String username, String tradePassword, String privateKey, String amount, String assetName, String assetIssuer, String destination) {
+    return new ChargeCollectTransferReq(platform,apiKey,username, tradePassword, privateKey, null, amount, assetName, assetIssuer, destination);
   }
 
-  public static final ChargeCollectTransferReq getInstanceByBackupKey(String apiKey,String username, String tradePassword, String backupKey, String amount, String assetName, String assetIssuer, String destination) {
-    return new ChargeCollectTransferReq(apiKey,username, tradePassword, null, backupKey, amount, assetName, assetIssuer, destination);
+  public static final ChargeCollectTransferReq getInstanceByBackupKey(String platform,String apiKey,String username, String tradePassword, String backupKey, String amount, String assetName, String assetIssuer, String destination) {
+    return new ChargeCollectTransferReq(platform,apiKey,username, tradePassword, null, backupKey, amount, assetName, assetIssuer, destination);
   }
 
   public ChargeCollectTransferReq setUsername(String username) {
