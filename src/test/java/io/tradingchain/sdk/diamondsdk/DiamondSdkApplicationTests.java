@@ -235,7 +235,7 @@ public class DiamondSdkApplicationTests {
     exchangeReq.privateKey = "SBC2WDTSXF55ZRUBYVHXI6S7UDKYUADUQTKGC52ILWC4O4ML5HZBDNCR";
     exchangeReq.list = list;
     exchangeReq.operSysType = "1";
-    ExchangeRateRes rateRes = DiamondService.exchangeRate(exchangeReq, "");
+    ExchangeRateRes rateRes = DiamondService.exchangeRate(exchangeReq, "yScdDvjCDJ906OlrIGIzITnOZVDKKEpm");
     Thread.sleep(15000);
     System.out.println(JSON.toJSONString(rateRes));
   }

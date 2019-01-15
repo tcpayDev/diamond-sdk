@@ -218,8 +218,9 @@ public class DiamondService {
     if (rateReq.code != 0) {
       return new ExchangeRateRes(rateReq.code + "", "暂无币商挂单,请选择其他交易方式");
     }
-    BigDecimal rateBuy = rateReq.bids[0][0];
-    BigDecimal rateSell = rateReq.asks[0][0];
+    BigDecimal rateBuy = rateReq.bids[0][0].divide(rateReq.bids[0][1],7,BigDecimal.ROUND_HALF_EVEN);
+    BigDecimal rateSell = rateReq.asks[0][0].divide(rateReq.asks[0][1],7,BigDecimal.ROUND_HALF_EVEN);
+
     //  获取OTC最新的汇率
     ExchangeOTCRateReq exchangeOTCRateReq = new ExchangeOTCRateReq();
     exchangeOTCRateReq.assetCode = req.counterAsset;
@@ -230,8 +231,8 @@ public class DiamondService {
                 Config.OTC_SECRET))
         .castTo(ExchangeOTCRateRes.class);
     if (rate.resCode.equals("C502570000000")) {
-      exchangeRateBuy = rate.buyRate.divide(rateBuy,7,BigDecimal.ROUND_HALF_EVEN).toPlainString();//rateBuy.multiply(rate.buyRate)
-      exchangeRateSell = rate.sellRate.divide(rateSell,7,BigDecimal.ROUND_HALF_EVEN).toPlainString();
+      exchangeRateBuy = rateBuy.multiply(rate.buyRate).setScale(7,BigDecimal.ROUND_HALF_EVEN).toPlainString();
+      exchangeRateSell =rateSell.multiply(rate.sellRate).setScale(7,BigDecimal.ROUND_HALF_EVEN).toPlainString();
     } else {
       return new ExchangeRateRes(rate.resCode, "暂无币商挂单,请选择其他交易方式");
     }
