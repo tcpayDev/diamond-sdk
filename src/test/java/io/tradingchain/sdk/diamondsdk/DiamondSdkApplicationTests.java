@@ -246,18 +246,18 @@ public class DiamondSdkApplicationTests {
     System.out.println(JSON.toJSONString(rateRes));
   }
 
-  @Test
-  public void doPathPaymentFreightCollect() throws Exception {
-    //String username, String tradePassword, String sourceAmount, String sourceAssetName, String sourceAssetIssuer,
-    // String destinationAmount, String destinationAssetName, String destinationAssetIssuer, String destination,
-    // String privateKey, String backupKey
-    DoPathPaymentReq registReq = DoPathPaymentReq.getInstanceByPrivateKey("tradingchain_test","15922222234", "123456", "0.0001000",
-            "BTC", "GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG",
-            "0.4007827", "USDT", "GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG",
-            "GAYEHYYEMTLQMUJGIRSWZDOF6CE5ESBYV5SV2YNJLAKKDMVECWY7ZAWR", "SBC2WDTSXF55ZRUBYVHXI6S7UDKYUADUQTKGC52ILWC4O4ML5HZBDNCR");
-    BaseVO baseVO = DiamondService.doPathPaymentFreightCollect(registReq, "yScdDvjCDJ906OlrIGIzITnOZVDKKEpm");
-    System.out.println(JSON.toJSONString(baseVO));
-  }
+//  @Test
+//  public void doPathPaymentFreightCollect() throws Exception {
+//    //String username, String tradePassword, String sourceAmount, String sourceAssetName, String sourceAssetIssuer,
+//    // String destinationAmount, String destinationAssetName, String destinationAssetIssuer, String destination,
+//    // String privateKey, String backupKey
+//    DoPathPaymentReq registReq = DoPathPaymentReq.getInstanceByPrivateKey("tradingchain_test","15922222234", "123456", "0.0001000",
+//            "BTC", "GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG",
+//            "0.4007827", "USDT", "GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG",
+//            "GAYEHYYEMTLQMUJGIRSWZDOF6CE5ESBYV5SV2YNJLAKKDMVECWY7ZAWR", "SBC2WDTSXF55ZRUBYVHXI6S7UDKYUADUQTKGC52ILWC4O4ML5HZBDNCR");
+//    BaseVO baseVO = DiamondService.doPathPaymentFreightCollect(registReq, "yScdDvjCDJ906OlrIGIzITnOZVDKKEpm");
+//    System.out.println(JSON.toJSONString(baseVO));
+//  }
 
   @Test
   public void freightCollectTransfer() throws Exception {
