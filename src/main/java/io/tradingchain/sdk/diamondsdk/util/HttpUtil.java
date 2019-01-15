@@ -1,7 +1,6 @@
 package io.tradingchain.sdk.diamondsdk.util;
 
 import com.alibaba.fastjson.JSON;
-import java.nio.charset.Charset;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -18,6 +17,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.security.NoSuchAlgorithmException;
 import java.util.Iterator;
 import java.util.Map;
@@ -25,11 +25,12 @@ import java.util.TreeMap;
 
 public class HttpUtil {
 
-  private static final Response post(String url, InputStream data) throws IOException {
+  private static final Response post(String url, InputStream data, long length) throws IOException {
     HttpClient httpClient = HttpClientBuilder.create().build();
     HttpPost httpPost = new HttpPost(url);
-    httpPost.addHeader(new BasicHeader("Content-Type", ContentType.APPLICATION_JSON.toString()));
     HttpEntity httpEntity = new BasicHttpEntity();
+    ((BasicHttpEntity) httpEntity).setContentType(ContentType.APPLICATION_JSON.toString());
+    ((BasicHttpEntity) httpEntity).setContentLength(length);
     ((BasicHttpEntity) httpEntity).setContent(data);
     httpPost.setEntity(httpEntity);
     Response response = new Response(httpClient.execute(httpPost));
@@ -37,11 +38,12 @@ public class HttpUtil {
   }
 
   private static final Response post(String url, String data) throws IOException {
-    return post(url, new ByteArrayInputStream(data.getBytes()));
+    byte[] bytes = data.getBytes();
+    return post(url, new ByteArrayInputStream(bytes), bytes.length);
   }
 
   private static final Response post(String url, Map data) throws IOException {
-    return post(url, new ByteArrayInputStream(JSON.toJSONString(data).getBytes()));
+    return post(url, JSON.toJSONString(data));
   }
 
   public static final Response post(Request request) throws IOException {
@@ -60,7 +62,7 @@ public class HttpUtil {
     HttpClient httpClient = HttpClientBuilder.create().build();
     HttpPost httpPost = new HttpPost(url);
 
-    ContentType strContent=ContentType.create("text/plain",Charset.forName("UTF-8"));
+    ContentType strContent = ContentType.create("text/plain", Charset.forName("UTF-8"));
     MultipartEntityBuilder builder = MultipartEntityBuilder.create();
     builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
     if (data != null) {
@@ -72,7 +74,7 @@ public class HttpUtil {
         if (value instanceof File) {
           builder.addBinaryBody(key, (File) value);
         } else {
-          builder.addTextBody(key, (String) value,strContent);
+          builder.addTextBody(key, (String) value, strContent);
         }
       }
     }
