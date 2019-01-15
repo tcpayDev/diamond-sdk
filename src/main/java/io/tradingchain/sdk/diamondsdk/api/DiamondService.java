@@ -542,6 +542,8 @@ public class DiamondService {
   public UserInfoResp userInfo(UserInfoReq req) throws Exception {
     UserInfoReqVO userInfoReqVO = new UserInfoReqVO();
     userInfoReqVO.userId = req.userId;
+    userInfoReqVO.apiKey = req.apiKey;
+    userInfoReqVO.timeStamp = req.timeStamp;
     return HttpUtil
         .post(AnnotationUtil.buildReq(req.pathUrl, setCommonParams(userInfoReqVO), req.secret))
         .castTo(UserInfoResp.class);
