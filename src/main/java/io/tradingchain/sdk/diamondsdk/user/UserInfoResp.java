@@ -9,4 +9,5 @@ public class UserInfoResp {
   public String assetCode;         //钻石币币种名称
   public String assetIssuer;       //钻石币币种发行人
   public String apiKey;            //签名公钥
+  public String timeStamp;         //时间戳
 }
