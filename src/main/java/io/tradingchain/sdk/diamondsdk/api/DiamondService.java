@@ -168,7 +168,7 @@ public class DiamondService {
    * 账户详情接口
    */
   public AccountDetailsResp accountDetails(AccountDetailsReq req,String SECRET) throws Exception {
-    final String path = "/find/account";
+    final String path = "/find/otc/account";
     return HttpUtil
         .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), SECRET))
         .castTo(AccountDetailsResp.class);

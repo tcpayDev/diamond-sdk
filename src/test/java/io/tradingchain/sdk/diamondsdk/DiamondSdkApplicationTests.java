@@ -253,12 +253,12 @@ public class DiamondSdkApplicationTests {
   @Test
   public void freightCollectTransfer() throws Exception {
     //String username, String tradePassword, String privateKey, String amount, String assetName, String assetIssuer, String destination
-    ChargeCollectTransferReq chargeCollectTransferReq =ChargeCollectTransferReq.getInstanceByPrivateKey("tradingchain_test","tradingchain","test10002",
-        "000000","SD4ULE6JLPUVB3I5FADCKOOOX7E7X52ISEDPGI2ASDVD36IST53I42QS","100",
+    ChargeCollectTransferReq chargeCollectTransferReq =ChargeCollectTransferReq.getInstanceByPrivateKey("tradingchain_hg","hgapp","test10002",
+        "000000","SD4ULE6JLPUVB3I5FADCKOOOX7E7X52ISEDPGI2ASDVD36IST53I42QS","0.0001",
         "HGD","GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG","GCNUUCAWTBNUHVK4DCQ4V4NMJKKPGJ6KJSJEVPVZWKUFJQ7LI5QXZW3U");
 
     ChargeCollectTransferResp collectTransferResp = DiamondService
-        .freightCollectTransfer(chargeCollectTransferReq, "yScdDvjCDJ906OlrIGIzITnOZVDKKEpm");
+        .freightCollectTransfer(chargeCollectTransferReq, "DyiYRda1sttXO6kmLTBlhzk3UEiEzuOU");
 
 
     System.out.println(JSON.toJSONString(collectTransferResp));
