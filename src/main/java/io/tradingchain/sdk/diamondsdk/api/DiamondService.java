@@ -73,8 +73,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 public class DiamondService {
 
@@ -554,8 +552,7 @@ public class DiamondService {
   /**
    * 修改密码
    */
-  @PostMapping("/resetPassword")
-  public BaseRes resetPassword(@RequestBody ResetPasswordRequestVO basePasswordVO, String secret)
+  public BaseRes resetPassword(ResetPasswordRequestVO basePasswordVO, String secret)
       throws Exception {
     final String path = "/api/resetPassword";
     return HttpUtil
@@ -567,8 +564,7 @@ public class DiamondService {
   /**
    * 忘记密码
    */
-  @PostMapping("/forgetPassword")
-  public BaseRes forgetPassword(@RequestBody ForgetPasswordRequestVO basePasswordVO, String secret)
+  public BaseRes forgetPassword(ForgetPasswordRequestVO basePasswordVO, String secret)
       throws Exception {
     final String path = "/api/forgetPassword";
     return HttpUtil
