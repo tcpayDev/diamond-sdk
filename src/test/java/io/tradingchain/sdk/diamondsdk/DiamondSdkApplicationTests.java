@@ -13,8 +13,11 @@ import io.tradingchain.sdk.diamondsdk.payment.QueryFiatTradeReceiveReq;
 import io.tradingchain.sdk.diamondsdk.payment.QueryFiatTradeReceiveResp;
 import io.tradingchain.sdk.diamondsdk.regist.BeforeRegisterReq;
 import io.tradingchain.sdk.diamondsdk.regist.BeforeRegisterResp;
+import io.tradingchain.sdk.diamondsdk.regist.ForgetPasswordRequestVO;
 import io.tradingchain.sdk.diamondsdk.regist.RegistReq;
 import io.tradingchain.sdk.diamondsdk.regist.RegisterResOTC;
+import io.tradingchain.sdk.diamondsdk.regist.ResetPasswordRequestVO;
+import io.tradingchain.sdk.diamondsdk.response.BaseRes;
 import io.tradingchain.sdk.diamondsdk.response.BaseVO;
 import io.tradingchain.sdk.diamondsdk.trustAsset.AssetPair;
 import org.junit.Ignore;
@@ -264,6 +267,26 @@ public class DiamondSdkApplicationTests {
     System.out.println(JSON.toJSONString(collectTransferResp));
   }
 
+
+  @Test
+  public void resetPassword() throws Exception {
+    ResetPasswordRequestVO requestVO = new ResetPasswordRequestVO("15921863921","tradingchain_test",
+        "tradingchain","P","12345678","11111111");
+    BaseRes baseRes = DiamondService.resetPassword(requestVO,"yScdDvjCDJ906OlrIGIzITnOZVDKKEpm");
+
+    System.out.println(JSON.toJSONString(baseRes));
+  }
+
+
+  @Test
+  public void forgetPassword() throws Exception {
+    //String username, String password, String platform,String apiKey, String type
+    ForgetPasswordRequestVO requestVO = new ForgetPasswordRequestVO("15921863921","22222222",
+        "tradingchain_test","tradingchain","P");
+    BaseRes baseRes = DiamondService.forgetPassword(requestVO,"yScdDvjCDJ906OlrIGIzITnOZVDKKEpm");
+
+    System.out.println(JSON.toJSONString(baseRes));
+  }
 
 }
 

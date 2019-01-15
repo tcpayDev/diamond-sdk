@@ -5,7 +5,6 @@ import static io.tradingchain.sdk.diamondsdk.config.Config.setOtcCommonParams;
 
 import io.tradingchain.sdk.diamondsdk.account.AccountDetailsReq;
 import io.tradingchain.sdk.diamondsdk.account.AccountDetailsResp;
-import io.tradingchain.sdk.diamondsdk.commit.CommitOrderReq;
 import io.tradingchain.sdk.diamondsdk.config.Config;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeOTCRateReq;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeOTCRateRes;
@@ -49,13 +48,17 @@ import io.tradingchain.sdk.diamondsdk.payment.QueryPaymentReq;
 import io.tradingchain.sdk.diamondsdk.payment.QueryPaymentResp;
 import io.tradingchain.sdk.diamondsdk.regist.BeforeRegisterReq;
 import io.tradingchain.sdk.diamondsdk.regist.BeforeRegisterResp;
+import io.tradingchain.sdk.diamondsdk.regist.ForgetPasswordRequestVO;
 import io.tradingchain.sdk.diamondsdk.regist.QueryUserReq;
 import io.tradingchain.sdk.diamondsdk.regist.QueryUserResp;
 import io.tradingchain.sdk.diamondsdk.regist.RegistReq;
 import io.tradingchain.sdk.diamondsdk.regist.RegisterRes;
 import io.tradingchain.sdk.diamondsdk.regist.RegisterResOTC;
+import io.tradingchain.sdk.diamondsdk.regist.ResetPasswordRequestVO;
+import io.tradingchain.sdk.diamondsdk.regist.ResetPasswordResponseVO;
 import io.tradingchain.sdk.diamondsdk.regist.UserReq;
 import io.tradingchain.sdk.diamondsdk.regist.UserResp;
+import io.tradingchain.sdk.diamondsdk.response.BaseRes;
 import io.tradingchain.sdk.diamondsdk.response.BaseVO;
 import io.tradingchain.sdk.diamondsdk.response.OtcPostersResponse;
 import io.tradingchain.sdk.diamondsdk.response.OtcPostersResponseOtc;
@@ -70,6 +73,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 public class DiamondService {
 
@@ -81,7 +86,7 @@ public class DiamondService {
   /**
    * 注册前获取备份私钥
    */
-  public BeforeRegisterResp beforeRegister(BeforeRegisterReq req,String SECRET) throws Exception {
+  public BeforeRegisterResp beforeRegister(BeforeRegisterReq req, String SECRET) throws Exception {
     final String path = "/api/getKeyBeforeRegister";
     return HttpUtil
         .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), SECRET))
@@ -94,7 +99,7 @@ public class DiamondService {
    * @param req 请求体
    * @param type 操作方式 1: 安卓; 2: IOS
    */
-  public RegisterResOTC register(RegistReq req, String type,String SECRET) throws Exception {
+  public RegisterResOTC register(RegistReq req, String type, String SECRET) throws Exception {
     final String path = "/api/registUser2";
     //注册1
     RegisterRes res = HttpUtil
@@ -104,7 +109,7 @@ public class DiamondService {
       //去OTC做相应注册
       return userAdd(req, res, type);
     } else {
-      return new RegisterResOTC(res.msg,req.username,req.platform);
+      return new RegisterResOTC(res.msg, req.username, req.platform);
     }
   }
 
@@ -167,7 +172,7 @@ public class DiamondService {
   /**
    * 账户详情接口
    */
-  public AccountDetailsResp accountDetails(AccountDetailsReq req,String SECRET) throws Exception {
+  public AccountDetailsResp accountDetails(AccountDetailsReq req, String SECRET) throws Exception {
     final String path = "/find/otc/account";
     return HttpUtil
         .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), SECRET))
@@ -179,7 +184,7 @@ public class DiamondService {
    *
    * @param req 请求体
    */
-  public ExchangeRateRes exchangeRate(ExchangeReq req,String SECRET)
+  public ExchangeRateRes exchangeRate(ExchangeReq req, String SECRET)
       throws Exception {
     final String path = "/find/tradeDepth";
     final String otc_path = "/api/fiatTrade/queryExchangeRate";
@@ -194,7 +199,7 @@ public class DiamondService {
       @Override
       public void run() {
         try {
-          assetsTrust(assetReq,SECRET);
+          assetsTrust(assetReq, SECRET);
         } catch (Exception e) {
         }
       }
@@ -241,7 +246,7 @@ public class DiamondService {
   /**
    * 资产列表信任接口
    */
-  private void assetsTrust(AssetsTrustReq req,String SECRET) throws Exception {
+  private void assetsTrust(AssetsTrustReq req, String SECRET) throws Exception {
     final String path = "/find/assetTrustList";
     HttpUtil
         .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), SECRET));
@@ -477,7 +482,8 @@ public class DiamondService {
   /**
    * 转账接口(接收方扣手续费,到付)
    */
-  public ChargeCollectTransferResp freightCollectTransfer(ChargeCollectTransferReq req,String SECRET)
+  public ChargeCollectTransferResp freightCollectTransfer(ChargeCollectTransferReq req,
+      String SECRET)
       throws Exception {
     final String path = "/trade/api/dfPayment";
     return HttpUtil
@@ -488,7 +494,7 @@ public class DiamondService {
   /**
    * 桥链列表接口(接收方扣手续费,到付)
    */
-  public BaseVO paymentPathListOfFreightCollect(PaymentPathListReq req,String SECRET)
+  public BaseVO paymentPathListOfFreightCollect(PaymentPathListReq req, String SECRET)
       throws Exception {
     final String path = "/find/getPaymentPathList";
     PaymentPathListResp pathListResp = HttpUtil
@@ -504,10 +510,10 @@ public class DiamondService {
   /**
    * 桥链支付接口(接收方扣手续费,到付)
    */
-  public BaseVO doPathPaymentFreightCollect(DoPathPaymentReq req,String SECRET) throws Exception {
+  public BaseVO doPathPaymentFreightCollect(DoPathPaymentReq req, String SECRET) throws Exception {
     final String path = "/trade/api/dfPaymentPath";
     DoPathPaymentResp doPathPaymentResp = HttpUtil
-        .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req),SECRET))
+        .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), SECRET))
         .castTo(DoPathPaymentResp.class);
     if (doPathPaymentResp.code == 0) {
       return new BaseVO();
@@ -538,10 +544,38 @@ public class DiamondService {
    */
   public UserInfoResp userInfo(UserInfoReq req) throws Exception {
     UserInfoReqVO userInfoReqVO = new UserInfoReqVO();
-    userInfoReqVO.userId=req.userId;
+    userInfoReqVO.userId = req.userId;
     return HttpUtil
         .post(AnnotationUtil.buildReq(req.pathUrl, setCommonParams(userInfoReqVO), req.secret))
         .castTo(UserInfoResp.class);
   }
+
+
+  /**
+   * 修改密码
+   */
+  @PostMapping("/resetPassword")
+  public BaseRes resetPassword(@RequestBody ResetPasswordRequestVO basePasswordVO, String secret)
+      throws Exception {
+    final String path = "/api/resetPassword";
+    return HttpUtil
+        .post(AnnotationUtil
+            .buildReq(Config.BASE_URL + path, setCommonParams(basePasswordVO), secret))
+        .castTo(ResetPasswordResponseVO.class);
+  }
+
+  /**
+   * 忘记密码
+   */
+  @PostMapping("/forgetPassword")
+  public BaseRes forgetPassword(@RequestBody ForgetPasswordRequestVO basePasswordVO, String secret)
+      throws Exception {
+    final String path = "/api/forgetPassword";
+    return HttpUtil
+        .post(AnnotationUtil
+            .buildReq(Config.BASE_URL + path, setCommonParams(basePasswordVO), secret))
+        .castTo(ResetPasswordResponseVO.class);
+  }
+
 
 }
