@@ -22,13 +22,23 @@ public class PaymentPathListReq {
   @ReqParam(isSgin = false,nullable = false, comment = "公钥")
   public String apiKey;
 
-  public PaymentPathListReq(String username, String password, String amount, String assetName, String assetIssuer, String destination) {
+  public PaymentPathListReq(String apiKey,String platform,String username, String password, String amount, String assetName, String assetIssuer, String destination) {
     this.username = username;
     this.password = password;
     this.amount = amount;
     this.assetName = assetName;
     this.assetIssuer = assetIssuer;
     this.destination = destination;
+    this.apiKey=apiKey;
+    this.platform=platform;
+  }
+
+  public String getPlatform() {
+    return platform;
+  }
+
+  public String getApiKey() {
+    return apiKey;
   }
 
   public PaymentPathListReq setUsername(String username) {

@@ -1,6 +1,7 @@
 package io.tradingchain.sdk.diamondsdk;
 
 import com.alibaba.fastjson.JSON;
+import io.tradingchain.sdk.diamondsdk.account.AccountDetailsReq;
 import io.tradingchain.sdk.diamondsdk.api.DiamondService;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeRateRes;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeReq;
@@ -14,6 +15,8 @@ import io.tradingchain.sdk.diamondsdk.payment.QueryFiatTradeReceiveResp;
 import io.tradingchain.sdk.diamondsdk.regist.BeforeRegisterReq;
 import io.tradingchain.sdk.diamondsdk.regist.BeforeRegisterResp;
 import io.tradingchain.sdk.diamondsdk.regist.ForgetPasswordRequestVO;
+import io.tradingchain.sdk.diamondsdk.regist.QueryUserReq;
+import io.tradingchain.sdk.diamondsdk.regist.QueryUserResp;
 import io.tradingchain.sdk.diamondsdk.regist.RegistReq;
 import io.tradingchain.sdk.diamondsdk.regist.RegisterResOTC;
 import io.tradingchain.sdk.diamondsdk.regist.ResetPasswordRequestVO;
@@ -101,6 +104,16 @@ public class DiamondSdkApplicationTests {
     System.out.println(JSON.toJSONString(vos));
   }
 
+
+  @Test
+  public void queryUser() throws Exception {
+    QueryUserReq registReq = new QueryUserReq();
+    registReq.operSysType = "1";
+    registReq.mobile = "18969099987";
+    QueryUserResp resp = DiamondService.queryUser(registReq);
+    System.out.println(JSON.toJSONString(resp));
+  }
+
   /*
       @Test
       public void moneyMerchantOrder() throws Exception {
@@ -116,14 +129,7 @@ public class DiamondSdkApplicationTests {
         System.out.println(vos);
       }
   /*
-      @Test
-      public void queryUser() throws Exception {
-        QueryUserReq registReq = new QueryUserReq();
-        registReq.operSysType = "1";
-        registReq.mobile = "15922222232";
-        QueryUserResp resp = DiamondService.queryUser(registReq);
-        System.out.println(JSON.toJSONString(resp));
-      }
+
 
 
 
@@ -284,6 +290,20 @@ public class DiamondSdkApplicationTests {
     ForgetPasswordRequestVO requestVO = new ForgetPasswordRequestVO("15921863921","22222222",
         "tradingchain_test","tradingchain","P");
     BaseRes baseRes = DiamondService.forgetPassword(requestVO,"yScdDvjCDJ906OlrIGIzITnOZVDKKEpm");
+
+    System.out.println(JSON.toJSONString(baseRes));
+  }
+
+  @Test
+  public void accountDetails() throws Exception {
+    AccountDetailsReq accountDetailsReq = new AccountDetailsReq();
+    accountDetailsReq.counterAssetName="USDT";
+    accountDetailsReq.counterAssetIssuer="GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG";
+    accountDetailsReq.platform="tradingchain_mon";
+    accountDetailsReq.username="17724502010";
+    accountDetailsReq.password="2546721670";
+    accountDetailsReq.apiKey="monpp";
+    BaseRes baseRes = DiamondService.accountDetails(accountDetailsReq,"6JLVJp0GhYOq44SUWACXl3jKArY32bUE");
 
     System.out.println(JSON.toJSONString(baseRes));
   }
