@@ -10,4 +10,5 @@ public class UserInfoResp {
   public String assetIssuer;       //钻石币币种发行人
   public String apiKey;            //签名公钥
   public String timeStamp;         //时间戳
+  public String sign;              //签名
 }
