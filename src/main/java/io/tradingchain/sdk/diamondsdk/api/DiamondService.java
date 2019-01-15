@@ -230,10 +230,8 @@ public class DiamondService {
                 Config.OTC_SECRET))
         .castTo(ExchangeOTCRateRes.class);
     if (rate.resCode.equals("C502570000000")) {
-      exchangeRateBuy = rateBuy.multiply(rate.buyRate)
-          .setScale(7, BigDecimal.ROUND_HALF_EVEN).toPlainString();
-      exchangeRateSell = rateSell.multiply(rate.sellRate)
-          .setScale(7, BigDecimal.ROUND_HALF_EVEN).toPlainString();
+      exchangeRateBuy = rate.buyRate.divide(rateBuy,7,BigDecimal.ROUND_HALF_EVEN).toPlainString();//rateBuy.multiply(rate.buyRate)
+      exchangeRateSell = rate.sellRate.divide(rateSell,7,BigDecimal.ROUND_HALF_EVEN).toPlainString();
     } else {
       return new ExchangeRateRes(rate.resCode, "暂无币商挂单,请选择其他交易方式");
     }
