@@ -26,7 +26,7 @@ public class AnnotationUtil {
                           : String.format("%s[%s]", reqParam.comment(), field.getName())));
         }
       }
-      if (reqParam.isSgin()) {
+      if (null != reqParam && reqParam.isSgin()) {
         map.put(field.getName(), field.get(req));
       }
       if (null != field.get(req)) {
