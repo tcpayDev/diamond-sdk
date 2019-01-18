@@ -10,7 +10,6 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 
 import java.io.ByteArrayInputStream;
@@ -22,8 +21,11 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Logger;
 
 public class HttpUtil {
+
+  private static final Logger LOGGER = Logger.getLogger(HttpUtil.class.getName());
 
   private static final Response post(String url, InputStream data, long length) throws IOException {
     HttpClient httpClient = HttpClientBuilder.create().build();
@@ -33,13 +35,15 @@ public class HttpUtil {
     ((BasicHttpEntity) httpEntity).setContentLength(length);
     ((BasicHttpEntity) httpEntity).setContent(data);
     httpPost.setEntity(httpEntity);
-    Response response = new Response(httpClient.execute(httpPost));
-    return response;
+    return new Response(httpClient.execute(httpPost));
   }
 
   private static final Response post(String url, String data) throws IOException {
+    LOGGER.info(String.format("post request, url=%s, data=%s", url, data));
     byte[] bytes = data.getBytes();
-    return post(url, new ByteArrayInputStream(bytes), bytes.length);
+    Response response = post(url, new ByteArrayInputStream(bytes), bytes.length);
+    LOGGER.info(String.format("post response, response=%s", JSON.toJSONString(response)));
+    return response;
   }
 
   private static final Response post(String url, Map data) throws IOException {
