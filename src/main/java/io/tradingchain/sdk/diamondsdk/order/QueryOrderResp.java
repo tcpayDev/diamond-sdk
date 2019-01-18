@@ -10,7 +10,7 @@ public class QueryOrderResp {
   public FiatTradeOrder fiatTradeOrder;
 
 
-  public class FiatTradeOrder{
+  public static class FiatTradeOrder{
     public String orderNo;
     public String assetCode;
     public String sellerId;
