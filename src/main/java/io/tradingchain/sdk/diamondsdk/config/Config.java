@@ -4,11 +4,17 @@ import java.lang.reflect.Field;
 
 public class Config {
 
-  public static String BASE_URL = "http://api.1mfpay.com";
-  public static String OTC_BASE_URL = "http://101.200.122.153:8380";
-  public static String PLATFORM = "tradingchain_test";
-  public static String API_KEY = "tradingchain";
-  public static String OTC_SECRET = "iaM43PnzzfY6Xdeo";
+  public static String BASE_URL;
+  public static String OTC_BASE_URL;
+  public static String PLATFORM;
+  public static String API_KEY;
+  public static String OTC_SECRET;
+
+//  public static String BASE_URL = "http://api.1mfpay.com";
+//  public static String OTC_BASE_URL = "http://101.200.122.153:8380";
+//  public static String PLATFORM = "tradingchain_test";
+//  public static String API_KEY = "tradingchain";
+//  public static String OTC_SECRET = "iaM43PnzzfY6Xdeo";
 
   private static final void setField(String fieldName, Object value, Object o) {
     try {

@@ -76,11 +76,6 @@ import java.util.TreeMap;
 
 public class DiamondService {
 
-  public static void main(String[] args) {
-    BigDecimal a = new BigDecimal("1000");
-    //System.out.println(a.compareTo(new BigDecimal("1000")));
-  }
-
   /**
    * 注册前获取备份私钥
    */
