@@ -42,7 +42,7 @@ public class HttpUtil {
     LOGGER.info(String.format("post request, url=%s, data=%s", url, data));
     byte[] bytes = data.getBytes();
     Response response = post(url, new ByteArrayInputStream(bytes), bytes.length);
-    LOGGER.info(String.format("post response, response=%s", JSON.toJSONString(response)));
+    LOGGER.info(String.format("post response, response=%s", response));
     return response;
   }
 
