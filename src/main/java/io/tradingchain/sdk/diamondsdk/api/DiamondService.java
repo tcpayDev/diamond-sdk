@@ -217,13 +217,13 @@ public class DiamondService {
     if (rateReq.bids.length<=0){
       rateBuy =  BigDecimal.ZERO;
     }else {
-      rateBuy = rateReq.bids[0][0].divide(rateReq.bids[0][1],7,BigDecimal.ROUND_HALF_EVEN);
+      rateBuy = rateReq.bids[0][0];
     }
     BigDecimal rateSell;
     if (rateReq.asks.length<=0){
-      rateSell = rateReq.asks[0][0].divide(rateReq.asks[0][1],7,BigDecimal.ROUND_HALF_EVEN);
+      rateSell = BigDecimal.ZERO;
     }else {
-      rateSell = rateReq.asks[0][0].divide(rateReq.asks[0][1],7,BigDecimal.ROUND_HALF_EVEN);
+      rateSell = rateReq.asks[0][0];
     }
     //  获取OTC最新的汇率
     ExchangeOTCRateReq exchangeOTCRateReq = new ExchangeOTCRateReq();
