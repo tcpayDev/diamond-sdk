@@ -12,7 +12,7 @@ public class QueryOrderListResp {
 
   public List<FiatTradeOrder> tradeOrderList;
 
-  public class FiatTradeOrder{
+  public static class FiatTradeOrder{
     public String orderNo;
     public String assetCode;
     public String sellerId;
