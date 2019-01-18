@@ -213,9 +213,18 @@ public class DiamondService {
     if (rateReq.code != 0) {
       return new ExchangeRateRes(rateReq.code + "", "暂无币商挂单,请选择其他交易方式");
     }
-    BigDecimal rateBuy = rateReq.bids[0][0].divide(rateReq.bids[0][1],7,BigDecimal.ROUND_HALF_EVEN);
-    BigDecimal rateSell = rateReq.asks[0][0].divide(rateReq.asks[0][1],7,BigDecimal.ROUND_HALF_EVEN);
-
+    BigDecimal rateBuy;
+    if (rateReq.bids.length<0){
+      rateBuy =  BigDecimal.ZERO;
+    }else {
+      rateBuy = rateReq.bids[0][0].divide(rateReq.bids[0][1],7,BigDecimal.ROUND_HALF_EVEN);
+    }
+    BigDecimal rateSell;
+    if (rateReq.asks.length<0){
+      rateSell = rateReq.asks[0][0].divide(rateReq.asks[0][1],7,BigDecimal.ROUND_HALF_EVEN);
+    }else {
+      rateSell = rateReq.asks[0][0].divide(rateReq.asks[0][1],7,BigDecimal.ROUND_HALF_EVEN);
+    }
     //  获取OTC最新的汇率
     ExchangeOTCRateReq exchangeOTCRateReq = new ExchangeOTCRateReq();
     exchangeOTCRateReq.assetCode = req.counterAsset;
