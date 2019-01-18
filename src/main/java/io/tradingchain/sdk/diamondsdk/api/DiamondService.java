@@ -243,10 +243,13 @@ public class DiamondService {
   /**
    * 资产列表信任接口
    */
-  private void assetsTrust(AssetsTrustReq req, String SECRET) throws Exception {
+  public void assetsTrust(AssetsTrustReq req, String SECRET){
     final String path = "/find/assetTrustList";
-    HttpUtil
-        .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), SECRET));
+    try {
+      HttpUtil
+          .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), SECRET));
+    }catch (Exception e){
+    }
   }
 
   /**
