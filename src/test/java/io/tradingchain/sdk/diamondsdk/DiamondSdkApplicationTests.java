@@ -86,14 +86,14 @@ public class DiamondSdkApplicationTests {
   public void moneyMerchantInfo() throws Exception {
     OtcPostersReq registReq = new OtcPostersReq();
     registReq.tradeType = "sell";
-    registReq.amount = BigDecimal.ONE;
-    registReq.payMode = "bank,alipay";
+    registReq.amount = new BigDecimal("30");
+    registReq.payMode = "alipay,bank,wepay";
     registReq.assetCode = "usdt";
     registReq.page = 1;
     registReq.pageSize = 10;
     registReq.operSysType = "1";
-    BaseVO vos = DiamondService.moneyMerchantInfo(registReq);
-    System.out.println(JSON.toJSONString(vos));
+    BaseVO vos = DiamondService.moneyMerchantOrder(registReq);
+//    System.out.println(JSON.toJSONString(vos));
   }
 
 
@@ -101,7 +101,7 @@ public class DiamondSdkApplicationTests {
   public void queryUser() throws Exception {
     QueryUserReq registReq = new QueryUserReq();
     registReq.operSysType = "1";
-    registReq.mobile = "18969099987";
+    registReq.mobile = "10010101234";
     QueryUserResp resp = DiamondService.queryUser(registReq);
     System.out.println(JSON.toJSONString(resp));
   }
@@ -151,13 +151,13 @@ public class DiamondSdkApplicationTests {
   @Test
   public void createOrder() throws Exception {
     CreateOrderReq registReq = new CreateOrderReq();
-    registReq.offerOrderNo = "90005181102172044000027";
-    registReq.quantity = "0.4007827";
-    registReq.price = "200";
-    registReq.amount = "80.1565400";
+    registReq.offerOrderNo = "90005190118155110000121";
+    registReq.quantity = "0.0001";
+    registReq.price = "6.85";
+    registReq.amount = "0.000685";
     registReq.type = "sell";
-    registReq.operSysType = "1";
-    registReq.userId = "c2d81d064e684c989233562c23d2dc0b";
+    registReq.operSysType = "2";
+    registReq.userId = "210d3e3008284478ae1570875d4eeb29";
     CreateOrderResp resp = DiamondService.createOrder(registReq);
     System.out.println(JSON.toJSONString(resp));
   }
@@ -219,21 +219,21 @@ public class DiamondSdkApplicationTests {
   public void exchangeRate() throws Exception {
 
     ExchangeReq exchangeReq = new ExchangeReq();
-    exchangeReq.apiKey = "tradingchain";
-    exchangeReq.baseAsset = "BTC";
-    exchangeReq.baseAssetIssuer = "GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG";
+    exchangeReq.apiKey = "hxbapp";
+    exchangeReq.baseAsset = "hxb";
+    exchangeReq.baseAssetIssuer = "GCTK3HEOXEH2J6W5BFV62Q5PWTS34TK6SYV74YKZ2XSZW6F45TSJPLF2";
     exchangeReq.counterAsset = "USDT";
-    exchangeReq.counterAssetIssuer = "GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG";
+    exchangeReq.counterAssetIssuer = "GCTK3HEOXEH2J6W5BFV62Q5PWTS34TK6SYV74YKZ2XSZW6F45TSJPLF2";
     exchangeReq.size = 1;
     List<AssetPair> list = new ArrayList<>();
-    list.add(new AssetPair("USDT", "GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG"));
-    list.add(new AssetPair("BTC", "GBFB5JCHH2KPS7TBYB3GAU6Q43S4KLVDIKLWEE3KQQHWETYKWNZY4GXG"));
-    exchangeReq.apiKey = "tradingchain";
-    exchangeReq.username = "15922222234";
-    exchangeReq.privateKey = "SBC2WDTSXF55ZRUBYVHXI6S7UDKYUADUQTKGC52ILWC4O4ML5HZBDNCR";
+    list.add(new AssetPair("USDT", "GCTK3HEOXEH2J6W5BFV62Q5PWTS34TK6SYV74YKZ2XSZW6F45TSJPLF2"));
+    list.add(new AssetPair("hxb", "GCTK3HEOXEH2J6W5BFV62Q5PWTS34TK6SYV74YKZ2XSZW6F45TSJPLF2"));
+    exchangeReq.apiKey = "hxbapp";
+    exchangeReq.username = "hxb001";
+    exchangeReq.privateKey = "SDSF4NU2OWV4FZL576RIEMET3KHK2MOIBFLC3RPLISINDYOXSFWOOQXF";
     exchangeReq.list = list;
     exchangeReq.operSysType = "1";
-    ExchangeRateRes rateRes = DiamondService.exchangeRate(exchangeReq, "yScdDvjCDJ906OlrIGIzITnOZVDKKEpm");
+    ExchangeRateRes rateRes = DiamondService.exchangeRate(exchangeReq, "hGO0GY9ZMPXQSDcKj7yHmknkJaKD3BY0");
     Thread.sleep(15000);
     System.out.println(JSON.toJSONString(rateRes));
   }

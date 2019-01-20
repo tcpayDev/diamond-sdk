@@ -73,6 +73,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
+import io.tradingchain.sdk.diamondsdk.payment.QueryPaymentResp.MerReceiveVo;
 
 public class DiamondService {
 
@@ -214,15 +215,15 @@ public class DiamondService {
       return new ExchangeRateRes(rateReq.code + "", "暂无币商挂单,请选择其他交易方式");
     }
     BigDecimal rateBuy;
-    if (rateReq.bids.length<=0){
-      rateBuy =  BigDecimal.ZERO;
-    }else {
+    if (rateReq.bids.length <= 0) {
+      rateBuy = BigDecimal.ZERO;
+    } else {
       rateBuy = rateReq.bids[0][0];
     }
     BigDecimal rateSell;
-    if (rateReq.asks.length<=0){
+    if (rateReq.asks.length <= 0) {
       rateSell = BigDecimal.ZERO;
-    }else {
+    } else {
       rateSell = rateReq.asks[0][0];
     }
     //  获取OTC最新的汇率
@@ -235,8 +236,10 @@ public class DiamondService {
                 Config.OTC_SECRET))
         .castTo(ExchangeOTCRateRes.class);
     if (rate.resCode.equals("C502570000000")) {
-      exchangeRateBuy = rateBuy.multiply(rate.buyRate).setScale(7,BigDecimal.ROUND_HALF_EVEN).toPlainString();
-      exchangeRateSell =rateSell.multiply(rate.sellRate).setScale(7,BigDecimal.ROUND_HALF_EVEN).toPlainString();
+      exchangeRateBuy = rateBuy.multiply(rate.buyRate).setScale(7, BigDecimal.ROUND_HALF_EVEN)
+          .toPlainString();
+      exchangeRateSell = rateSell.multiply(rate.sellRate).setScale(7, BigDecimal.ROUND_HALF_EVEN)
+          .toPlainString();
     } else {
       return new ExchangeRateRes(rate.resCode, "暂无币商挂单,请选择其他交易方式");
     }
@@ -247,12 +250,12 @@ public class DiamondService {
   /**
    * 资产列表信任接口
    */
-  public void assetsTrust(AssetsTrustReq req, String SECRET){
+  public void assetsTrust(AssetsTrustReq req, String SECRET) {
     final String path = "/find/assetTrustList";
     try {
       HttpUtil
           .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), SECRET));
-    }catch (Exception e){
+    } catch (Exception e) {
     }
   }
 
@@ -269,14 +272,24 @@ public class DiamondService {
     List<OtcPostersVO> lists = new ArrayList<>();
     if (res.resCode.equals("C502570000000") && res.otcPosterseList.size() > 0) {
       for (OtcPosters o : res.otcPosterseList) {
-        //获取币商的收款账户
-        if (new BigDecimal(o.amount).compareTo(req.amount) >= 0) {
-          QueryPaymentReq receiveReq = new QueryPaymentReq();
-          receiveReq.userId = o.userId;
-          receiveReq.operSysType = req.operSysType;
-          QueryPaymentResp receiveResp = findPayments(receiveReq);
-          if (receiveResp.resCode.equals("C502570000000") && receiveResp.merReceiveVos.size() > 0) {
-            lists.add(new OtcPostersVO(o, receiveResp.merReceiveVos));
+        if (new BigDecimal(o.minPrice).compareTo(req.amount) <= 0
+            && new BigDecimal(o.maxPrice).compareTo(req.amount) >= 0) {
+          //获取币商的收款账户
+          if (new BigDecimal(o.amount).compareTo(req.amount) >= 0) {
+            QueryPaymentReq receiveReq = new QueryPaymentReq();
+            receiveReq.userId = o.userId;
+            receiveReq.operSysType = req.operSysType;
+            QueryPaymentResp receiveResp = findPayments(receiveReq);
+            List<MerReceiveVo> list = new ArrayList<>();
+            if (receiveResp.resCode.equals("C502570000000")
+                && receiveResp.merReceiveVos.size() > 0) {
+              for (MerReceiveVo m :receiveResp.merReceiveVos){
+                if (m.stutas.equals("1")){
+                  list.add(m);
+                }
+              }
+              lists.add(new OtcPostersVO(o, list));
+            }
           }
         }
       }
@@ -302,35 +315,55 @@ public class DiamondService {
     List<OtcPosters> wepays = new ArrayList<>();
     if (res.resCode.equals("C502570000000") && res.otcPosterseList.size() > 0) {
       for (OtcPosters o : res.otcPosterseList) {
-        if (new BigDecimal(o.amount).compareTo(req.amount) >= 0) {
-          //推荐查询银行卡挂单
-          if (o.paymentType.contains("bank")) {
-            banks.add(o);
-          }
-          if (o.paymentType.contains("alipay")) {
-            alipays.add(o);
-          }
-          if (o.paymentType.contains("wepay")) {
-            wepays.add(o);
+        if (new BigDecimal(o.minPrice).compareTo(req.amount) <= 0 && new BigDecimal(o.maxPrice).compareTo(req.amount) >= 0) {
+          if (new BigDecimal(o.amount).compareTo(req.amount) >= 0) {
+            //查询挂单商户的收款方式
+            QueryPaymentReq receiveReq = new QueryPaymentReq();
+            receiveReq.userId = o.userId;
+            receiveReq.operSysType = req.operSysType;
+            QueryPaymentResp receiveResp = findPayments(receiveReq);
+            if (receiveResp.merReceiveVos.size()>0){
+              for (MerReceiveVo m : receiveResp.merReceiveVos){
+                //判断收款方式是否可用.并根据收款类型分别处理
+                if (m.stutas.equals("1")){
+                  if (m.receiveType.equals("bank")) {
+                    banks.add(o);
+                  }
+                  if (m.receiveType.equals("alipay")) {
+                    alipays.add(o);
+                  }
+                  if (m.receiveType.equals("wepay")) {
+                    wepays.add(o);
+                  }
+                }
+              }
+            }
           }
         }
       }
       //首先判断银行卡用户
       OtcPosters otcPosters = new OtcPosters();
+      String paymentType= "";
       if (req.amount.compareTo(new BigDecimal("1000")) >= 0) {
         if (banks.size() > 0) {
+          paymentType="bank";
           otcPosters = banks.get(RandomUtil.get(banks.size()));
         } else if (alipays.size() > 0) {
+          paymentType="alipay";
           otcPosters = alipays.get(RandomUtil.get(alipays.size()));
         } else if (wepays.size() > 0) {
+          paymentType="wepay";
           otcPosters = wepays.get(RandomUtil.get(wepays.size()));
         }
       } else {
         if (alipays.size() > 0) {
+          paymentType="alipay";
           otcPosters = alipays.get(RandomUtil.get(alipays.size()));
         } else if (banks.size() > 0) {
+          paymentType="bank";
           otcPosters = banks.get(RandomUtil.get(banks.size()));
         } else if (wepays.size() > 0) {
+          paymentType="wepay";
           otcPosters = wepays.get(RandomUtil.get(wepays.size()));
         }
       }
@@ -341,7 +374,7 @@ public class DiamondService {
       QueryFiatTradeReceiveReq receiveReq = new QueryFiatTradeReceiveReq();
       receiveReq.operSysType = req.operSysType;
       receiveReq.userId = otcPosters.userId;
-      receiveReq.payMode = otcPosters.paymentType;
+      receiveReq.payMode = paymentType;
       List<QueryFiatTradeReceiveResp.MerReceiveVo> mlists = new ArrayList<>();
       QueryFiatTradeReceiveResp queryResp = queryReceive(receiveReq);
       if (queryResp.resCode.equals("C502570000000")) {

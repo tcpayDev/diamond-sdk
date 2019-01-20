@@ -13,6 +13,13 @@ public class OtcPostersVO {
     this.otcVOS = new OtcVO(o, list);
   }
 
+  @Override
+  public String toString() {
+    return "OtcPostersVO{" +
+        "otcVOS=" + otcVOS +
+        '}';
+  }
+
   public class OtcVO {
 
     public String orderNo; //	订单号
@@ -26,6 +33,18 @@ public class OtcPostersVO {
       this.price=o.unitPrice;
       this.extend1 = o.extend1;
       this.accountNo = list;
+    }
+
+
+    @Override
+    public String toString() {
+      return "OtcVO{" +
+          "orderNo='" + orderNo + '\'' +
+          ", userId='" + userId + '\'' +
+          ", extend1='" + extend1 + '\'' +
+          ", price='" + price + '\'' +
+          ", accountNo=" + accountNo +
+          '}';
     }
   }
 }
