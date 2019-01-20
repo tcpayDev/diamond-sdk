@@ -86,14 +86,14 @@ public class DiamondSdkApplicationTests {
   public void moneyMerchantInfo() throws Exception {
     OtcPostersReq registReq = new OtcPostersReq();
     registReq.tradeType = "sell";
-    registReq.amount = new BigDecimal("30");
+    registReq.amount = new BigDecimal("5");
     registReq.payMode = "alipay,bank,wepay";
     registReq.assetCode = "usdt";
     registReq.page = 1;
     registReq.pageSize = 10;
     registReq.operSysType = "1";
-    BaseVO vos = DiamondService.moneyMerchantOrder(registReq);
-//    System.out.println(JSON.toJSONString(vos));
+    BaseVO vos = DiamondService.moneyMerchantInfo(registReq);
+    System.out.println(JSON.toJSONString(vos));
   }
 
 
