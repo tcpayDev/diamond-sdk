@@ -85,14 +85,14 @@ public class DiamondSdkApplicationTests {
   @Test
   public void moneyMerchantInfo() throws Exception {
     OtcPostersReq registReq = new OtcPostersReq();
-    registReq.tradeType = "sell";
-    registReq.amount = new BigDecimal("5");
+    registReq.tradeType = "buy";
+    registReq.amount = new BigDecimal("1");
     registReq.payMode = "alipay,bank,wepay";
-    registReq.assetCode = "usdt";
+    registReq.assetCode = "Mon";
     registReq.page = 1;
     registReq.pageSize = 10;
     registReq.operSysType = "1";
-    BaseVO vos = DiamondService.moneyMerchantInfo(registReq);
+    BaseVO vos = DiamondService.moneyMerchantOrder(registReq);
     System.out.println(JSON.toJSONString(vos));
   }
 
@@ -208,8 +208,8 @@ public class DiamondSdkApplicationTests {
   public void orderInfo() throws Exception {
     QueryOrderReq registReq = new QueryOrderReq();
     registReq.operSysType = "2";
-    registReq.orderNo = "90005181102172044000027";
-    registReq.userId = "c34d93b6d68740f29518aa01571cc74b";
+    registReq.orderNo = "99110190121212646000091";
+    registReq.userId = "5d61d91e9d30407996e913758c7e552a";
     QueryOrderResp resp = DiamondService.orderInfo(registReq);
     System.out.println(JSON.toJSONString(resp));
   }

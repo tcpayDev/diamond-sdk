@@ -7,7 +7,7 @@ public class QueryOrderResp {
   public String resCode;
   public String resMsg;
 
-  public FiatTradeOrder fiatTradeOrder;
+  public FiatTradeOrder FiatTradeOrder;
 
 
   public static class FiatTradeOrder{
@@ -23,10 +23,10 @@ public class QueryOrderResp {
     public BigDecimal price;
     public String offerOrderNo;
     public int status;
-    public Date overtime;
-    public Date cancelTime;
-    public Date createTime;
-    public BigDecimal fee;
+    public Long overtime;
+    public Long cancelTime;
+    public Long createTime;
+    public String fee;
     public String payMode;
     public String amount;
 
@@ -61,7 +61,7 @@ public class QueryOrderResp {
     return "QueryOrderResp{" +
         "resCode='" + resCode + '\'' +
         ", resMsg='" + resMsg + '\'' +
-        ", fiatTradeOrder=" + fiatTradeOrder +
+        ", FiatTradeOrder=" + FiatTradeOrder +
         '}';
   }
 }
