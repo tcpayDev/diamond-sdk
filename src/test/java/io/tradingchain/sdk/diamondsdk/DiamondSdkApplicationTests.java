@@ -87,14 +87,14 @@ public class DiamondSdkApplicationTests {
   @Test
   public void moneyMerchantInfo() throws Exception {
     OtcPostersReq registReq = new OtcPostersReq();
-    registReq.tradeType = "buy";
-    registReq.amount = new BigDecimal("500");
+    registReq.tradeType = "sell";
+    registReq.amount = new BigDecimal("9.27");
     registReq.payMode = "alipay,bank,wepay";
     registReq.assetCode = "USDT";
     registReq.page = 1;
     registReq.pageSize = 10;
     registReq.operSysType = "1";
-    BaseVO vos = DiamondService.moneyMerchantInfo(registReq);
+    BaseVO vos = DiamondService.moneyMerchantOrder(registReq);
     System.out.println(JSON.toJSONString(vos));
   }
 
@@ -153,13 +153,13 @@ public class DiamondSdkApplicationTests {
   @Test
   public void createOrder() throws Exception {
     CreateOrderReq registReq = new CreateOrderReq();
-    registReq.offerOrderNo = "90005190118155110000121";
-    registReq.quantity = "0.0001";
+    registReq.offerOrderNo = "90005190120124109000204";
+    registReq.quantity = "1.3549356";
     registReq.price = "6.85";
-    registReq.amount = "0.000685";
+    registReq.amount = "9.27";
     registReq.type = "sell";
     registReq.operSysType = "2";
-    registReq.userId = "210d3e3008284478ae1570875d4eeb29";
+    registReq.userId = "6a07c3f139ee4eb49d6d69720e609bbd";
     CreateOrderResp resp = DiamondService.createOrder(registReq);
     System.out.println(JSON.toJSONString(resp));
   }
@@ -190,7 +190,7 @@ public class DiamondSdkApplicationTests {
   public void orderList() throws Exception {
     QueryOrderListReq registReq = new QueryOrderListReq();
     registReq.operSysType = "1";
-    registReq.userId = "c34d93b6d68740f29518aa01571cc74b";
+    registReq.userId = "5f57e5db4a244ef0ac05c88986dafaba";
     QueryOrderListResp resp = DiamondService.orderList(registReq);
     System.out.println(JSON.toJSONString(resp));
   }
@@ -208,50 +208,16 @@ public class DiamondSdkApplicationTests {
 
   @Test
   public void orderInfo() throws Exception {
-    String[] str = {"99110190121191058000054",
-        "99110190121191535000055",
-        "99110190121191747000056",
-        "99110190121191834000057",
-        "99110190121192719000058",
-        "99110190121193936000059",
-        "99110190121194240000060",
-        "99110190121195012000061",
-        "99110190121200437000063",
-        "99110190121200631000064",
-        "99110190121211250000078",
-        "99110190121211332000079",
-        "99110190121211343000080",
-        "99110190121211403000081",
-        "99110190121211438000082",
-        "99110190121211443000083",
-        "99110190121211527000084",
-        "99110190121211714000085",
-        "99110190121211724000086",
-        "99110190121211955000087",
-        "99110190121211956000088",
-        "99110190121212210000089",
-        "99110190121212526000090",
-        "99110190121212646000091",
-        "99110190121212848000092",
-        "99110190121212909000093",
-        "99110190121213001000094",
-        "99110190121213214000095",
-        "99110190121213318000096",
-        "99110190121213631000097",
-        "99110190121213647000098",
-        "99110190121214418000102",
-        "99110190121214447000103"};
     Map<String,String> map = new HashMap<>();
-    for (String s : str){
+
       QueryOrderReq registReq = new QueryOrderReq();
       registReq.operSysType = "2";
-      registReq.orderNo = s;
-      registReq.userId = "5d61d91e9d30407996e913758c7e552a";
+      registReq.orderNo = "99110190122002107000001";
+      registReq.userId = "f5656f988e3e4346a57b3a885bc36022";
       QueryOrderResp resp = DiamondService.orderInfo(registReq);
-      map.put(s,resp.FiatTradeOrder.status+"");
-    }
 
-    System.out.println(map);
+
+    System.out.println(resp);
   }
 
 

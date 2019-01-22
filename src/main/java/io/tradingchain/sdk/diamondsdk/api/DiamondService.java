@@ -68,6 +68,7 @@ import io.tradingchain.sdk.diamondsdk.user.UserInfoReqVO;
 import io.tradingchain.sdk.diamondsdk.user.UserInfoResp;
 import io.tradingchain.sdk.diamondsdk.util.AnnotationUtil;
 import io.tradingchain.sdk.diamondsdk.util.HttpUtil;
+import io.tradingchain.sdk.diamondsdk.util.HttpUtil.Response;
 import io.tradingchain.sdk.diamondsdk.util.RandomUtil;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -437,9 +438,18 @@ public class DiamondService {
    */
   public CreateOrderResp createOrder(CreateOrderReq req) throws Exception {
     final String path = "/api/fiatTrade/create";
-    return HttpUtil.post(AnnotationUtil
+
+    Response post = HttpUtil.post(AnnotationUtil
         .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
-            Config.OTC_SECRET)).castTo(CreateOrderResp.class);
+            Config.OTC_SECRET));
+
+    System.out.println(post);
+
+    return null;
+
+//    return HttpUtil.post(AnnotationUtil
+//        .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
+//            Config.OTC_SECRET)).castTo(CreateOrderResp.class);
   }
 
 

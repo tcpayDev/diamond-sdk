@@ -10,6 +10,12 @@ public class Config {
   public static String API_KEY;
   public static String OTC_SECRET;
 
+//  public static String BASE_URL="http://diamond.tradingchain.io/";
+//  public static String OTC_BASE_URL="http://exchange-getway.wellsfargoex.com/";
+//  public static String PLATFORM="tradingchain";
+//  public static String API_KEY="tradingchain";
+//  public static String OTC_SECRET="iaM43PnzzfY6Xdeo";
+
 //  public static String BASE_URL = "http://api.1mfpay.com";
 //  public static String OTC_BASE_URL = "http://101.200.122.153:8380";
 //  public static String PLATFORM = "tradingchain_test";
