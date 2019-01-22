@@ -274,7 +274,9 @@ public class DiamondService {
       for (OtcPosters o : res.otcPosterseList) {
         if (new BigDecimal(o.minPrice).compareTo(req.amount) <= 0 && new BigDecimal(o.maxPrice).compareTo(req.amount) >= 0) {
           //获取币商的收款账户
-          if (new BigDecimal(o.totalPrice).compareTo(req.amount) >= 0) {
+          //计算未成交量
+          BigDecimal surplusPrice = new BigDecimal(o.surplusPrice).multiply(new BigDecimal(o.unitPrice));
+          if (surplusPrice.compareTo(req.amount) >= 0) {
             QueryPaymentReq receiveReq = new QueryPaymentReq();
             receiveReq.userId = o.userId;
             receiveReq.operSysType = req.operSysType;
@@ -315,7 +317,9 @@ public class DiamondService {
     if (res.resCode.equals("C502570000000") && res.otcPosterseList.size() > 0) {
       for (OtcPosters o : res.otcPosterseList) {
         if (new BigDecimal(o.minPrice).compareTo(req.amount) <= 0 && new BigDecimal(o.maxPrice).compareTo(req.amount) >= 0) {
-          if (new BigDecimal(o.totalPrice).compareTo(req.amount) >= 0) {
+          //计算未成交量
+          BigDecimal surplusPrice = new BigDecimal(o.surplusPrice).multiply(new BigDecimal(o.unitPrice));
+          if (surplusPrice.compareTo(req.amount) >= 0) {
             //查询挂单商户的收款方式
             QueryPaymentReq receiveReq = new QueryPaymentReq();
             receiveReq.userId = o.userId;
