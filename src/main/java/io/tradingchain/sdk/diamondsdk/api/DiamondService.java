@@ -438,18 +438,9 @@ public class DiamondService {
    */
   public CreateOrderResp createOrder(CreateOrderReq req) throws Exception {
     final String path = "/api/fiatTrade/create";
-
-    Response post = HttpUtil.post(AnnotationUtil
+    return HttpUtil.post(AnnotationUtil
         .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
-            Config.OTC_SECRET));
-
-    System.out.println(post);
-
-    return null;
-
-//    return HttpUtil.post(AnnotationUtil
-//        .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
-//            Config.OTC_SECRET)).castTo(CreateOrderResp.class);
+            Config.OTC_SECRET)).castTo(CreateOrderResp.class);
   }
 
 
