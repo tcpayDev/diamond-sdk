@@ -39,30 +39,42 @@ public class OtcPostersRes {
     @Override
     public String toString() {
       return "OtcPosters{" +
-          "orderNo='" + orderNo + '\'' +
-          ", postType='" + postType + '\'' +
-          ", userId='" + userId + '\'' +
-          ", unitPrice='" + unitPrice + '\'' +
-          ", amount='" + amount + '\'' +
-          ", totalPrice='" + totalPrice + '\'' +
-          ", minPrice='" + minPrice + '\'' +
-          ", maxPrice='" + maxPrice + '\'' +
-          ", dealPrice='" + dealPrice + '\'' +
-          ", surplusPrice='" + surplusPrice + '\'' +
-          ", status='" + status + '\'' +
-          ", currency='" + currency + '\'' +
-          ", paymentType='" + paymentType + '\'' +
-          ", extend1='" + extend1 + '\'' +
-          '}';
+              "orderNo='" + orderNo + '\'' +
+              ", postType='" + postType + '\'' +
+              ", userId='" + userId + '\'' +
+              ", unitPrice='" + unitPrice + '\'' +
+              ", amount='" + amount + '\'' +
+              ", totalPrice='" + totalPrice + '\'' +
+              ", minPrice='" + minPrice + '\'' +
+              ", maxPrice='" + maxPrice + '\'' +
+              ", dealPrice='" + dealPrice + '\'' +
+              ", surplusPrice='" + surplusPrice + '\'' +
+              ", status='" + status + '\'' +
+              ", currency='" + currency + '\'' +
+              ", paymentType='" + paymentType + '\'' +
+              ", extend1='" + extend1 + '\'' +
+              '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      return this.userId.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+      if (null == this.userId)
+        return 0;
+      return this.userId.hashCode();
     }
   }
 
   @Override
   public String toString() {
     return "OtcPostersRes{" +
-        "resCode='" + resCode + '\'' +
-        ", resMsg='" + resMsg + '\'' +
-        ", otcPosterseList=" + otcPosterseList +
-        '}';
+            "resCode='" + resCode + '\'' +
+            ", resMsg='" + resMsg + '\'' +
+            ", otcPosterseList=" + otcPosterseList +
+            '}';
   }
 }
