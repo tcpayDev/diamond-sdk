@@ -532,6 +532,21 @@ public class DiamondService {
         .castTo(ChargeCollectTransferResp.class);
   }
 
+
+  /**
+   * 转账接口(接收方扣手续费,先付)
+   */
+  public ChargeCollectTransferResp paymentTransfer(ChargeCollectTransferReq req,
+      String SECRET)
+      throws Exception {
+    final String path = "/trade/api/payment";
+    return HttpUtil
+        .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), SECRET))
+        .castTo(ChargeCollectTransferResp.class);
+  }
+
+
+
   /**
    * 桥链列表接口(接收方扣手续费,到付)
    */
