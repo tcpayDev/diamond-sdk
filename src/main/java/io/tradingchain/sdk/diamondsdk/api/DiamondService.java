@@ -46,6 +46,7 @@ import io.tradingchain.sdk.diamondsdk.payment.QueryFiatTradeReceiveReq;
 import io.tradingchain.sdk.diamondsdk.payment.QueryFiatTradeReceiveResp;
 import io.tradingchain.sdk.diamondsdk.payment.QueryPaymentReq;
 import io.tradingchain.sdk.diamondsdk.payment.QueryPaymentResp;
+import io.tradingchain.sdk.diamondsdk.payment.QueryPaymentResp.MerReceiveVo;
 import io.tradingchain.sdk.diamondsdk.regist.BeforeRegisterReq;
 import io.tradingchain.sdk.diamondsdk.regist.BeforeRegisterResp;
 import io.tradingchain.sdk.diamondsdk.regist.ForgetPasswordRequestVO;
@@ -68,13 +69,11 @@ import io.tradingchain.sdk.diamondsdk.user.UserInfoReqVO;
 import io.tradingchain.sdk.diamondsdk.user.UserInfoResp;
 import io.tradingchain.sdk.diamondsdk.util.AnnotationUtil;
 import io.tradingchain.sdk.diamondsdk.util.HttpUtil;
-import io.tradingchain.sdk.diamondsdk.util.HttpUtil.Response;
 import io.tradingchain.sdk.diamondsdk.util.RandomUtil;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
-import io.tradingchain.sdk.diamondsdk.payment.QueryPaymentResp.MerReceiveVo;
 
 public class DiamondService {
 
@@ -136,6 +135,7 @@ public class DiamondService {
         userReq.userName = req.username;
         userReq.operSysType = type;
         userReq.nickName = req.username;
+        userReq.platform = req.platform;
         UserResp user = HttpUtil.post(AnnotationUtil
             .buildReq(Config.OTC_BASE_URL + otc_path, setOtcCommonParams(userReq),
                 Config.OTC_SECRET)).castTo(UserResp.class);
@@ -273,10 +273,12 @@ public class DiamondService {
     List<OtcPostersVO> lists = new ArrayList<>();
     if (res.resCode.equals("C502570000000") && res.otcPosterseList.size() > 0) {
       for (OtcPosters o : res.otcPosterseList) {
-        if (new BigDecimal(o.minPrice).compareTo(req.amount) <= 0 && new BigDecimal(o.maxPrice).compareTo(req.amount) >= 0) {
+        if (new BigDecimal(o.minPrice).compareTo(req.amount) <= 0
+            && new BigDecimal(o.maxPrice).compareTo(req.amount) >= 0) {
           //获取币商的收款账户
           //计算未成交量
-          BigDecimal surplusPrice = new BigDecimal(o.surplusPrice).multiply(new BigDecimal(o.unitPrice));
+          BigDecimal surplusPrice = new BigDecimal(o.surplusPrice)
+              .multiply(new BigDecimal(o.unitPrice));
           if (surplusPrice.compareTo(req.amount) >= 0) {
             QueryPaymentReq receiveReq = new QueryPaymentReq();
             receiveReq.userId = o.userId;
@@ -285,8 +287,8 @@ public class DiamondService {
             List<MerReceiveVo> list = new ArrayList<>();
             if (receiveResp.resCode.equals("C502570000000")
                 && receiveResp.merReceiveVos.size() > 0) {
-              for (MerReceiveVo m :receiveResp.merReceiveVos){
-                if (m.stutas.equals("1")){
+              for (MerReceiveVo m : receiveResp.merReceiveVos) {
+                if (m.stutas.equals("1")) {
                   list.add(m);
                 }
               }
@@ -317,19 +319,21 @@ public class DiamondService {
     List<OtcPosters> wepays = new ArrayList<>();
     if (res.resCode.equals("C502570000000") && res.otcPosterseList.size() > 0) {
       for (OtcPosters o : res.otcPosterseList) {
-        if (new BigDecimal(o.minPrice).compareTo(req.amount) <= 0 && new BigDecimal(o.maxPrice).compareTo(req.amount) >= 0) {
+        if (new BigDecimal(o.minPrice).compareTo(req.amount) <= 0
+            && new BigDecimal(o.maxPrice).compareTo(req.amount) >= 0) {
           //计算未成交量
-          BigDecimal surplusPrice = new BigDecimal(o.surplusPrice).multiply(new BigDecimal(o.unitPrice));
+          BigDecimal surplusPrice = new BigDecimal(o.surplusPrice)
+              .multiply(new BigDecimal(o.unitPrice));
           if (surplusPrice.compareTo(req.amount) >= 0) {
             //查询挂单商户的收款方式
             QueryPaymentReq receiveReq = new QueryPaymentReq();
             receiveReq.userId = o.userId;
             receiveReq.operSysType = req.operSysType;
             QueryPaymentResp receiveResp = findPayments(receiveReq);
-            if (receiveResp.merReceiveVos.size()>0){
-              for (MerReceiveVo m : receiveResp.merReceiveVos){
+            if (receiveResp.merReceiveVos.size() > 0) {
+              for (MerReceiveVo m : receiveResp.merReceiveVos) {
                 //判断收款方式是否可用.并根据收款类型分别处理
-                if (m.stutas.equals("1")){
+                if (m.stutas.equals("1")) {
                   if (m.receiveType.equals("bank")) {
                     banks.add(o);
                   }
@@ -347,27 +351,27 @@ public class DiamondService {
       }
       //首先判断银行卡用户
       OtcPosters otcPosters = new OtcPosters();
-      String paymentType= "";
+      String paymentType = "";
       if (req.amount.compareTo(new BigDecimal("1000")) >= 0) {
         if (banks.size() > 0) {
-          paymentType="bank";
+          paymentType = "bank";
           otcPosters = banks.get(RandomUtil.get(banks.size()));
         } else if (alipays.size() > 0) {
-          paymentType="alipay";
+          paymentType = "alipay";
           otcPosters = alipays.get(RandomUtil.get(alipays.size()));
         } else if (wepays.size() > 0) {
-          paymentType="wepay";
+          paymentType = "wepay";
           otcPosters = wepays.get(RandomUtil.get(wepays.size()));
         }
       } else {
         if (alipays.size() > 0) {
-          paymentType="alipay";
+          paymentType = "alipay";
           otcPosters = alipays.get(RandomUtil.get(alipays.size()));
         } else if (banks.size() > 0) {
-          paymentType="bank";
+          paymentType = "bank";
           otcPosters = banks.get(RandomUtil.get(banks.size()));
         } else if (wepays.size() > 0) {
-          paymentType="wepay";
+          paymentType = "wepay";
           otcPosters = wepays.get(RandomUtil.get(wepays.size()));
         }
       }
@@ -544,7 +548,6 @@ public class DiamondService {
         .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), SECRET))
         .castTo(ChargeCollectTransferResp.class);
   }
-
 
 
   /**

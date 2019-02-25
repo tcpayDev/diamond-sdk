@@ -29,6 +29,8 @@ public class UserReq {
   public String version = "1.0.0";
   @ReqParam(isSgin = true,nullable = false, comment = "Token")
   public String accessToken = System.currentTimeMillis()+"";
+  @ReqParam(isSgin = false,nullable = false, comment = "平台标识")
+  public String platform;
 
   @Override
   public String toString() {
@@ -43,8 +45,10 @@ public class UserReq {
         ", idCard='" + idCard + '\'' +
         ", userName='" + userName + '\'' +
         ", operSysType='" + operSysType + '\'' +
+        ", nickName='" + nickName + '\'' +
         ", version='" + version + '\'' +
         ", accessToken='" + accessToken + '\'' +
+        ", platform='" + platform + '\'' +
         '}';
   }
 }
