@@ -11,6 +11,8 @@ import io.tradingchain.sdk.diamondsdk.payment.AddPaymentReq;
 import io.tradingchain.sdk.diamondsdk.payment.AddPaymentResp;
 import io.tradingchain.sdk.diamondsdk.payment.ChargeCollectTransferReq;
 import io.tradingchain.sdk.diamondsdk.payment.ChargeCollectTransferResp;
+import io.tradingchain.sdk.diamondsdk.payment.DelPaymentReq;
+import io.tradingchain.sdk.diamondsdk.payment.DelPaymentResp;
 import io.tradingchain.sdk.diamondsdk.payment.QueryFiatTradeReceiveReq;
 import io.tradingchain.sdk.diamondsdk.payment.QueryFiatTradeReceiveResp;
 import io.tradingchain.sdk.diamondsdk.payment.QueryPaymentReq;
@@ -185,6 +187,15 @@ public class DiamondSdkApplicationTests {
     registReq.operSysType = "2";
     registReq.userId = "6a07c3f139ee4eb49d6d69720e609bbd";
     CreateOrderResp resp = DiamondService.createOrder(registReq);
+    System.out.println(JSON.toJSONString(resp));
+  }
+
+
+  @Test
+  public void delReceive() throws Exception {
+    DelPaymentReq registReq = new DelPaymentReq("235","2","6239bf05346e41f486f555bb92652fa5");
+
+    DelPaymentResp resp = DiamondService.delReceive(registReq);
     System.out.println(JSON.toJSONString(resp));
   }
 

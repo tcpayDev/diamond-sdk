@@ -4,7 +4,9 @@ import io.tradingchain.sdk.diamondsdk.annotation.ReqParam;
 
 public class DelPaymentReq {
   @ReqParam(isSgin = true,nullable = false, comment = "id")
-  public Integer id;
+  public String id;
+  @ReqParam(isSgin = true,nullable = false, comment = "userId")
+  public String userId;
   @ReqParam(isSgin = false,nullable = false, comment = "操作 1:安卓 2:IOS")
   public String operSysType;
   @ReqParam(isSgin = false,nullable = false, comment = "版本")
@@ -12,12 +14,13 @@ public class DelPaymentReq {
   @ReqParam(isSgin = true,nullable = false, comment = "token")
   public String accessToken = System.currentTimeMillis()+"";
 
-  public DelPaymentReq(Integer id, String operSysType) {
+  public DelPaymentReq(String id, String operSysType,String userId) {
+    this.userId=userId;
     this.id = id;
     this.operSysType = operSysType;
   }
 
-  public DelPaymentReq setId(Integer id) {
+  public DelPaymentReq setId(String id) {
     this.id = id;
     return this;
   }
