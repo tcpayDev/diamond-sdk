@@ -7,14 +7,19 @@ import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeRateRes;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeReq;
 import io.tradingchain.sdk.diamondsdk.merchantOffer.OtcPostersReq;
 import io.tradingchain.sdk.diamondsdk.order.*;
+import io.tradingchain.sdk.diamondsdk.payment.AddPaymentReq;
+import io.tradingchain.sdk.diamondsdk.payment.AddPaymentResp;
 import io.tradingchain.sdk.diamondsdk.payment.ChargeCollectTransferReq;
 import io.tradingchain.sdk.diamondsdk.payment.ChargeCollectTransferResp;
 import io.tradingchain.sdk.diamondsdk.payment.QueryFiatTradeReceiveReq;
 import io.tradingchain.sdk.diamondsdk.payment.QueryFiatTradeReceiveResp;
+import io.tradingchain.sdk.diamondsdk.payment.QueryPaymentReq;
+import io.tradingchain.sdk.diamondsdk.payment.QueryPaymentResp;
 import io.tradingchain.sdk.diamondsdk.regist.*;
 import io.tradingchain.sdk.diamondsdk.response.BaseRes;
 import io.tradingchain.sdk.diamondsdk.response.BaseVO;
 import io.tradingchain.sdk.diamondsdk.trustAsset.AssetPair;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Ignore;
@@ -149,6 +154,25 @@ public class DiamondSdkApplicationTests {
 
   */
 
+
+  @Test
+  public void addPayment() throws Exception {
+    //tring receiveType, String name, String accountNo, String bankName,String bankAddr, File appealFile, String userId, String operSysType
+    AddPaymentReq registReq = new AddPaymentReq("alipay","燕子李三","123456",
+        "c34d93b6d68740f29518aa01571cc74b","1");
+    AddPaymentResp resp = DiamondService.addPayment(registReq);
+    System.out.println(JSON.toJSONString(resp));
+  }
+
+
+  @Test
+  public void findPayments() throws Exception {
+    QueryPaymentReq registReq = new QueryPaymentReq();
+    registReq.operSysType = "1";
+    registReq.userId = "c34d93b6d68740f29518aa01571cc74b";
+    QueryPaymentResp resp = DiamondService.findPayments(registReq);
+    System.out.println(JSON.toJSONString(resp));
+  }
 
   @Test
   public void createOrder() throws Exception {

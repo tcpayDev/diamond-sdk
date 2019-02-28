@@ -30,6 +30,15 @@ public class AddPaymentReq {
     this.receiveType = receiveType;
   }
 
+  public AddPaymentReq(String receiveType, String name, String accountNo,
+      String userId, String operSysType) {
+    this.receiveType = receiveType;
+    this.name = name;
+    this.accountNo = accountNo;
+    this.userId = userId;
+    this.operSysType = operSysType;
+  }
+
   public AddPaymentReq(String receiveType, String name, String accountNo, String bankName,
                        String bankAddr, File appealFile, String userId, String operSysType) {
     this.receiveType = receiveType;
