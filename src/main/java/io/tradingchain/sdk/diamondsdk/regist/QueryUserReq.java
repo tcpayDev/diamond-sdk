@@ -11,6 +11,8 @@ public class QueryUserReq {
   public String version = "1.0.0";
   @ReqParam(isSgin = true,nullable = false, comment = "token")
   public String accessToken = System.currentTimeMillis()+"";
+  @ReqParam(isSgin = false,nullable = true, comment = "token")
+  public String platfomr;
 
   public QueryUserReq() {
   }
@@ -18,6 +20,12 @@ public class QueryUserReq {
   public QueryUserReq(String mobile, String operSysType) {
     this.mobile = mobile;
     this.operSysType = operSysType;
+  }
+
+  public QueryUserReq(String mobile, String operSysType,String platfomr) {
+    this.mobile = mobile;
+    this.operSysType = operSysType;
+    this.platfomr=platfomr;
   }
 
   public QueryUserReq setMobile(String mobile) {

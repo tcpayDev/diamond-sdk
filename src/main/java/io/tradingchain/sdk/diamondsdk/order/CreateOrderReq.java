@@ -21,6 +21,10 @@ public class CreateOrderReq {
   public String version = "1.0.0";
   @ReqParam(isSgin = true,nullable = false, comment = "token")
   public String accessToken = System.currentTimeMillis()+"";
+  @ReqParam(isSgin = false,nullable = true, comment = "notifyUrl")
+  public String notifyUrl;
+
+
 
   public CreateOrderReq() {
   }
@@ -34,6 +38,18 @@ public class CreateOrderReq {
     this.type = type;
     this.userId = userId;
     this.operSysType = operSysType;
+  }
+
+  public CreateOrderReq(String offerOrderNo, String quantity, String price, String amount,
+      String type, String userId, String operSysType,String notifyUrl) {
+    this.offerOrderNo = offerOrderNo;
+    this.quantity = quantity;
+    this.price = price;
+    this.amount = amount;
+    this.type = type;
+    this.userId = userId;
+    this.operSysType = operSysType;
+    this.notifyUrl=notifyUrl;
   }
 
   public CreateOrderReq setOfferOrderNo(String offerOrderNo) {
