@@ -7,7 +7,7 @@ public class QueryOrderResp {
   public String resCode;
   public String resMsg;
 
-  public FiatTradeOrder FiatTradeOrder;
+  public FiatTradeOrder fiatTradeOrder;
 
 
   public static class FiatTradeOrder{
@@ -61,7 +61,7 @@ public class QueryOrderResp {
     return "QueryOrderResp{" +
         "resCode='" + resCode + '\'' +
         ", resMsg='" + resMsg + '\'' +
-        ", FiatTradeOrder=" + FiatTradeOrder +
+        ", fiatTradeOrder=" + fiatTradeOrder +
         '}';
   }
 }

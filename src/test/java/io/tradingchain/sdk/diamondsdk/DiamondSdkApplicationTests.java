@@ -243,15 +243,11 @@ public class DiamondSdkApplicationTests {
 
   @Test
   public void orderInfo() throws Exception {
-    Map<String,String> map = new HashMap<>();
-
       QueryOrderReq registReq = new QueryOrderReq();
       registReq.operSysType = "2";
-      registReq.orderNo = "99110190122002107000001";
-      registReq.userId = "f5656f988e3e4346a57b3a885bc36022";
+      registReq.orderNo = "99110190305162158000049";
+      registReq.userId = "55356d734bdf47a78850d51526d280e2";
       QueryOrderResp resp = DiamondService.orderInfo(registReq);
-
-
     System.out.println(resp);
   }
 
