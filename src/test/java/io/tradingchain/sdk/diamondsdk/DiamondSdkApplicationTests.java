@@ -1,8 +1,11 @@
 package io.tradingchain.sdk.diamondsdk;
 
+import static io.tradingchain.sdk.diamondsdk.config.Config.setCommonParams;
+
 import com.alibaba.fastjson.JSON;
 import io.tradingchain.sdk.diamondsdk.account.AccountDetailsReq;
 import io.tradingchain.sdk.diamondsdk.api.DiamondService;
+import io.tradingchain.sdk.diamondsdk.config.Config;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeRateRes;
 import io.tradingchain.sdk.diamondsdk.exchangeRate.ExchangeReq;
 import io.tradingchain.sdk.diamondsdk.merchantOffer.OtcPostersReq;
@@ -21,6 +24,8 @@ import io.tradingchain.sdk.diamondsdk.regist.*;
 import io.tradingchain.sdk.diamondsdk.response.BaseRes;
 import io.tradingchain.sdk.diamondsdk.response.BaseVO;
 import io.tradingchain.sdk.diamondsdk.trustAsset.AssetPair;
+import io.tradingchain.sdk.diamondsdk.util.AnnotationUtil;
+import io.tradingchain.sdk.diamondsdk.util.HttpUtil;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,23 +44,23 @@ public class DiamondSdkApplicationTests {
   @Test
   public void beforeRegister() throws Exception {
     BeforeRegisterReq req = new BeforeRegisterReq();
-    req.apiKey = "tradingchain";
-    BeforeRegisterResp resp = DiamondService.beforeRegister(req, "");
+    req.apiKey = "chenyu";
+    BeforeRegisterResp resp = DiamondService.beforeRegister(req, "2fb756b5284847f19fa3160a43f149e9");
     System.out.println(JSON.toJSONString(resp));
   }
 
   @Test
   public void register() throws Exception {
     RegistReq registReq = new RegistReq();
-    registReq.apiKey = "tradingchain";
-    registReq.username = "15966668889";
+    registReq.apiKey = "chenyu";
+    registReq.username = "88888888888";
     registReq.password = "12345678";
-    registReq.phone = "15966668889";
-    registReq.platform = "tradingchain_test";
-    registReq.privateKey = "SA7EAP4IA4G5GEITLW2RIESPZQ2DAZZBTNWO7JAS3VWBP6DIEQQF4EYO";
-    registReq.backupKey = "SANFDFZ56TJTRHN26K3MIYDHVSSGGAIJJVP4XYVDPDSM2KW5DAWMN5KS";
+    registReq.phone = "88888888888";
+    registReq.platform = "tradingchain";
+    registReq.privateKey = "SAYIAJFURBNZB6TZC33ASK64SCXJHDN6AB2EBLXGDJ622PPNMGFZFLSG";
+    registReq.backupKey = "SASHJYOSGC3LB6Z7N5NIPL4Y6RH7V7X3WHREQ7IV3PD3O3ILJDYQRV3Y";
     registReq.tradePassword = "123456";
-    RegisterResOTC register = DiamondService.register(registReq, "1", "yScdDvjCDJ906OlrIGIzITnOZVDKKEpm");
+    RegisterResOTC register = DiamondService.register(registReq, "1", "2fb756b5284847f19fa3160a43f149e9");
     System.out.println(register);
   }
 
@@ -94,12 +99,12 @@ public class DiamondSdkApplicationTests {
   @Test
   public void moneyMerchantInfo() throws Exception {
     OtcPostersReq registReq = new OtcPostersReq();
-    registReq.tradeType = "sell";
-    registReq.amount = new BigDecimal("9.27");
-    registReq.payMode = "alipay,bank,wepay";
-    registReq.assetCode = "USDT";
+    registReq.tradeType = "buy";
+//    registReq.amount = new BigDecimal("100");
+//    registReq.payMode = "alipay,bank,wepay";
+//    registReq.assetCode = "USDT";
     registReq.page = 1;
-    registReq.pageSize = 10;
+    registReq.pageSize = 100;
     registReq.operSysType = "1";
     BaseVO vos = DiamondService.moneyMerchantOrder(registReq);
     System.out.println(JSON.toJSONString(vos));
@@ -110,7 +115,7 @@ public class DiamondSdkApplicationTests {
   public void queryUser() throws Exception {
     QueryUserReq registReq = new QueryUserReq();
     registReq.operSysType = "1";
-    registReq.mobile = "10010101234";
+    registReq.mobile = "15922222234";
     QueryUserResp resp = DiamondService.queryUser(registReq);
     System.out.println(JSON.toJSONString(resp));
   }
@@ -160,8 +165,8 @@ public class DiamondSdkApplicationTests {
   @Test
   public void addPayment() throws Exception {
     //tring receiveType, String name, String accountNo, String bankName,String bankAddr, File appealFile, String userId, String operSysType
-    AddPaymentReq registReq = new AddPaymentReq("alipay","燕子李三","123456",
-        "c34d93b6d68740f29518aa01571cc74b","1");
+    AddPaymentReq registReq = new AddPaymentReq("alipay","bwb","123456",
+        "7ab3ccd3a2d54a57add1949e19030253","1");
     AddPaymentResp resp = DiamondService.addPayment(registReq);
     System.out.println(JSON.toJSONString(resp));
   }
@@ -171,7 +176,7 @@ public class DiamondSdkApplicationTests {
   public void findPayments() throws Exception {
     QueryPaymentReq registReq = new QueryPaymentReq();
     registReq.operSysType = "1";
-    registReq.userId = "c34d93b6d68740f29518aa01571cc74b";
+    registReq.userId = "3a0b239f2b0540ffa6faaa1e67741b48";
     QueryPaymentResp resp = DiamondService.findPayments(registReq);
     System.out.println(JSON.toJSONString(resp));
   }
@@ -234,21 +239,10 @@ public class DiamondSdkApplicationTests {
   public void queryReceive() throws Exception {
     QueryFiatTradeReceiveReq registReq = new QueryFiatTradeReceiveReq();
     registReq.operSysType = "1";
-    registReq.payMode = "alipay";
-    registReq.userId = "c34d93b6d68740f29518aa01571cc74b";
+    registReq.payMode = "bank";
+    registReq.userId = "f8803ef976c2491d8b7fb94f5cd71019";
     QueryFiatTradeReceiveResp resp = DiamondService.queryReceive(registReq);
     System.out.println(JSON.toJSONString(resp));
-  }
-
-
-  @Test
-  public void orderInfo() throws Exception {
-      QueryOrderReq registReq = new QueryOrderReq();
-      registReq.operSysType = "2";
-      registReq.orderNo = "99110190305162158000049";
-      registReq.userId = "55356d734bdf47a78850d51526d280e2";
-      QueryOrderResp resp = DiamondService.orderInfo(registReq);
-    System.out.println(resp);
   }
 
 
@@ -314,6 +308,40 @@ public class DiamondSdkApplicationTests {
 
 
   @Test
+  public void confirmPay() throws Exception {
+    ConfirmPayReq confirmPayReq = new ConfirmPayReq("99110190403172342000450","alipay",
+        "668b91490dc346c7978e62cb7a8cad99","1");
+
+    ConfirmPayResp payResp = DiamondService.confirmPay(confirmPayReq);
+
+    System.out.println(JSON.toJSONString(payResp));
+  }
+
+
+//  @Test
+//  public void fiatTradeGrant() throws Exception {
+//    TradeGrantReq tradeGrantReq = new TradeGrantReq();
+//    tradeGrantReq.operSysType="1";
+//    tradeGrantReq.orderNo="99110190412165918000067";
+//    tradeGrantReq.userId="bf735a2da0ba4c9da18ec4b41650c33d";
+//    BaseVO baseVO = DiamondService.fiatTradeGrant(tradeGrantReq);
+//
+//    System.out.println(JSON.toJSONString(baseVO));
+//  }
+
+
+  @Test
+  public void orderInfo() throws Exception {
+    QueryOrderReq registReq = new QueryOrderReq();
+    registReq.operSysType = "2";
+    registReq.orderNo = "99110190514202239002597";//99110190314202543001371 //99110190314203150001373
+    registReq.userId = "3ecffc4f25c343539b89541b7aaa419d";
+    QueryOrderResp resp = DiamondService.orderInfo(registReq);
+    System.out.println(resp);
+  }
+
+
+  @Test
   public void forgetPassword() throws Exception {
     ForgetPasswordRequestVO requestVO = new ForgetPasswordRequestVO("15921863921", "22222222",
             "tradingchain_test", "tradingchain", "P");
@@ -335,5 +363,26 @@ public class DiamondSdkApplicationTests {
 
     System.out.println(JSON.toJSONString(baseRes));
   }
+
+  public static void main(String[] args) throws Exception{
+    AttributeReqVO attributeReqVO = new AttributeReqVO();
+    attributeReqVO.unitPrice="6.11";
+    attributeReqVO.amount="1000";
+    attributeReqVO.totalPrice="6800";
+    attributeReqVO.minPrice="0.01";
+    attributeReqVO.maxPrice="500";
+    attributeReqVO.postType="sell";
+    attributeReqVO.currency="USDT";
+    attributeReqVO.userId="3a0b239f2b0540ffa6faaa1e67741b48";
+    attributeReqVO.operSysType="1";
+//    attributeReqVO.password="12345678";
+    ResetPasswordResponseVO responseVO = HttpUtil
+        .post(AnnotationUtil
+            .buildReq(Config.OTC_BASE_URL + "/api/posters/commit", attributeReqVO,"iaM43PnzzfY6Xdeo"))
+        .castTo(ResetPasswordResponseVO.class);
+
+    System.out.println(responseVO);
+  }
+
 }
 

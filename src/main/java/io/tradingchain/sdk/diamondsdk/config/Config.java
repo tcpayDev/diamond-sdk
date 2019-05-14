@@ -3,7 +3,7 @@ package io.tradingchain.sdk.diamondsdk.config;
 import java.lang.reflect.Field;
 
 public class Config {
-
+//
   public static String BASE_URL;
   public static String OTC_BASE_URL;
   public static String PLATFORM;
@@ -17,7 +17,7 @@ public class Config {
 //  public static String OTC_SECRET="iaM43PnzzfY6Xdeo";
 
 //  public static String BASE_URL = "http://api.1mfpay.com";
-//  public static String OTC_BASE_URL = "http://101.200.122.153:8380";
+//  public static String OTC_BASE_URL = "http://47.88.237.199:8980";
 //  public static String PLATFORM = "tradingchain_test";
 //  public static String API_KEY = "tradingchain";
 //  public static String OTC_SECRET = "iaM43PnzzfY6Xdeo";
@@ -48,13 +48,6 @@ public class Config {
   public static final Object setCommonParams(Object o) {
     setField("apiKey", API_KEY, o);
     setField("platform", PLATFORM, o);
-    return o;
-  }
-
-  // 设置OTC请求对象的公共参数
-  public static final Object setOtcCommonParams(Object o) throws Exception {
-//    setField("operSysType", operSysType, o);
-//    setField("version", "1.0.0", o);
     return o;
   }
 }

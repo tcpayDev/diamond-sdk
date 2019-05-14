@@ -7,11 +7,11 @@ import java.math.BigDecimal;
 public class OtcPostersReq {
   @ReqParam(isSgin = false,nullable = false, comment = "买卖方向 buy(买)/sell(卖)")
   public String tradeType;
-  @ReqParam(isSgin = false,nullable = false, comment = "金额")
+  @ReqParam(isSgin = false,nullable = true, comment = "金额")
   public BigDecimal amount;
-  @ReqParam(isSgin = false,nullable = false, comment = "支付方式 用,分割")
+  @ReqParam(isSgin = false,nullable = true, comment = "支付方式 用,分割")
   public String payMode;
-  @ReqParam(isSgin = false,nullable = false, comment = "币种名称 如:btc")
+  @ReqParam(isSgin = false,nullable = true, comment = "币种名称 如:btc")
   public String assetCode;
   @ReqParam(isSgin = false,nullable = false, comment = "page")
   public int page;

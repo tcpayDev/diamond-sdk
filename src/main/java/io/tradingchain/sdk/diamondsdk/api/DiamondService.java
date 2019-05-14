@@ -1,7 +1,6 @@
 package io.tradingchain.sdk.diamondsdk.api;
 
 import static io.tradingchain.sdk.diamondsdk.config.Config.setCommonParams;
-import static io.tradingchain.sdk.diamondsdk.config.Config.setOtcCommonParams;
 
 import io.tradingchain.sdk.diamondsdk.account.AccountDetailsReq;
 import io.tradingchain.sdk.diamondsdk.account.AccountDetailsResp;
@@ -137,7 +136,7 @@ public class DiamondService {
         userReq.nickName = req.username;
         userReq.platform = req.platform;
         UserResp user = HttpUtil.post(AnnotationUtil
-            .buildReq(Config.OTC_BASE_URL + otc_path, setOtcCommonParams(userReq),
+            .buildReq(Config.OTC_BASE_URL + otc_path, userReq,
                 Config.OTC_SECRET)).castTo(UserResp.class);
         if (user.resCode.equals("C502570000000")) {
           //System.out.println(res.data.publicKey);
@@ -160,7 +159,7 @@ public class DiamondService {
     final String path = "/api/user/query";
     return HttpUtil
         .post(AnnotationUtil
-            .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req), Config.OTC_SECRET))
+            .buildReq(Config.OTC_BASE_URL + path, req, Config.OTC_SECRET))
         .castTo(QueryUserResp.class);
   }
 
@@ -268,7 +267,7 @@ public class DiamondService {
   public BaseVO moneyMerchantInfo(OtcPostersReq req) throws Exception {
     final String path = "/api/fiatTrade/queryOffers";
     OtcPostersRes res = HttpUtil.post(AnnotationUtil
-        .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
+        .buildReq(Config.OTC_BASE_URL + path, req,
             Config.OTC_SECRET)).castTo(OtcPostersRes.class);
     List<OtcPostersVO> lists = new ArrayList<>();
     if (res.resCode.equals("C502570000000") && res.otcPosterseList.size() > 0) {
@@ -311,7 +310,7 @@ public class DiamondService {
   public BaseVO moneyMerchantOrder(OtcPostersReq req) throws Exception {
     final String path = "/api/fiatTrade/queryOffers";
     OtcPostersRes res = HttpUtil.post(AnnotationUtil
-        .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
+        .buildReq(Config.OTC_BASE_URL + path, req,
             Config.OTC_SECRET)).castTo(OtcPostersRes.class);
     List<OtcPostersResVO> lists = new ArrayList<>();
     List<OtcPosters> banks = new ArrayList<>();
@@ -402,7 +401,7 @@ public class DiamondService {
   public AddPaymentResp addPayment(AddPaymentReq req) throws Exception {
     final String path = "/api/info/receive/add";
     return HttpUtil.postForm(AnnotationUtil
-        .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
+        .buildReq(Config.OTC_BASE_URL + path, req,
             Config.OTC_SECRET)).castTo(AddPaymentResp.class);
   }
 
@@ -418,7 +417,7 @@ public class DiamondService {
     treeMap.put("accessToken", req.accessToken);
     treeMap.put("userId", req.userId);
     return HttpUtil.post(AnnotationUtil
-        .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
+        .buildReq(Config.OTC_BASE_URL + path, req,
             Config.OTC_SECRET)).castTo(QueryPaymentResp.class);
   }
 
@@ -430,7 +429,7 @@ public class DiamondService {
   public DelPaymentResp delReceive(DelPaymentReq req) throws Exception {
     final String path = "/api/info/receive/delReceive";
     return HttpUtil.post(AnnotationUtil
-        .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
+        .buildReq(Config.OTC_BASE_URL + path, req,
             Config.OTC_SECRET)).castTo(DelPaymentResp.class);
   }
 
@@ -443,7 +442,7 @@ public class DiamondService {
   public CreateOrderResp createOrder(CreateOrderReq req) throws Exception {
     final String path = "/api/fiatTrade/create";
     return HttpUtil.post(AnnotationUtil
-        .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
+        .buildReq(Config.OTC_BASE_URL + path, req,
             Config.OTC_SECRET)).castTo(CreateOrderResp.class);
   }
 
@@ -456,7 +455,7 @@ public class DiamondService {
   public CancelOrderResp cancelOrder(CancelOrderReq req) throws Exception {
     final String path = "/api/fiatTrade/cancel";
     return HttpUtil.post(AnnotationUtil
-        .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
+        .buildReq(Config.OTC_BASE_URL + path, req,
             Config.OTC_SECRET)).castTo(CancelOrderResp.class);
   }
 
@@ -468,7 +467,7 @@ public class DiamondService {
   public ConfirmPayResp confirmPay(ConfirmPayReq req) throws Exception {
     final String path = "/api/fiatTrade/pay";
     return HttpUtil.post(AnnotationUtil
-        .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
+        .buildReq(Config.OTC_BASE_URL + path, req,
             Config.OTC_SECRET)).castTo(ConfirmPayResp.class);
   }
 
@@ -480,7 +479,7 @@ public class DiamondService {
   public FiatTradeAppealResp fiatTradeAppeal(FiatTradeAppealReq req) throws Exception {
     final String path = "/api/fiatTrade/appeal";
     return HttpUtil.postForm(AnnotationUtil
-        .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
+        .buildReq(Config.OTC_BASE_URL + path, req,
             Config.OTC_SECRET)).castTo(FiatTradeAppealResp.class);
   }
 
@@ -493,7 +492,7 @@ public class DiamondService {
   public QueryOrderListResp orderList(QueryOrderListReq req) throws Exception {
     final String path = "/api/fiatTrade/query";
     return HttpUtil.post(AnnotationUtil
-        .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
+        .buildReq(Config.OTC_BASE_URL + path, req,
             Config.OTC_SECRET)).castTo(QueryOrderListResp.class);
   }
 
@@ -507,7 +506,7 @@ public class DiamondService {
     final String path = "/api/fiatTrade/queryReceives";
 
     return HttpUtil.post(AnnotationUtil
-        .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
+        .buildReq(Config.OTC_BASE_URL + path, req,
             Config.OTC_SECRET)).castTo(QueryFiatTradeReceiveResp.class);
   }
 
@@ -520,7 +519,7 @@ public class DiamondService {
   public QueryOrderResp orderInfo(QueryOrderReq req) throws Exception {
     final String path = "/api/fiatTrade/queryByOrderNo";
     return HttpUtil.post(AnnotationUtil
-        .buildReq(Config.OTC_BASE_URL + path, setOtcCommonParams(req),
+        .buildReq(Config.OTC_BASE_URL + path, req,
             Config.OTC_SECRET)).castTo(QueryOrderResp.class);
   }
 
