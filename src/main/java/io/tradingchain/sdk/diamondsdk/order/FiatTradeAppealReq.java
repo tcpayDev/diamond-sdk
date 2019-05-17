@@ -20,6 +20,17 @@ public class FiatTradeAppealReq {
   public String operSysType;
   @ReqParam(isSgin = false,nullable = false, comment = "版本")
   public String version = "1.0.0";
+
+  public FiatTradeAppealReq setVersion(String version) {
+    this.version = version;
+    return this;
+  }
+
+  public FiatTradeAppealReq setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
+    return this;
+  }
+
   @ReqParam(isSgin = true,nullable = false, comment = "token")
   public String accessToken = System.currentTimeMillis()+"";
 

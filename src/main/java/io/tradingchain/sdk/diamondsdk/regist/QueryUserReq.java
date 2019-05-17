@@ -9,6 +9,22 @@ public class QueryUserReq {
   public String operSysType;
   @ReqParam(isSgin = false,nullable = false, comment = "版本号 1.0.0")
   public String version = "1.0.0";
+
+  public QueryUserReq setVersion(String version) {
+    this.version = version;
+    return this;
+  }
+
+  public QueryUserReq setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
+    return this;
+  }
+
+  public QueryUserReq setPlatfomr(String platfomr) {
+    this.platfomr = platfomr;
+    return this;
+  }
+
   @ReqParam(isSgin = true,nullable = false, comment = "token")
   public String accessToken = System.currentTimeMillis()+"";
   @ReqParam(isSgin = false,nullable = true, comment = "token")

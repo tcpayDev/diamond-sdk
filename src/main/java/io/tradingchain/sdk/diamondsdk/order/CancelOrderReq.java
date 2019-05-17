@@ -11,6 +11,17 @@ public class CancelOrderReq {
   public String operSysType;
   @ReqParam(isSgin = false,nullable = false, comment = "版本")
   public String version = "1.0.0";
+
+  public CancelOrderReq setVersion(String version) {
+    this.version = version;
+    return this;
+  }
+
+  public CancelOrderReq setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
+    return this;
+  }
+
   @ReqParam(isSgin = true,nullable = false, comment = "token")
   public String accessToken = System.currentTimeMillis()+"";
 

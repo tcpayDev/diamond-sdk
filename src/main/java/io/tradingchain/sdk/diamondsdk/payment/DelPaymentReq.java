@@ -11,6 +11,22 @@ public class DelPaymentReq {
   public String operSysType;
   @ReqParam(isSgin = false,nullable = false, comment = "版本")
   public String version = "1.0.0";
+
+  public DelPaymentReq setUserId(String userId) {
+    this.userId = userId;
+    return this;
+  }
+
+  public DelPaymentReq setVersion(String version) {
+    this.version = version;
+    return this;
+  }
+
+  public DelPaymentReq setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
+    return this;
+  }
+
   @ReqParam(isSgin = true,nullable = false, comment = "token")
   public String accessToken = System.currentTimeMillis()+"";
 

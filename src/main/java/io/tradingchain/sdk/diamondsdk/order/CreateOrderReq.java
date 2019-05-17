@@ -19,6 +19,22 @@ public class CreateOrderReq {
   public String operSysType;
   @ReqParam(isSgin = false,nullable = false, comment = "版本")
   public String version = "1.0.0";
+
+  public CreateOrderReq setVersion(String version) {
+    this.version = version;
+    return this;
+  }
+
+  public CreateOrderReq setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
+    return this;
+  }
+
+  public CreateOrderReq setNotifyUrl(String notifyUrl) {
+    this.notifyUrl = notifyUrl;
+    return this;
+  }
+
   @ReqParam(isSgin = true,nullable = false, comment = "token")
   public String accessToken = System.currentTimeMillis()+"";
   @ReqParam(isSgin = false,nullable = true, comment = "notifyUrl")

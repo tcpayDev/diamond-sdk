@@ -13,6 +13,17 @@ public class ConfirmPayReq {
   public String operSysType;
   @ReqParam(isSgin = false,nullable = false, comment = "版本")
   public String version = "1.0.0";
+
+  public ConfirmPayReq setVersion(String version) {
+    this.version = version;
+    return this;
+  }
+
+  public ConfirmPayReq setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
+    return this;
+  }
+
   @ReqParam(isSgin = true,nullable = false, comment = "token")
   public String accessToken = System.currentTimeMillis()+"";
 
