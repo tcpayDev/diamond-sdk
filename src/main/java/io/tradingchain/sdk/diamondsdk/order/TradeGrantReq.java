@@ -11,6 +11,27 @@ public class TradeGrantReq {
   public String operSysType;    //操作系统: 1：安卓2：IOS
   @ReqParam(isSgin = false,nullable = false, comment = "版本")
   public String version = "1.0.0";
+
+  public void setUserId(String userId) {
+    this.userId = userId;
+  }
+
+  public void setOrderNo(String orderNo) {
+    this.orderNo = orderNo;
+  }
+
+  public void setOperSysType(String operSysType) {
+    this.operSysType = operSysType;
+  }
+
+  public void setVersion(String version) {
+    this.version = version;
+  }
+
+  public void setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
+  }
+
   @ReqParam(isSgin = true,nullable = false, comment = "token")
   public String accessToken = System.currentTimeMillis()+"";
 }

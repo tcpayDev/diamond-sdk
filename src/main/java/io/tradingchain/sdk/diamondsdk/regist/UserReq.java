@@ -27,6 +27,63 @@ public class UserReq {
   public String nickName;
   @ReqParam(isSgin = false,nullable = false, comment = "版本")
   public String version = "1.0.0";
+
+  public void setMobile(String mobile) {
+    this.mobile = mobile;
+  }
+
+  public void setLoginPass(String loginPass) {
+    this.loginPass = loginPass;
+  }
+
+  public void setTradePassword(String tradePassword) {
+    this.tradePassword = tradePassword;
+  }
+
+  public void setPrivateKey(String privateKey) {
+    this.privateKey = privateKey;
+  }
+
+  public void setExUserId(String exUserId) {
+    this.exUserId = exUserId;
+  }
+
+  public void setPublicKey(String publicKey) {
+    this.publicKey = publicKey;
+  }
+
+  public void setInviteCode(String inviteCode) {
+    this.inviteCode = inviteCode;
+  }
+
+  public void setIdCard(String idCard) {
+    this.idCard = idCard;
+  }
+
+  public void setUserName(String userName) {
+    this.userName = userName;
+  }
+
+  public void setOperSysType(String operSysType) {
+    this.operSysType = operSysType;
+  }
+
+  public void setNickName(String nickName) {
+    this.nickName = nickName;
+  }
+
+  public void setVersion(String version) {
+    this.version = version;
+  }
+
+  public void setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
+  }
+
+  public void setPlatform(String platform) {
+    this.platform = platform;
+  }
+
   @ReqParam(isSgin = true,nullable = false, comment = "Token")
   public String accessToken = System.currentTimeMillis()+"";
   @ReqParam(isSgin = false,nullable = false, comment = "平台标识")

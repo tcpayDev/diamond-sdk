@@ -115,7 +115,6 @@ public class DiamondService {
     UserReq userReq = new UserReq();
     QueryUserReq queryUserReq = new QueryUserReq();
     queryUserReq.mobile = req.phone;
-    queryUserReq.accessToken = System.currentTimeMillis() + "1";
     queryUserReq.operSysType = type;
     queryUserReq.version = userReq.version;
     QueryUserResp queryUserResp = queryUser(queryUserReq);

@@ -11,4 +11,20 @@ public class ExchangeOTCRateReq {
   public String version = "1.0.0";
   @ReqParam(isSgin = true,nullable = false, comment = "token")
   public String accessToken = System.currentTimeMillis()+"";
+
+  public void setAssetCode(String assetCode) {
+    this.assetCode = assetCode;
+  }
+
+  public void setOperSysType(String operSysType) {
+    this.operSysType = operSysType;
+  }
+
+  public void setVersion(String version) {
+    this.version = version;
+  }
+
+  public void setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
+  }
 }

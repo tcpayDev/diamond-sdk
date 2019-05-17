@@ -19,6 +19,14 @@ public class QueryOrderListReq {
   public QueryOrderListReq() {
   }
 
+  public void setVersion(String version) {
+    this.version = version;
+  }
+
+  public void setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
+  }
+
   public QueryOrderListReq(int page, int pageSize, String userId, String operSysType) {
     this.page = page;
     this.pageSize = pageSize;

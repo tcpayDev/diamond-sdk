@@ -14,6 +14,14 @@ public class QueryFiatTradeReceiveReq {
   @ReqParam(isSgin = true,nullable = false, comment = "token")
   public String accessToken = System.currentTimeMillis()+"";
 
+  public void setVersion(String version) {
+    this.version = version;
+  }
+
+  public void setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
+  }
+
   public QueryFiatTradeReceiveReq() {
   }
 

@@ -17,6 +17,14 @@ public class QueryOrderReq {
   public QueryOrderReq() {
   }
 
+  public void setVersion(String version) {
+    this.version = version;
+  }
+
+  public void setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
+  }
+
   public QueryOrderReq(String userId, String orderNo, String operSysType) {
     this.userId = userId;
     this.orderNo = orderNo;
