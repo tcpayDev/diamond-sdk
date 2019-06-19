@@ -33,6 +33,62 @@ public class AttributeReqVO {
   public String currency = System.currentTimeMillis()+"";
   @ReqParam(isSgin = true,nullable = false, comment = "token")
   public String userId = System.currentTimeMillis()+"";
+
+  public AttributeReqVO setUnitPrice(String unitPrice) {
+    this.unitPrice = unitPrice;
+    return this;
+  }
+
+  public AttributeReqVO setAmount(String amount) {
+    this.amount = amount;
+    return this;
+  }
+
+  public AttributeReqVO setTotalPrice(String totalPrice) {
+    this.totalPrice = totalPrice;
+    return this;
+  }
+
+  public AttributeReqVO setMinPrice(String minPrice) {
+    this.minPrice = minPrice;
+    return this;
+  }
+
+  public AttributeReqVO setMaxPrice(String maxPrice) {
+    this.maxPrice = maxPrice;
+    return this;
+  }
+
+  public AttributeReqVO setPostType(String postType) {
+    this.postType = postType;
+    return this;
+  }
+
+  public AttributeReqVO setCurrency(String currency) {
+    this.currency = currency;
+    return this;
+  }
+
+  public AttributeReqVO setUserId(String userId) {
+    this.userId = userId;
+    return this;
+  }
+
+  public AttributeReqVO setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
+    return this;
+  }
+
+  public AttributeReqVO setOperSysType(String operSysType) {
+    this.operSysType = operSysType;
+    return this;
+  }
+
+  public AttributeReqVO setVersion(String version) {
+    this.version = version;
+    return this;
+  }
+
   @ReqParam(isSgin = true,nullable = false, comment = "token")
   public String accessToken = System.currentTimeMillis()+"";
   @ReqParam(isSgin = false,nullable = false, comment = "操作系统")

@@ -11,6 +11,17 @@ public class QueryFiatTradeReceiveReq {
   public String operSysType;
   @ReqParam(isSgin = false,nullable = false, comment = "版本")
   public String version = "1.0.0";
+
+  public QueryFiatTradeReceiveReq setVersion(String version) {
+    this.version = version;
+    return this;
+  }
+
+  public QueryFiatTradeReceiveReq setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
+    return this;
+  }
+
   @ReqParam(isSgin = true,nullable = false, comment = "token")
   public String accessToken = System.currentTimeMillis()+"";
 

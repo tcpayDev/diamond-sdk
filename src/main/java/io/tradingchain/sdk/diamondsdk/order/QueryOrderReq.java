@@ -11,6 +11,17 @@ public class QueryOrderReq {
   public String operSysType;    //操作系统: 1：安卓2：IOS
   @ReqParam(isSgin = false,nullable = false, comment = "版本")
   public String version = "1.0.0";
+
+  public QueryOrderReq setVersion(String version) {
+    this.version = version;
+    return this;
+  }
+
+  public QueryOrderReq setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
+    return this;
+  }
+
   @ReqParam(isSgin = true,nullable = false, comment = "token")
   public String accessToken = System.currentTimeMillis()+"";
 
