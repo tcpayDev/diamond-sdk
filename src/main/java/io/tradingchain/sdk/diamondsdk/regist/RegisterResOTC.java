@@ -13,6 +13,20 @@ public class RegisterResOTC extends BaseRes {
   public String username;
   public String platform;
 
+  public RegisterResOTC() {
+  }
+
+  public RegisterResOTC(String publicKey, String privateKey, String backupKey,
+      String userId, String inviteCode, String username, String platform) {
+    this.publicKey = publicKey;
+    this.privateKey = privateKey;
+    this.backupKey = backupKey;
+    this.userId = userId;
+    this.inviteCode = inviteCode;
+    this.username = username;
+    this.platform = platform;
+  }
+
   public RegisterResOTC(RegisterRes res, UserResp user) {
     this.code = res.code;
     this.msg = res.msg;
