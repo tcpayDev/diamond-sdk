@@ -27,6 +27,8 @@ public class RegisterResOTC extends BaseRes {
     this.platform = platform;
   }
 
+
+
   public RegisterResOTC(RegisterRes res, UserResp user) {
     this.code = res.code;
     this.msg = res.msg;
