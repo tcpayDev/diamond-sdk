@@ -44,5 +44,6 @@ public class OtcPostersRes {
     public String qrUrl;
     public String bankNo;
     public String bankAddr;
+    public String bankName;
   }
 }
