@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.BasicHttpEntity;
 import org.apache.http.entity.ContentType;
@@ -21,15 +22,27 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public class HttpUtil {
 
   private static final Logger LOGGER = Logger.getLogger(HttpUtil.class.getName());
+  private static final int TIMEOUT_MILLS = 120000; // two minutes 两分钟
+
+  private static final RequestConfig REQUEST_CONFIG = RequestConfig.custom()
+          .setConnectTimeout(TIMEOUT_MILLS)
+          .setSocketTimeout(TIMEOUT_MILLS)
+          .build();
 
   private static final Response post(String url, InputStream data, long length) throws IOException {
-    HttpClient httpClient = HttpClientBuilder.create().build();
+    HttpClient httpClient = HttpClientBuilder.create()
+            .disableAutomaticRetries()
+            .evictExpiredConnections()
+            .evictIdleConnections(TIMEOUT_MILLS, TimeUnit.MILLISECONDS)
+            .build();
     HttpPost httpPost = new HttpPost(url);
+    httpPost.setConfig(REQUEST_CONFIG);
     HttpEntity httpEntity = new BasicHttpEntity();
     ((BasicHttpEntity) httpEntity).setContentType(ContentType.APPLICATION_JSON.toString());
     ((BasicHttpEntity) httpEntity).setContentLength(length);
