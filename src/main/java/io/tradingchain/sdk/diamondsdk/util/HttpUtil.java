@@ -46,7 +46,12 @@ public class HttpUtil {
     ((BasicHttpEntity) httpEntity).setContentLength(length);
     ((BasicHttpEntity) httpEntity).setContent(data);
     httpPost.setEntity(httpEntity);
-    return new Response(httpClient.execute(httpPost));
+    HttpResponse execute = httpClient.execute(httpPost);
+    try{
+      return new Response(execute);
+    } finally {
+      httpPost.releaseConnection(); // 断开链接
+    }
   }
 
   private static final Response post(String url, String data) throws IOException {
