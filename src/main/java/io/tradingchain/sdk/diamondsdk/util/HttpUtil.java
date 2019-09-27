@@ -38,8 +38,6 @@ public class HttpUtil {
   private static final Response post(String url, InputStream data, long length) throws IOException {
     HttpClient httpClient = HttpClientBuilder.create()
             .disableAutomaticRetries()
-            .evictExpiredConnections()
-            .evictIdleConnections(TIMEOUT_MILLS, TimeUnit.MILLISECONDS)
             .build();
     HttpPost httpPost = new HttpPost(url);
     httpPost.setConfig(REQUEST_CONFIG);
