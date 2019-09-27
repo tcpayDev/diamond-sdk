@@ -7,6 +7,7 @@ import okhttp3.RequestBody;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
@@ -28,6 +29,11 @@ public class HttpUtil {
 
     private static final Logger LOGGER = Logger.getLogger(HttpUtil.class.getName());
     private static final int TIMEOUT_MILLS = 75000;
+
+    private static final RequestConfig REQUEST_CONFIG = RequestConfig.custom()
+            .setConnectTimeout(TIMEOUT_MILLS)
+            .setSocketTimeout(TIMEOUT_MILLS)
+            .build();
 
     private static final OkHttpClient httpClient = new OkHttpClient.Builder()
             .connectTimeout(TIMEOUT_MILLS, TimeUnit.MILLISECONDS)
@@ -60,6 +66,7 @@ public class HttpUtil {
     private static final Response postFormC(String url, Map data) throws IOException {
         HttpClient httpClient = HttpClientBuilder.create().build();
         HttpPost httpPost = new HttpPost(url);
+        httpPost.setConfig(REQUEST_CONFIG);
 
         ContentType strContent = ContentType.create("text/plain", Charset.forName("UTF-8"));
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
