@@ -71,7 +71,9 @@ import io.tradingchain.sdk.diamondsdk.util.HttpUtil;
 import io.tradingchain.sdk.diamondsdk.util.RandomUtil;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 public class DiamondService {
@@ -250,13 +252,15 @@ public class DiamondService {
   /**
    * 资产列表信任接口
    */
-  public void assetsTrust(AssetsTrustReq req, String SECRET) {
+  public Map assetsTrust(AssetsTrustReq req, String SECRET) {
     final String path = "/find/assetTrustList";
     try {
-      HttpUtil
-          .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), SECRET));
+      return HttpUtil
+          .post(AnnotationUtil.buildReq(Config.BASE_URL + path, setCommonParams(req), SECRET))
+          .toMap();
     } catch (Exception e) {
     }
+    return new HashMap();
   }
 
   /**
