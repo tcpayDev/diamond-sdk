@@ -45,13 +45,18 @@ public class HttpUtil {
     okhttp3.Response response = httpClient.newCall(
         new Builder().post(RequestBody.create(MediaType.parse("application/json"), data))
             .url(url).build()).execute();
-    String responseString = response.body().string();
-    LOGGER.info(String.format("post response, response=%s", responseString));
-    Integer code = JSON.parseObject(responseString).getInteger("code");
-    if (code !=null) {
-      return new Response(responseString);
-    }else {
-      throw new RuntimeException("请求服务异常");
+    if(response.isSuccessful()){
+      String responseString = response.body().string();
+      LOGGER.info(String.format("post response, response=%s", responseString));
+      Integer code = JSON.parseObject(responseString).getInteger("code");
+      if (code !=null) {
+        return new Response(responseString);
+      }else {
+        throw new RuntimeException("请求服务异常-code");
+      }
+    }else{
+      LOGGER.info(String.format("post response, response=%s", response.message()));
+      throw new RuntimeException("请求服务异常-response");
     }
   }
 
