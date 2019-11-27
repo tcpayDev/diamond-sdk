@@ -45,23 +45,18 @@ public class HttpUtil {
     okhttp3.Response response = httpClient.newCall(
         new Builder().post(RequestBody.create(MediaType.parse("application/json"), data))
             .url(url).build()).execute();
-    if(response.isSuccessful()){
+    if (response.isSuccessful()) {
       String responseString = response.body().string();
       LOGGER.info(String.format("post response, response=%s", responseString));
-      Integer code = JSON.parseObject(responseString).getInteger("code");
-      if (code !=null) {
-        return new Response(responseString);
-      }else {
-        throw new RuntimeException("请求服务异常-code");
-      }
-    }else{
+      return new Response(responseString);
+    } else {
       LOGGER.info(String.format("post response, response=%s", response.message()));
       throw new RuntimeException("请求服务异常-response");
     }
   }
 
   public static void main(String[] args) throws IOException {
-    post("http://test-api.tcpay.info/trade/api/payment","");
+    post("http://test-api.tcpay.info/trade/api/payment", "");
   }
 
   private static final Response post(String url, Map data) throws IOException {
